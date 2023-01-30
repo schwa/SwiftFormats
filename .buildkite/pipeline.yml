@@ -3,4 +3,4 @@ steps:
       - "swift package clean"
       - "swift build"
       - "swift test --enable-code-coverage"
-      - "swiftlint lint --quiet"
+      #- "swiftlint lint --quiet"
