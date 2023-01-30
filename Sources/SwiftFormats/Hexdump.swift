@@ -1,7 +1,7 @@
 @_implementationOnly import Algorithms
 import Foundation
 
-//public struct HexdumpFormatStyle<FormatInput>: FormatStyle where FormatInput: DataProtocol, FormatInput.Index == Int {
+// public struct HexdumpFormatStyle<FormatInput>: FormatStyle where FormatInput: DataProtocol, FormatInput.Index == Int {
 //    public typealias FormatInput = FormatInput
 //    public typealias FormatOutput = String
 //
@@ -11,26 +11,26 @@ import Foundation
 //        fatalError()
 //        return s
 //    }
-//}
+// }
 //
-//public extension FormatStyle where Self == HexdumpFormatStyle<Data> {
+// public extension FormatStyle where Self == HexdumpFormatStyle<Data> {
 //    static var hexdump: Self {
 //        HexdumpFormatStyle()
 //    }
-//}
+// }
 //
-//public extension FormatStyle where Self == HexdumpFormatStyle<[UInt8]> {
+// public extension FormatStyle where Self == HexdumpFormatStyle<[UInt8]> {
 //    static var hexdump: Self {
 //        HexdumpFormatStyle()
 //    }
-//}
+// }
 
 // Now do this for all DataProtocol types
 
 //// TODO: Remove Buffer.index == Int restriction
 //// TODO: Can we use DataProtocol instead?
 //// swiftlint:disable:next line_length
-//public func hexdump<Buffer>(_ buffer: Buffer, width: Int = 16, baseAddress: Int = 0, separator: String = "\n", terminator: String = "", stream: inout some TextOutputStream) where Buffer: RandomAccessCollection, Buffer.Element == UInt8, Buffer.Index == Int {
+// public func hexdump<Buffer>(_ buffer: Buffer, width: Int = 16, baseAddress: Int = 0, separator: String = "\n", terminator: String = "", stream: inout some TextOutputStream) where Buffer: RandomAccessCollection, Buffer.Element == UInt8, Buffer.Index == Int {
 //    for index in stride(from: 0, through: buffer.count, by: width) {
 //        let address = UInt(baseAddress + index).formatted(.hex.leadingZeros().prefix(.none))
 //        let chunk = buffer[index ..< (index + min(width, buffer.count - index))]
@@ -60,16 +60,16 @@ import Foundation
 //        stream.write(separator)
 //    }
 //    stream.write(terminator)
-//}
+// }
 
-//public func hexdump<Buffer>(_ buffer: Buffer, width: Int = 16, baseAddress: Int = 0) where Buffer: RandomAccessCollection, Buffer.Element == UInt8, Buffer.Index == Int {
+// public func hexdump<Buffer>(_ buffer: Buffer, width: Int = 16, baseAddress: Int = 0) where Buffer: RandomAccessCollection, Buffer.Element == UInt8, Buffer.Index == Int {
 //    var string = String()
 //    hexdump(buffer, width: width, baseAddress: baseAddress, stream: &string)
 //    print(string)
-//}
+// }
 
 //
-//public extension Collection<UInt8> {
+// public extension Collection<UInt8> {
 //    func hexDump() {
 //        let offsetFormatter = RadixedIntegerFormatStyle<Int>(radix: 16, prefix: .none, leadingZeros: true, groupCount: nil, groupSeparator: "_", uppercase: true)
 //        let byteFormatter = RadixedIntegerFormatStyle<UInt8>(radix: 16, leadingZeros: true, uppercase: true)
@@ -85,4 +85,4 @@ import Foundation
 //            .joined(separator: "\n")
 //        print(s)
 //    }
-//}
+// }

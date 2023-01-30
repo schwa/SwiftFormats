@@ -13,7 +13,8 @@ let package = Package(
     products: [
         .library(
             name: "SwiftFormats",
-            targets: ["SwiftFormats"]),
+            targets: ["SwiftFormats"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
@@ -22,10 +23,12 @@ let package = Package(
         .target(
             name: "SwiftFormats",
             dependencies: [
-                .product(name: "Algorithms", package: "swift-algorithms")
-            ]),
+                .product(name: "Algorithms", package: "swift-algorithms"),
+            ]
+        ),
         .testTarget(
             name: "SwiftFormatsTests",
-            dependencies: ["SwiftFormats"]),
+            dependencies: ["SwiftFormats"]
+        ),
     ]
 )

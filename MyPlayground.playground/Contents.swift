@@ -14,5 +14,3 @@ for measurement in measurements {
     print(measurement.formatted(.measurement(width: .narrow)))
     print(measurement.formatted(.measurement(width: .wide)))
 }
-
-

@@ -1,5 +1,5 @@
-import Foundation
 import CoreGraphics
+import Foundation
 
 public struct CGPointStyle: CompositeFormatStyle {
     public var componentStyle: FloatingPointFormatStyle<Double>

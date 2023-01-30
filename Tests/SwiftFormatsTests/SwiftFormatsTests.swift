@@ -1,7 +1,7 @@
-@testable import SwiftFormats
-import Foundation
-import XCTest
 import CoreLocation
+import Foundation
+@testable import SwiftFormats
+import XCTest
 
 class StringTests: XCTestCase {
     func test1() {
