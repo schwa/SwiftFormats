@@ -1,18 +1,15 @@
-//import XCTest
-//@testable import SwiftFormats
-//
-//final class SwiftFormatsTests: XCTestCase {
-//    func testExample() throws {
-//        // This is an example of a functional test case.
-//        // Use XCTAssert and related functions to verify your tests produce the correct
-//        // results.
-//        XCTAssertEqual(SwiftFormats().text, "Hello, World!")
-//    }
-//}
-
 @testable import SwiftFormats
 import Foundation
 import XCTest
+import CoreLocation
+
+class StringTests: XCTestCase {
+    func test1() {
+        XCTAssertEqual(String(123, format: .described), "123")
+        XCTAssertEqual(String(123, format: .number), "123")
+        XCTAssertEqual(String(123, format: .dumped), "- 123\n") // TODO: can dump format change? Probably
+    }
+}
 
 class FormatStyleTests: XCTestCase {
     func testIntegerFormatStyle() {
@@ -40,4 +37,31 @@ class FormatStyleTests: XCTestCase {
 //
 //        print("\(Data([0xDE, 0xED, 0xBE, 0xEF]), format: .hexdump)")
 //    }
+}
+
+class DMSTests: XCTestCase {
+    func test1() {
+        let locale = Locale(identifier: "en_US")
+        XCTAssertEqual("\(45.25125, format: .dmsNotation(mode: .decimalDegrees).locale(locale))", "45.25125°")
+        XCTAssertEqual("\(45.25125, format: .dmsNotation(mode: .decimalMinutes).locale(locale))", "45° 15.075′")
+        XCTAssertEqual("\(45.25125, format: .dmsNotation(mode: .decimalSeconds).locale(locale))", "45° 15′ 4.5″")
+    }
+}
+
+class AngleTests: XCTestCase {
+    func test1() {
+        let locale = Locale(identifier: "en_US")
+        XCTAssertEqual("\(45.25125, format: .angle(inputUnit: .degrees, outputUnit: .degrees).locale(locale))", "45.25125°")
+        XCTAssertEqual("\(45.25125, format: .angle(inputUnit: .degrees, outputUnit: .radians).locale(locale))", "0.789783rad")
+        XCTAssertEqual("\(0.789783, format: .angle(inputUnit: .radians, outputUnit: .degrees).locale(locale))", "45.251233°")
+        XCTAssertEqual("\(0.789783, format: .angle(inputUnit: .radians, outputUnit: .radians).locale(locale))", "0.789783rad")
+    }
+}
+
+class CoordinatesTests: XCTestCase {
+    func test1() {
+        let locale = Locale(identifier: "en_US")
+        let coordinate = CLLocationCoordinate2D(latitude: 37.78, longitude: 122.43)
+        XCTAssertEqual("\(coordinate, format: .coordinates().locale(locale))", "37.78° N, 122.43° E")
+    }
 }
