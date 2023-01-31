@@ -52,6 +52,8 @@ public extension FormatStyle where Self == DegreesMinutesSecondsNotationFormatSt
     }
 }
 
+// TODO: SwiftUI.Angle
+
 // MARK: -
 
 public struct AngleFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {

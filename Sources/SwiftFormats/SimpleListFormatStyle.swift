@@ -26,7 +26,13 @@ public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy wher
     // TODO: allow skipping , and just split by whitespace
     // TODO: provide user separator
 
+    public enum ParseError: Error {
+        case countError
+    }
+
     public private(set) var substrategy: Substrategy
+
+    public var countRange: ClosedRange <Int> = .zero ... .max
 
     public init(substrategy: Substrategy) {
         self.substrategy = substrategy
@@ -38,6 +44,10 @@ public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy wher
             .map {
                 try substrategy.parse(String($0))
             }
+
+        guard countRange.contains(components.count) else {
+            throw ParseError.countError
+        }
         return components
     }
 }

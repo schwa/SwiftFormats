@@ -43,6 +43,9 @@ class DMSTests: XCTestCase {
 
 class AngleTests: XCTestCase {
     func test1() {
+        XCTAssertEqual(45.25125.formatted(.dmsNotation().locale(locale)), "45.25125°")
+        XCTAssertEqual("\(45.25125, format: .angle(inputUnit: .degrees, outputUnit: .degrees).locale(locale))", "45.25125°")
+
         XCTAssertEqual("\(45.25125, format: .angle(inputUnit: .degrees, outputUnit: .degrees).locale(locale))", "45.25125°")
         XCTAssertEqual("\(45.25125, format: .angle(inputUnit: .degrees, outputUnit: .radians).locale(locale))", "0.789783rad")
         XCTAssertEqual("\(0.789783, format: .angle(inputUnit: .radians, outputUnit: .degrees).locale(locale))", "45.251233°")
@@ -72,3 +75,35 @@ class HexDumpTests: XCTestCase {
     }
 }
 
+class CGPointTests: XCTestCase {
+    func test1() {
+        XCTAssertEqual(CGPoint.zero.formatted(), "0, 0")
+        XCTAssertEqual(try CGPointParseStrategy().parse("0, 0"), CGPoint.zero)
+        XCTAssertEqual(try CGPointParseStrategy().parse("0.1, 2.3"), CGPoint(x: 0.1, y: 2.3))
+        XCTAssertThrowsError(try CGPointParseStrategy().parse(""))
+        XCTAssertThrowsError(try CGPointParseStrategy().parse("0.1"))
+        XCTAssertThrowsError(try CGPointParseStrategy().parse("1, 2, 2"))
+    }
+}
+
+class ClosedRangeTests: XCTestCase {
+    func test1() throws {
+        XCTAssertEqual("\(1 ... 2, format: ClosedRangeFormatStyle(substyle: .number))", "1 ... 2")
+
+        XCTAssertEqual(
+            try ClosedRangeFormatStyle(substyle: FloatingPointFormatStyle<Double>.number).parseStrategy.parse("1 ... 2"),
+            1 ... 2
+        )
+        XCTAssertEqual(
+            try ClosedRangeFormatStyle(substyle: FloatingPointFormatStyle<Double>.number).parseStrategy.parse("1 - 2"),
+            1 ... 2
+        )
+        XCTAssertEqual(
+            try ClosedRangeFormatStyle(substyle: FloatingPointFormatStyle<Double>.number).parseStrategy.delimiters([" "]).parse("1 2"),
+            1 ... 2
+        )
+        XCTAssertThrowsError(
+            try ClosedRangeFormatStyle(substyle: FloatingPointFormatStyle<Double>.number).parseStrategy.parse("1 2")
+        )
+    }
+}
