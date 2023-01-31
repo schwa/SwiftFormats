@@ -40,13 +40,13 @@ public struct DegreesMinutesSecondsNotationFormatStyle<FormatInput>: FormatStyle
     }
 }
 
-extension FormatStyle where Self == DegreesMinutesSecondsNotationFormatStyle<Float> {
+public extension FormatStyle where Self == DegreesMinutesSecondsNotationFormatStyle<Float> {
     static func dmsNotation(mode: Self.Mode = .decimalDegrees, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle) -> Self {
         DegreesMinutesSecondsNotationFormatStyle(mode: mode, measurementStyle: measurementStyle)
     }
 }
 
-extension FormatStyle where Self == DegreesMinutesSecondsNotationFormatStyle<Double> {
+public extension FormatStyle where Self == DegreesMinutesSecondsNotationFormatStyle<Double> {
     static func dmsNotation(mode: Self.Mode = .decimalDegrees, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle) -> Self {
         DegreesMinutesSecondsNotationFormatStyle(mode: mode, measurementStyle: measurementStyle)
     }
@@ -54,27 +54,27 @@ extension FormatStyle where Self == DegreesMinutesSecondsNotationFormatStyle<Dou
 
 // MARK: -
 
-struct AngleFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {
+public struct AngleFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {
     public static var defaultMeasurementStyle: Measurement<UnitAngle>.FormatStyle {
         .measurement(width: .narrow)
     }
 
-    enum Unit: Codable {
+    public enum Unit: Codable {
         case degrees
         case radians
     }
 
-    var inputUnit: Unit
-    var outputUnit: Unit
-    var measurementStyle: Measurement<UnitAngle>.FormatStyle
+    public var inputUnit: Unit
+    public var outputUnit: Unit
+    public var measurementStyle: Measurement<UnitAngle>.FormatStyle
 
-    init(inputUnit: AngleFormatStyle<FormatInput>.Unit, outputUnit: AngleFormatStyle<FormatInput>.Unit, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle) {
+    public init(inputUnit: AngleFormatStyle<FormatInput>.Unit, outputUnit: AngleFormatStyle<FormatInput>.Unit, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle) {
         self.inputUnit = inputUnit
         self.outputUnit = outputUnit
         self.measurementStyle = measurementStyle
     }
 
-    func format(_ value: FormatInput) -> String {
+    public func format(_ value: FormatInput) -> String {
         switch (inputUnit, outputUnit) {
         case (.degrees, .degrees):
             return "\(Double(value), unit: UnitAngle.degrees, format: measurementStyle)"
@@ -88,7 +88,7 @@ struct AngleFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloat
     }
 }
 
-extension FormatStyle where Self == AngleFormatStyle<Double> {
+public extension FormatStyle where Self == AngleFormatStyle<Double> {
     static func angle(inputUnit: Self.Unit, outputUnit: Self.Unit) -> Self {
         AngleFormatStyle(inputUnit: inputUnit, outputUnit: outputUnit)
     }

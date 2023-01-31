@@ -1,7 +1,9 @@
 import CoreLocation
 import Foundation
-@testable import SwiftFormats
+/*@testable*/ import SwiftFormats
 import XCTest
+
+private let locale = Locale(identifier: "en_US")
 
 class StringTests: XCTestCase {
     func test1() {
@@ -41,7 +43,6 @@ class FormatStyleTests: XCTestCase {
 
 class DMSTests: XCTestCase {
     func test1() {
-        let locale = Locale(identifier: "en_US")
         XCTAssertEqual("\(45.25125, format: .dmsNotation(mode: .decimalDegrees).locale(locale))", "45.25125°")
         XCTAssertEqual("\(45.25125, format: .dmsNotation(mode: .decimalMinutes).locale(locale))", "45° 15.075′")
         XCTAssertEqual("\(45.25125, format: .dmsNotation(mode: .decimalSeconds).locale(locale))", "45° 15′ 4.5″")
@@ -50,7 +51,6 @@ class DMSTests: XCTestCase {
 
 class AngleTests: XCTestCase {
     func test1() {
-        let locale = Locale(identifier: "en_US")
         XCTAssertEqual("\(45.25125, format: .angle(inputUnit: .degrees, outputUnit: .degrees).locale(locale))", "45.25125°")
         XCTAssertEqual("\(45.25125, format: .angle(inputUnit: .degrees, outputUnit: .radians).locale(locale))", "0.789783rad")
         XCTAssertEqual("\(0.789783, format: .angle(inputUnit: .radians, outputUnit: .degrees).locale(locale))", "45.251233°")
@@ -60,8 +60,16 @@ class AngleTests: XCTestCase {
 
 class CoordinatesTests: XCTestCase {
     func test1() {
-        let locale = Locale(identifier: "en_US")
         let coordinate = CLLocationCoordinate2D(latitude: 37.78, longitude: 122.43)
         XCTAssertEqual("\(coordinate, format: .coordinates().locale(locale))", "37.78° N, 122.43° E")
+    }
+}
+
+class SimpleListTests: XCTestCase {
+    func test1() {
+        let style = SimpleListFormatStyle(substyle: FloatingPointFormatStyle<Double>.number).locale(locale)
+        XCTAssertEqual(style.format([1.1,2.2,3.3,4.4]), "1.1, 2.2, 3.3, 4.4")
+        let parser = style.parseStrategy
+        XCTAssertEqual(try parser.parse("1.1, 2.2, 3.3, 4.4"), [1.1,2.2,3.3,4.4])
     }
 }

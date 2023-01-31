@@ -27,6 +27,7 @@ public extension Hemisphere {
 }
 
 // TODO: Localized
+// TODO: Really should be `cardinal direction`
 extension Hemisphere: CustomStringConvertible {
     public var description: String {
         switch self {
@@ -43,14 +44,20 @@ extension Hemisphere: CustomStringConvertible {
 }
 
 public struct HemisphereFormatStyle: FormatStyle {
+    let abbreviated: Bool
+
+    public init(abbreviated: Bool) {
+        self.abbreviated = abbreviated
+    }
+
     public func format(_ value: Hemisphere) -> String {
-        "\(value.description.first!)"
+        abbreviated ? "\(value.description.first!)" : value.description
     }
 }
 
-extension FormatStyle where Self == HemisphereFormatStyle {
-    static func hemisphere() -> Self {
-        HemisphereFormatStyle()
+public extension FormatStyle where Self == HemisphereFormatStyle {
+    static func hemisphere(abbreviated: Bool = true) -> Self {
+        HemisphereFormatStyle(abbreviated: abbreviated)
     }
 }
 

@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "simd-support",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/schwa/SIMD-Support",
+      "state" : {
+        "revision" : "18b99ea7ff053e80aff3fffc6f573ee1faa11035",
+        "version" : "0.0.2"
+      }
+    },
+    {
       "identity" : "swift-algorithms",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-algorithms",
