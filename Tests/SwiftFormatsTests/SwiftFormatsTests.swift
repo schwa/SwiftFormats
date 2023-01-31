@@ -31,14 +31,6 @@ class FormatStyleTests: XCTestCase {
         XCTAssertEqual("\(100, format: .described)", "100")
         XCTAssertEqual("\("100", format: .described)", "100")
     }
-
-//    func testHexdump() {
-//        var s = ""
-//        hexdump([1, 2, 3, 4], stream: &s)
-//        XCTAssertEqual(s, "0000000000000000  0x01 0x02 0x03 0x04                              ????\n")
-//
-//        print("\(Data([0xDE, 0xED, 0xBE, 0xEF]), format: .hexdump)")
-//    }
 }
 
 class DMSTests: XCTestCase {
@@ -73,3 +65,10 @@ class SimpleListTests: XCTestCase {
         XCTAssertEqual(try parser.parse("1.1, 2.2, 3.3, 4.4"), [1.1,2.2,3.3,4.4])
     }
 }
+
+class HexDumpTests: XCTestCase {
+    func testHexdump() {
+        XCTAssertEqual("\(Data([0xDE, 0xED, 0xBE, 0xEF]), format: .hexdump())", "0000000000000000  0xDE 0xED 0xBE 0xEF                              ????\n")
+    }
+}
+
