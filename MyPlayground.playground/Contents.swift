@@ -48,3 +48,27 @@ import SwiftUI
 ////
 ////
 ////PlaygroundPage.current.setLiveView(ContentView())
+
+func a() {
+    let angle = 0.785398 // 45°
+    let q = simd_quatd(angle: angle, axis: [0, 0, 1])
+    let vector = q.act([1, 0, 0])
+    atan2(vector.x, vector.y)
+}
+a()
+
+func b() {
+    let angle = 0.785398 // 45°
+    let q = simd_quatd(angle: angle, axis: [0, 1, 0])
+    let vector = q.act([0, 0, 1])
+    atan2(vector.x, vector.z)
+}
+b()
+
+func c() {
+    let angle = 0.785398 // 45°
+    let q = simd_quatd(angle: angle, axis: [1, 0, 0])
+    let vector = q.act([0, 1, 0])
+    atan2(vector.y, vector.z)
+}
+c()

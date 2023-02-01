@@ -129,5 +129,8 @@ class QuaternionTests: XCTestCase {
         XCTAssertEqual("\(q, format: .quaternion(style: .imaginaryReal, numberStyle: .number.precision(.fractionLength(...2))))", "real: 0.92, imaginary: x: 0, y: 0, z: 0.38")
         XCTAssertEqual("\(q, format: .quaternion(style: .vector, numberStyle: .number.precision(.fractionLength(...2))))", "x: 0, y: 0, z: 0.38, w: 0.92")
         XCTAssertEqual("\(q, format: .quaternion(style: .angleAxis, numberStyle: .number.precision(.fractionLength(...2))))", "angle: 0.79, axis: x: 0, y: 0, z: 1")
+//        XCTAssertEqual("\(q, format: .quaternion(style: .lossyXRotation, numberStyle: .number.precision(.fractionLength(...2))))", "0.79")
+//        XCTAssertEqual("\(q, format: .quaternion(style: .lossyYRotation, numberStyle: .number.precision(.fractionLength(...2))))", "0")
+//        XCTAssertEqual("\(q, format: .quaternion(style: .lossyZRotation, numberStyle: .number.precision(.fractionLength(...2))))", "0")
     }
 }

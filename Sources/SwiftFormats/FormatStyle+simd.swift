@@ -117,6 +117,9 @@ public struct QuaternionFormatStyle: FormatStyle {
         case imaginaryReal // (ix, iy, iz), r
         case vector // x, y, z, w
         case angleAxis // angle, axis x, axis y, axis z
+//        case lossyXRotation // angle around X axis
+//        case lossyYRotation // angle around Y axis
+//        case lossyZRotation // angle around Z axis
     }
 
     public init(style: QuaternionFormatStyle.Style = .components, mappingStyle: Bool = true, humanReadable: Bool = true, numberStyle: FloatingPointFormatStyle<Double> = .number) {
@@ -159,6 +162,18 @@ public struct QuaternionFormatStyle: FormatStyle {
                 ("axis", "\(value.axis, format: .simd(numberStyle))"),
             ]
             return SimpleMappingFormatStyle().format(mapping)
+        case .lossyXRotation:
+            let vector = value.act([0, 1, 0])
+            let rotation = atan2(vector.y, vector.z)
+            return rotation.formatted(numberStyle)
+        case .lossyYRotation:
+            let vector = value.act([0, 0, 1])
+            let rotation = atan2(vector.x, vector.z)
+            return rotation.formatted(numberStyle)
+        case .lossyZRotation:
+            let vector = value.act([0, 0, 1])
+            let rotation = atan2(vector.x, vector.y)
+            return rotation.formatted(numberStyle)
         }
     }
 }
