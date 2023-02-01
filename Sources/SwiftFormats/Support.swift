@@ -12,3 +12,5 @@ internal func degreesToRadians<F>(_ value: F) -> F where F: FloatingPoint {
 internal func radiansToDegrees<F>(_ value: F) -> F where F: FloatingPoint {
     value * 180 / .pi
 }
+
+// MARK: -

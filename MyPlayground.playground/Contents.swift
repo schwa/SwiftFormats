@@ -26,25 +26,25 @@ import SwiftUI
 //    print("")
 //}
 
-let f = MeasurementFormatter()
-f.unitStyle = .long
-f.unitOptions = .providedUnit
-f
-f.getObjectValue(nil, for: "45°", errorDescription: nil)
-//struct ContentView: View {
-//
-//    @State
-//    var value = 1.0 ... 2.0
-//
-//    var body: some View {
-//        VStack {
-//            TextField("Value", value: $value, format: ClosedRangeFormatStyle(substyle: .number))
-//            Text(verbatim: "\(value)")
-//        }
-//        .frame(width: 320, height: 240)
-//        .border(Color.red)
-//    }
-//}
-//
-//
-//PlaygroundPage.current.setLiveView(ContentView())
+//let f = MeasurementFormatter()
+//f.unitStyle = .long
+//f.unitOptions = .providedUnit
+//f
+//f.getObjectValue(nil, for: "45°", errorDescription: nil)
+////struct ContentView: View {
+////
+////    @State
+////    var value = 1.0 ... 2.0
+////
+////    var body: some View {
+////        VStack {
+////            TextField("Value", value: $value, format: ClosedRangeFormatStyle(substyle: .number))
+////            Text(verbatim: "\(value)")
+////        }
+////        .frame(width: 320, height: 240)
+////        .border(Color.red)
+////    }
+////}
+////
+////
+////PlaygroundPage.current.setLiveView(ContentView())
