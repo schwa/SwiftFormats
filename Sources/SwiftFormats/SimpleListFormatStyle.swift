@@ -1,5 +1,6 @@
 import Foundation
 
+/// A format style that formats a list of elements by formatting each element with a substyle and joining them with a separator.
 public struct SimpleListFormatStyle <Element, Substyle>: ParseableFormatStyle where Substyle: ParseableFormatStyle, Element == Substyle.FormatInput, Substyle.FormatOutput == String {
 
     // TODO: provide user separator
@@ -21,6 +22,7 @@ public struct SimpleListFormatStyle <Element, Substyle>: ParseableFormatStyle wh
 
 // MARK: -
 
+/// A parse strategy that parses a list of elements by parsing each element with a substrategy and splitting them by a separator.
 public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy where Substrategy: ParseStrategy, Element == Substrategy.ParseOutput, Substrategy.ParseInput == String {
 
     // TODO: allow skipping , and just split by whitespace
@@ -51,4 +53,3 @@ public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy wher
         return components
     }
 }
-

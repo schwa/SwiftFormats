@@ -10,6 +10,10 @@ public struct DescribedFormatStyle<FormatInput>: FormatStyle {
 }
 
 public extension FormatStyle where Self == DescribedFormatStyle<Any> {
+    /// A format style that uses `String(describing:)` to format the value. Useful for debugging.
+    ///
+    /// Example:
+    /// - `"\(123, format: .described)"`` vs `String(describing: 123)` // :shrug:
     static var described: DescribedFormatStyle<FormatInput> {
         DescribedFormatStyle()
     }
@@ -29,6 +33,7 @@ public struct DumpedFormatStyle<FormatInput>: FormatStyle {
 }
 
 public extension FormatStyle where Self == DescribedFormatStyle<Any> {
+    /// A format style that uses `dump` to format the value. Useful for debugging.
     static var dumped: DumpedFormatStyle<FormatInput> {
         DumpedFormatStyle()
     }

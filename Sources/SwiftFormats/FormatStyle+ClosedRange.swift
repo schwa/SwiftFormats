@@ -1,11 +1,18 @@
 import Foundation
 import RegexBuilder
 
+/// A `FormatStyle` that formats a `ClosedRange`.
 public struct ClosedRangeFormatStyle <Bound, Substyle>: FormatStyle where Bound: Comparable, Substyle: FormatStyle, Substyle.FormatInput == Bound, Substyle.FormatOutput == String {
 
+    /// The `FormatStyle` used to format the individual bounds of the `ClosedRange`.
     public var substyle: Substyle
+
+    /// The delimiter used to separate the bounds of the `ClosedRange`.
     public var delimiter: String? = "..."
 
+    /// - Parameters:
+    ///   - substyle: The `FormatStyle` used to format the individual bounds of the `ClosedRange`.
+    ///   - delimiter: The delimiter used to separate the bounds of the `ClosedRange`.
     public init(substyle: Substyle, delimiter: String? = "...") {
         self.substyle = substyle
         self.delimiter = delimiter
@@ -27,15 +34,22 @@ extension ClosedRangeFormatStyle: ParseableFormatStyle where Substyle: Parseable
     }
 }
 
+/// A `ParseStrategy` that parses a strings into a `ClosedRange`.
 public struct ClosedRangeParseStrategy <Bound, Substrategy>: ParseStrategy where Bound: Comparable, Substrategy: ParseStrategy, Substrategy.ParseInput == String, Substrategy.ParseOutput == Bound {
 
+    /// The `ParseStrategy` used to parse the individual bounds of the `ClosedRange`.
     public var substrategy: Substrategy
+
+    /// The delimiters used to separate the bounds of the `ClosedRange`.
     public var delimiters: [String]
 
     public enum ParseError: Error {
         case parseError
     }
 
+    /// - Parameters:
+    ///   - substrategy: The `ParseStrategy` used to parse the individual bounds of the `ClosedRange`.
+    ///   - delimiters: The delimiters used to separate the bounds of the `ClosedRange`.
     public init(substrategy: Substrategy, delimiters: [String] = ["...", "-"]) {
         self.substrategy = substrategy
         self.delimiters = delimiters
@@ -78,8 +92,8 @@ public extension ClosedRangeParseStrategy {
     }
 }
 
-
-
+/// Generates a ChoiceOf regex pattern from an array of strings.
+/// TODO: Make private.
 extension Array: RegexComponent where Element == String {
     public var regex: Regex<Substring> {
 

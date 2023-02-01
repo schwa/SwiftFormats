@@ -1,5 +1,7 @@
 import Foundation
 
+// TODO: Experimental, possibly not very useful.
+
 public protocol CompositeFormatStyle: FormatStyle {
     associatedtype ComponentStyle: FormatStyle
     var componentStyle: ComponentStyle { get set }

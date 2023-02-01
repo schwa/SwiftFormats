@@ -3,6 +3,7 @@ import Foundation
 
 // TODO: Remove FormatInput.Index == Int restriction
 
+/// A `FormatStyle` for hexdumping data.
 public struct HexdumpFormatStyle<FormatInput>: FormatStyle where FormatInput: DataProtocol, FormatInput.Index == Int {
 
     public typealias FormatInput = FormatInput
@@ -13,6 +14,12 @@ public struct HexdumpFormatStyle<FormatInput>: FormatStyle where FormatInput: Da
     public var separator: String
     public var terminator: String
 
+    ///
+    /// - Parameters:
+    ///   - width: Number of octets per line.
+    ///   - baseAddress:  Base address to use for the first line.
+    ///   - separator: Separator string to use between lines.
+    ///   - terminator: Terminator string to use after the last line.
     public init(width: Int = 16, baseAddress: Int = 0, separator: String = "\n", terminator: String = "") {
         self.width = width
         self.baseAddress = baseAddress

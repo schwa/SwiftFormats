@@ -1,12 +1,15 @@
 import Foundation
 
-// MARK: -
-
+/// A `FormatStyle` that formats an angle in degrees, minutes, and seconds.
 public struct DegreesMinutesSecondsNotationFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {
+
     public enum Mode: Codable {
-        case decimalDegrees // 45.25125°
-        case decimalMinutes // 45° 15.075'
-        case decimalSeconds // 45° 15' 4.5"
+        /// Only the degrees are shown, e.g. "45.25125°".
+        case decimalDegrees
+        /// The degrees and minutes are shown, e.g. "45° 15.075'".
+        case decimalMinutes
+        /// The degrees, minutes, and seconds are shown, e.g. "45° 15' 4.5".
+        case decimalSeconds
     }
 
     public static var defaultMeasurementStyle: Measurement<UnitAngle>.FormatStyle {
@@ -14,6 +17,8 @@ public struct DegreesMinutesSecondsNotationFormatStyle<FormatInput>: FormatStyle
     }
 
     public var mode: Mode
+
+    /// The style used to format the degrees, minutes, and seconds.
     public var measurementStyle: Measurement<UnitAngle>.FormatStyle
 
     public init(mode: DegreesMinutesSecondsNotationFormatStyle.Mode = .decimalDegrees, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle) {
@@ -56,6 +61,7 @@ public extension FormatStyle where Self == DegreesMinutesSecondsNotationFormatSt
 
 // MARK: -
 
+/// A `FormatStyle` that formats angles in degrees or radians, input and output units can be different.
 public struct AngleFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {
     public static var defaultMeasurementStyle: Measurement<UnitAngle>.FormatStyle {
         .measurement(width: .narrow)
@@ -95,3 +101,26 @@ public extension FormatStyle where Self == AngleFormatStyle<Double> {
         AngleFormatStyle(inputUnit: inputUnit, outputUnit: outputUnit)
     }
 }
+
+// TODO: Measurement doesn't support parsing, so we may need to implement our own parsing strategy. Possible only for english locale.
+
+/*
+public struct AngleParseStrategy <ParseOutput>: ParseStrategy where ParseOutput: BinaryFloatingPoint {
+
+    public typealias Unit = AngleFormatStyle<ParseOutput>.Unit
+
+    public var outputUnit: Unit
+//    public var measurementStyle: Measurement<UnitAngle>.FormatStyle
+
+    public func parse(_ value: String) throws -> ParseOutput {
+
+
+
+
+
+
+        fatalError()
+    }
+
+}
+*/

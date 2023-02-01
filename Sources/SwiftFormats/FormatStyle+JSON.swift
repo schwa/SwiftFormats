@@ -1,12 +1,15 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Jonathan Wight on 1/30/23.
 //
 
 import Foundation
 
+/// A `FormatStyle` for `JSON`.
+/// - Example:
+///   - `TextField(text: "JSON", value: $value, format: JSONFormatStyle<SomeCodableType>())`
 public struct JSONFormatStyle <FormatInput>: FormatStyle where FormatInput: Encodable {
 
     public init() {

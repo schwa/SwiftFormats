@@ -63,6 +63,7 @@ public extension FormatStyle where Self == HemisphereFormatStyle {
 
 // MARK: -
 
+/// A format style for a latitude value.
 public struct LatitudeFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {
     public typealias Substyle = DegreesMinutesSecondsNotationFormatStyle<FormatInput>
 
@@ -103,6 +104,7 @@ public extension FormatStyle where Self == LatitudeFormatStyle<Float> {
 
 // MARK: -
 
+/// A format style for a longitude value.
 public struct LongitudeFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {
     public typealias Substyle = DegreesMinutesSecondsNotationFormatStyle<FormatInput>
 
@@ -143,6 +145,7 @@ public extension FormatStyle where Self == LongitudeFormatStyle<Float> {
 
 // MARK: -
 
+/// A format style for a lat/long coordinate.
 public struct CoordinatesFormatter: FormatStyle {
     // TODO: need a way to pass options down to sub styles
 

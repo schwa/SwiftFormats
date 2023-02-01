@@ -1,5 +1,6 @@
 import Foundation
 
+/// A `FormatStyle` to format integers values as a string in a given radix.
 public struct RadixedIntegerFormatStyle<FormatInput>: FormatStyle, Hashable, Codable where FormatInput: BinaryInteger {
     public typealias FormatInput = FormatInput
     public typealias FormatOutput = String

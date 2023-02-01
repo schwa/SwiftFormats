@@ -2,6 +2,22 @@
 
 More `FormatStyle` implementation for more types.
 
+## Description
+
+This package provides more `FormatStyle` implementations for various types. Many types also provide `parserStrategy` implementations for parsing strings into the type where appropriate.
+
+It also provides extensions for String and string interpolation to make it easier to format values.
+
+## Examples
+
+### String interpolation
+
+```swift
+let number = 123.456
+let formatted = "The number is \(number, .number)"
+// formatted == "The number is 123.456"
+```
+
 ## TODO
 
 - [ ] Find and handle all the TODOs
@@ -20,4 +36,3 @@ More `FormatStyle` implementation for more types.
 ### Other
 
 - https://fuckingformatstyle.com
-
