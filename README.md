@@ -70,6 +70,7 @@ The initial priority is to expose formats and parsers for more SIMD/CG types. So
 - [ ] Do all SIMD types in a sane way
 - [ ] Make a "field" type generic format, e.g. represent CGPoint as `x: 1.234, y: 5.678` (use for SIMD and other CG types)
 - [ ] A parser for angle would be nice but `Measurement<Angle>` has no parser we can base it off.
+- [ ] Investigate a "Parsable" and "Formattable" protocol that provides a .formatted() etc functions.
 
 ## Resources
 

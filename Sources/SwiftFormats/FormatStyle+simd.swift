@@ -7,7 +7,7 @@ import simd
 public struct SIMDFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, ScalarStyle: FormatStyle, ScalarStyle.FormatInput == V.Scalar, ScalarStyle.FormatOutput == String {
 
     public var scalarStyle: ScalarStyle
-    public var mappingStyle: Bool = false
+    public var mappingStyle: Bool
 
     public init(scalarStyle: ScalarStyle, mappingStyle: Bool = true) {
         self.scalarStyle = scalarStyle
@@ -27,38 +27,38 @@ public struct SIMDFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, Scala
 }
 
 public extension FormatStyle where Self == SIMDFormatStyle<SIMD2<Float>, FloatingPointFormatStyle<Float>> {
-    static func simd(_ scalarStyle: FloatingPointFormatStyle<Float> = .number) -> Self {
-        return Self(scalarStyle: scalarStyle)
+    static func simd(_ scalarStyle: FloatingPointFormatStyle<Float> = .number, mappingStyle: Bool = true) -> Self {
+        return Self(scalarStyle: scalarStyle, mappingStyle: mappingStyle)
     }
 }
 
 public extension FormatStyle where Self == SIMDFormatStyle<SIMD3<Float>, FloatingPointFormatStyle<Float>> {
-    static func simd(_ scalarStyle: FloatingPointFormatStyle<Float> = .number) -> Self {
-        return Self(scalarStyle: scalarStyle)
+    static func simd(_ scalarStyle: FloatingPointFormatStyle<Float> = .number, mappingStyle: Bool = true) -> Self {
+        return Self(scalarStyle: scalarStyle, mappingStyle: mappingStyle)
     }
 }
 
 public extension FormatStyle where Self == SIMDFormatStyle<SIMD4<Float>, FloatingPointFormatStyle<Float>> {
-    static func simd(_ scalarStyle: FloatingPointFormatStyle<Float> = .number) -> Self {
-        return Self(scalarStyle: scalarStyle)
+    static func simd(_ scalarStyle: FloatingPointFormatStyle<Float> = .number, mappingStyle: Bool = true) -> Self {
+        return Self(scalarStyle: scalarStyle, mappingStyle: mappingStyle)
     }
 }
 
 public extension FormatStyle where Self == SIMDFormatStyle<SIMD2<Double>, FloatingPointFormatStyle<Double>> {
-    static func simd(_ scalarStyle: FloatingPointFormatStyle<Double> = .number) -> Self {
-        return Self(scalarStyle: scalarStyle)
+    static func simd(_ scalarStyle: FloatingPointFormatStyle<Double> = .number, mappingStyle: Bool = true) -> Self {
+        return Self(scalarStyle: scalarStyle, mappingStyle: mappingStyle)
     }
 }
 
 public extension FormatStyle where Self == SIMDFormatStyle<SIMD3<Double>, FloatingPointFormatStyle<Double>> {
-    static func simd(_ scalarStyle: FloatingPointFormatStyle<Double> = .number) -> Self {
-        return Self(scalarStyle: scalarStyle)
+    static func simd(_ scalarStyle: FloatingPointFormatStyle<Double> = .number, mappingStyle: Bool = true) -> Self {
+        return Self(scalarStyle: scalarStyle, mappingStyle: mappingStyle)
     }
 }
 
 public extension FormatStyle where Self == SIMDFormatStyle<SIMD4<Double>, FloatingPointFormatStyle<Double>> {
-    static func simd(_ scalarStyle: FloatingPointFormatStyle<Double> = .number) -> Self {
-        return Self(scalarStyle: scalarStyle)
+    static func simd(_ scalarStyle: FloatingPointFormatStyle<Double> = .number, mappingStyle: Bool = true) -> Self {
+        return Self(scalarStyle: scalarStyle, mappingStyle: mappingStyle)
     }
 }
 
