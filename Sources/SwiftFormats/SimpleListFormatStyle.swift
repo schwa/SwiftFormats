@@ -47,6 +47,7 @@ public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy wher
         self.substrategy = substrategy
     }
 
+    /// TODO: this will totally break when the substrategy emits commas (e.g. localisation that use commas as digit group separators) 
     public func parse(_ value: String) throws -> [Element] {
         let components = try value
             .split(separator: ",", omittingEmptySubsequences: false)
