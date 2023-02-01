@@ -10,21 +10,32 @@ It also provides extensions for String and string interpolation to make it easie
 
 ## Types
 
-| Type                     | Format                | Parsable      | Notes                                |
-|--------------------------|-----------------------|---------------|--------------------------------------|
-| `BinaryFloatingPoint`    | Angles                | Unimplemented | Radians, degrees, etc                |
-| `BinaryFloatingPoint`    | Degree Minute Seconds | Unimplemented |                                      |
-| `CGPoint`                | List                  | Yes           |                                      |
-| `ClosedRange`            | `X ... Y`             | Yes           |                                      |
-| `CLLocationCoordinate2D` | List                  | No            |                                      |
-| `BinaryFloatingPoint`    | Latitude              | No            | Including hemisphere                 |
-| `BinaryFloatingPoint`    | Longitude             | No            | Including hemisphere                 |
-| `Any`                    | Description           | No            | Uses `String(describing:)`           |
-| `Any`                    | Dump                  | No            | Uses `dump()`                        |
-| `DataProtocol`           | Hex-dumped            | No            |                                      |
-| `Codable`                | JSON                  | Yes           | Uses `JSONEncoder` and `JSONDecoder` |
-| `SIMD3<Float>`           | List                  | Yes           |                                      |
-| `BinaryInteger`          | Radixed format        | No            | Binary, Octal, Hex representations   |
+<!-- TODO: Big table. Break it down. -->
+
+| Name | In (1)                   | Out (2)  | Format (3)            | Parser (4) | Accessor (5)  | Notes                                |
+|------|--------------------------|----------|-----------------------|------------|---------------|--------------------------------------|
+|      | `BinaryFloatingPoint`    | `String` | Angles                | No         | `angle`       | Radians, degrees, etc                |
+|      | `BinaryFloatingPoint`    | `String` | Degree Minute Seconds | No         | `dmsNotation` |                                      |
+|      | `CGPoint`                | `String` | List (6)              | Yes        | `point`       |                                      |
+|      | `ClosedRange`            | `String` | `X ... Y`             | Yes        | No            |                                      |
+|      | `CLLocationCoordinate2D` | `String` | List                  | No         | `coordinates` |                                      |
+|      | `BinaryFloatingPoint`    | `String` | Latitude              | No         | `latitude`    | Including hemisphere                 |
+|      | `BinaryFloatingPoint`    | `String` | Longitude             | No         | `longitude`   | Including hemisphere                 |
+|      | `Any`                    | `String` | Description           | No         | `describing`  | Uses `String(describing:)`           |
+|      | `Any`                    | `String` | Dump                  | No         | `dumped`      | Uses `dump()`                        |
+|      | `DataProtocol`           | `String` | Hex-dumped            | No         | `hexdumped`   |                                      |
+|      | `Codable`                | `String` | JSON                  | Yes        | `json`        | Uses `JSONEncoder` and `JSONDecoder` |
+|      | `SIMD3<Float>`           | `String` | List (7)              | Yes        | TODO          | TODO: Placeholder implementation     |
+|      | `BinaryInteger`          | `String` | Radixed format        | No         | Various       | Binary, Octal, Hex representations   |
+
+### Notes
+
+1: Type provided as `FormatInput` in the `FormatStyle` implementation.
+2: Type provided as `FormatOutput` in the `FormatStyle` implementation.
+3: Format of the output.
+4: Whether the `FormatStyle` implementation provides a corresponding `ParserStrategy`.
+5: Whether a convenience property is provided to access style on `FormatStyle`.
+6: Formats the input as a comma-separated list.
 
 ## Examples
 
