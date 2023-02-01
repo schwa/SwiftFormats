@@ -6,12 +6,8 @@ import simd
 // TODO: Make generic
 public struct SIMDFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, ScalarStyle: FormatStyle, ScalarStyle.FormatInput == V.Scalar, ScalarStyle.FormatOutput == String {
 
-//    public var parseStrategy: SIMDParseStrategy {
-//        return SIMDParseStrategy(componentFormat: componentFormat)
-//    }
-
     public var scalarStyle: ScalarStyle
-    public var mappingStyle: Bool = true
+    public var mappingStyle: Bool = false
 
     public init(scalarStyle: ScalarStyle, mappingStyle: Bool = true) {
         self.scalarStyle = scalarStyle
@@ -83,23 +79,27 @@ public extension SIMD {
 
 // TODO: We need simple mapping and list and whatnot to be parseable too
 
-//extension SIMDFormatStyle: ParseableFormatStyle where ScalarStyle: ParseableFormatStyle {
-//
-//}
+extension SIMDFormatStyle: ParseableFormatStyle where ScalarStyle: ParseableFormatStyle {
+    public var parseStrategy: SIMDParseStrategy <V, ScalarStyle.Strategy> {
+        return SIMDParseStrategy(scalarStrategy: scalarStyle.parseStrategy)
+    }
+}
 
-//public struct SIMDParseStrategy: ParseStrategy {
-//    public var componentFormat: FloatingPointFormatStyle<Float>
-//
-//    public init(componentFormat: FloatingPointFormatStyle<Float>) {
-//        self.componentFormat = componentFormat
-//    }
-//
-//    public func parse(_ value: String) throws -> SIMD3<Float> {
-//        let style = SimpleListFormatStyle(substyle: componentFormat)
-//        let scalars = try style.parseStrategy.parse(value)
-//        return SIMD3<Float>(scalars)
-//    }
-//}
+public struct SIMDParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SIMD, ScalarStrategy: ParseStrategy, ScalarStrategy.ParseInput == String, ScalarStrategy.ParseOutput == V.Scalar {
+
+    public var scalarStrategy: ScalarStrategy
+    //public var mappingStyle: Bool = true // TODO
+
+    public init(scalarStrategy: ScalarStrategy) {
+        self.scalarStrategy = scalarStrategy
+    }
+
+    public func parse(_ value: String) throws -> V {
+        let strategy = SimpleListParseStrategy(substrategy: scalarStrategy)
+        let scalars = try strategy.parse(value)
+        return V(scalars)
+    }
+}
 
 // MARK: -
 

@@ -1,6 +1,5 @@
 import Foundation
 
-
 // TODO: Make public and put in a doc explain why this is necessary :-(
 internal struct IdentityFormatStyle <Value>: FormatStyle {
     func format(_ value: Value) -> Value {
@@ -44,8 +43,9 @@ internal struct AnyFormatStyle <FormatInput, FormatOutput>: FormatStyle {
 // TODO: Make generic. Add subformatters.
 internal struct SimpleMappingFormatStyle <Value, Substyle>: FormatStyle where Substyle: FormatStyle, Substyle.FormatInput == Value, Substyle.FormatOutput == String {
 
-
     let substyle: Substyle
+
+    // TODO: Expose SimpleListFormatStyle options.
 
     init(substyle: Substyle) {
         self.substyle = substyle
@@ -59,8 +59,21 @@ internal struct SimpleMappingFormatStyle <Value, Substyle>: FormatStyle where Su
     }
 }
 
-extension SimpleMappingFormatStyle where Value == String, Substyle == IdentityFormatStyle<Value> {
+internal extension SimpleMappingFormatStyle where Value == String, Substyle == IdentityFormatStyle<Value> {
     init() {
         self = .init(substyle: IdentityFormatStyle<String>())
+    }
+}
+
+extension SimpleMappingFormatStyle: ParseableFormatStyle where Substyle: ParseableFormatStyle {
+    var parseStrategy: SimpleMappingParseStrategy<Value, Substyle.Strategy> {
+        // TODO: Pass down configuration
+        return SimpleMappingParseStrategy()
+    }
+}
+
+internal struct SimpleMappingParseStrategy <Value, Substrategy>: ParseStrategy where Substrategy: ParseStrategy, Substrategy.ParseInput == String, Substrategy.ParseOutput == Value {
+    func parse(_ value: String) throws -> [(String, Value)] {
+        unimplemented()
     }
 }
