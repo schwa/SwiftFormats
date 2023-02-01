@@ -1,6 +1,6 @@
 import Foundation
 
-/// A `FormatStyle` that formats an angle in degrees, minutes, and seconds.
+/// Formats an angle in degrees, minutes, and seconds.
 public struct DegreesMinutesSecondsNotationFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {
 
     public enum Mode: Codable {
@@ -61,7 +61,7 @@ public extension FormatStyle where Self == DegreesMinutesSecondsNotationFormatSt
 
 // MARK: -
 
-/// A `FormatStyle` that formats angles in degrees or radians, input and output units can be different.
+/// Format angles in degrees or radians, input and output units can be different.
 public struct AngleFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {
     public static var defaultMeasurementStyle: Measurement<UnitAngle>.FormatStyle {
         .measurement(width: .narrow)

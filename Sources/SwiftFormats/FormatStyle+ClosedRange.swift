@@ -1,7 +1,7 @@
 import Foundation
 import RegexBuilder
 
-/// A `FormatStyle` that formats a `ClosedRange`.
+/// Formats a `ClosedRange`.
 public struct ClosedRangeFormatStyle <Bound, Substyle>: FormatStyle where Bound: Comparable, Substyle: FormatStyle, Substyle.FormatInput == Bound, Substyle.FormatOutput == String {
 
     /// The `FormatStyle` used to format the individual bounds of the `ClosedRange`.
@@ -34,7 +34,7 @@ extension ClosedRangeFormatStyle: ParseableFormatStyle where Substyle: Parseable
     }
 }
 
-/// A `ParseStrategy` that parses a strings into a `ClosedRange`.
+/// Parses a string into a `ClosedRange`.
 public struct ClosedRangeParseStrategy <Bound, Substrategy>: ParseStrategy where Bound: Comparable, Substrategy: ParseStrategy, Substrategy.ParseInput == String, Substrategy.ParseOutput == Bound {
 
     /// The `ParseStrategy` used to parse the individual bounds of the `ClosedRange`.

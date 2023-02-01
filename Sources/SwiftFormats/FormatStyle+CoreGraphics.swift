@@ -1,7 +1,7 @@
 import CoreGraphics
 import Foundation
 
-/// A `FormatStyle` for `CGPoint`.
+/// Format `CGPoint`s.
 public struct CGPointFormatStyle: ParseableFormatStyle {
 
     public var parseStrategy: CGPointParseStrategy {

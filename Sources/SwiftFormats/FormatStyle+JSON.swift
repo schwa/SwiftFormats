@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// A `FormatStyle` for `JSON`.
+/// Format `Encodable`` types as JSON strings.
 /// - Example:
 ///   - `TextField(text: "JSON", value: $value, format: JSONFormatStyle<SomeCodableType>())`
 public struct JSONFormatStyle <FormatInput>: FormatStyle where FormatInput: Encodable {

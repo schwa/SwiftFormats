@@ -4,19 +4,19 @@ import Foundation
 // TODO: add support for UTM (can import https://github.com/wtw-software/UTMConversion)
 // TODO: add support for geohash
 
-public enum LatitudeLongitude: CaseIterable {
+internal enum LatitudeLongitude: CaseIterable {
     case latitude
     case longitude
 }
 
-public enum Hemisphere: CaseIterable {
+internal enum Hemisphere: CaseIterable {
     case east
     case west
     case north
     case south
 }
 
-public extension Hemisphere {
+internal extension Hemisphere {
     init(latitude value: CLLocationDegrees) {
         self = value >= 0 ? .north : .south
     }
@@ -29,7 +29,7 @@ public extension Hemisphere {
 // TODO: Localized
 // TODO: Really should be `cardinal direction`
 extension Hemisphere: CustomStringConvertible {
-    public var description: String {
+    var description: String {
         switch self {
         case .north:
             return "North"
@@ -43,19 +43,19 @@ extension Hemisphere: CustomStringConvertible {
     }
 }
 
-public struct HemisphereFormatStyle: FormatStyle {
+internal struct HemisphereFormatStyle: FormatStyle {
     let abbreviated: Bool
 
-    public init(abbreviated: Bool) {
+    init(abbreviated: Bool) {
         self.abbreviated = abbreviated
     }
 
-    public func format(_ value: Hemisphere) -> String {
+    func format(_ value: Hemisphere) -> String {
         abbreviated ? "\(value.description.first!)" : value.description
     }
 }
 
-public extension FormatStyle where Self == HemisphereFormatStyle {
+internal extension FormatStyle where Self == HemisphereFormatStyle {
     static func hemisphere(abbreviated: Bool = true) -> Self {
         HemisphereFormatStyle(abbreviated: abbreviated)
     }
@@ -63,7 +63,7 @@ public extension FormatStyle where Self == HemisphereFormatStyle {
 
 // MARK: -
 
-/// A format style for a latitude value.
+/// Format latitude values, including hemisphere.
 public struct LatitudeFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {
     public typealias Substyle = DegreesMinutesSecondsNotationFormatStyle<FormatInput>
 
@@ -104,7 +104,7 @@ public extension FormatStyle where Self == LatitudeFormatStyle<Float> {
 
 // MARK: -
 
-/// A format style for a longitude value.
+/// Format latitude values, including hemisphere.
 public struct LongitudeFormatStyle<FormatInput>: FormatStyle where FormatInput: BinaryFloatingPoint {
     public typealias Substyle = DegreesMinutesSecondsNotationFormatStyle<FormatInput>
 
