@@ -4,60 +4,18 @@ import Foundation
 // TODO: add support for UTM (can import https://github.com/wtw-software/UTMConversion)
 // TODO: add support for geohash
 
-internal enum LatitudeLongitude: CaseIterable {
-    case latitude
-    case longitude
-}
+/// A format style for a lat/long coordinate.
+public struct CoordinatesFormatter: FormatStyle {
+    // TODO: need a way to pass options down to sub styles
 
-internal enum Hemisphere: CaseIterable {
-    case east
-    case west
-    case north
-    case south
-}
-
-internal extension Hemisphere {
-    init(latitude value: CLLocationDegrees) {
-        self = value >= 0 ? .north : .south
-    }
-
-    init(longitude value: CLLocationDegrees) {
-        self = value >= 0 ? .east : .west
+    public func format(_ value: CLLocationCoordinate2D) -> String {
+        "\(value.latitude, format: .latitude()), \(value.longitude, format: .longitude())"
     }
 }
 
-// TODO: Localized
-// TODO: Really should be `cardinal direction`
-extension Hemisphere: CustomStringConvertible {
-    var description: String {
-        switch self {
-        case .north:
-            return "North"
-        case .south:
-            return "South"
-        case .east:
-            return "East"
-        case .west:
-            return "West"
-        }
-    }
-}
-
-internal struct HemisphereFormatStyle: FormatStyle {
-    let abbreviated: Bool
-
-    init(abbreviated: Bool) {
-        self.abbreviated = abbreviated
-    }
-
-    func format(_ value: Hemisphere) -> String {
-        abbreviated ? "\(value.description.first!)" : value.description
-    }
-}
-
-internal extension FormatStyle where Self == HemisphereFormatStyle {
-    static func hemisphere(abbreviated: Bool = true) -> Self {
-        HemisphereFormatStyle(abbreviated: abbreviated)
+public extension FormatStyle where Self == CoordinatesFormatter {
+    static func coordinates() -> Self {
+        CoordinatesFormatter()
     }
 }
 
@@ -143,19 +101,63 @@ public extension FormatStyle where Self == LongitudeFormatStyle<Float> {
     }
 }
 
+
 // MARK: -
 
-/// A format style for a lat/long coordinate.
-public struct CoordinatesFormatter: FormatStyle {
-    // TODO: need a way to pass options down to sub styles
+internal enum LatitudeLongitude: CaseIterable {
+    case latitude
+    case longitude
+}
 
-    public func format(_ value: CLLocationCoordinate2D) -> String {
-        "\(value.latitude, format: .latitude()), \(value.longitude, format: .longitude())"
+internal enum Hemisphere: CaseIterable {
+    case east
+    case west
+    case north
+    case south
+}
+
+internal extension Hemisphere {
+    init(latitude value: CLLocationDegrees) {
+        self = value >= 0 ? .north : .south
+    }
+
+    init(longitude value: CLLocationDegrees) {
+        self = value >= 0 ? .east : .west
     }
 }
 
-public extension FormatStyle where Self == CoordinatesFormatter {
-    static func coordinates() -> Self {
-        CoordinatesFormatter()
+// TODO: Localized
+// TODO: Really should be `cardinal direction`
+extension Hemisphere: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .north:
+            return "North"
+        case .south:
+            return "South"
+        case .east:
+            return "East"
+        case .west:
+            return "West"
+        }
     }
 }
+
+internal struct HemisphereFormatStyle: FormatStyle {
+    let abbreviated: Bool
+
+    init(abbreviated: Bool) {
+        self.abbreviated = abbreviated
+    }
+
+    func format(_ value: Hemisphere) -> String {
+        abbreviated ? "\(value.description.first!)" : value.description
+    }
+}
+
+internal extension FormatStyle where Self == HemisphereFormatStyle {
+    static func hemisphere(abbreviated: Bool = true) -> Self {
+        HemisphereFormatStyle(abbreviated: abbreviated)
+    }
+}
+

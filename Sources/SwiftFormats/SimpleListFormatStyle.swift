@@ -1,13 +1,9 @@
 import Foundation
 
 /// A format style that formats a list of elements by formatting each element with a substyle and joining them with a separator.
-public struct SimpleListFormatStyle <Element, Substyle>: ParseableFormatStyle where Substyle: ParseableFormatStyle, Element == Substyle.FormatInput, Substyle.FormatOutput == String {
+public struct SimpleListFormatStyle <Element, Substyle>: FormatStyle where Substyle: FormatStyle, Element == Substyle.FormatInput, Substyle.FormatOutput == String {
 
     // TODO: provide user separator
-
-    public var parseStrategy: SimpleListParseStrategy <Element, Substyle.Strategy> {
-        SimpleListParseStrategy(substrategy: substyle.parseStrategy)
-    }
 
     public var substyle: Substyle
 
@@ -17,6 +13,12 @@ public struct SimpleListFormatStyle <Element, Substyle>: ParseableFormatStyle wh
 
     public func format(_ value: [Element]) -> String {
         return value.map { substyle.format($0) }.joined(separator: ", ")
+    }
+}
+
+extension SimpleListFormatStyle: ParseableFormatStyle where Substyle: ParseableFormatStyle {
+    public var parseStrategy: SimpleListParseStrategy <Element, Substyle.Strategy> {
+        SimpleListParseStrategy(substrategy: substyle.parseStrategy)
     }
 }
 

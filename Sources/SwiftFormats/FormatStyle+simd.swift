@@ -15,8 +15,7 @@ public struct SIMDFormatStyle: ParseableFormatStyle {
     }
 
     public func format(_ value: SIMD3<Float>) -> String {
-        let style = SimpleListFormatStyle(substyle: componentFormat)
-        return style.format(value.scalars)
+        return SimpleListFormatStyle(substyle: componentFormat).format(value.scalars)
     }
 }
 
