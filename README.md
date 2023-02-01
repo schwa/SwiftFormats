@@ -18,10 +18,18 @@ let formatted = "The number is \(number, .number)"
 // formatted == "The number is 123.456"
 ```
 
+### CoreGraphics
+
+```swift
+let point = CGPoint(x: 1.234, y: 5.678)
+let formatted = point.formatted(.decimal(places: 2))
+// formatted == "(1.23, 5.68)"
+```
+
 ## TODO
 
 - [ ] Find and handle all the TODOs
-- [ ] Add more `.formatted()` and `.formatted(_ style:)` functions where appropropriate
+- [ ] Add more `.formatted()` and `.formatted(_ style:)` functions where appropriate
 - [ ] Add sugar for parsing (does a standard library equivalent to `.formatted()` exist?)
 - [ ] Investigate attribute strings and other non-string `FormatOutput` types
 
@@ -29,10 +37,10 @@ let formatted = "The number is \(number, .number)"
 
 ### Apple
 
-- https://developer.apple.com/documentation/foundation/formatstyle
-- https://developer.apple.com/documentation/foundation/parseableformatstyle
-- https://developer.apple.com/documentation/foundation/floatingpointformatstyle
+- <https://developer.apple.com/documentation/foundation/formatstyle>
+- <https://developer.apple.com/documentation/foundation/parseableformatstyle>
+- <https://developer.apple.com/documentation/foundation/floatingpointformatstyle>
 
 ### Other
 
-- https://fuckingformatstyle.com
+- <https://fuckingformatstyle.com>
