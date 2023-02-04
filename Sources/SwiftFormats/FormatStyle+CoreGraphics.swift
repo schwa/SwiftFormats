@@ -49,23 +49,21 @@ public extension CGPoint {
         self = try CGPointFormatStyle().parseStrategy.parse(string)
     }
 
-    init<T, Value>(_ value: Value, format: T) throws where T: ParseableFormatStyle, Value: StringProtocol, T.Strategy == CGPointParseStrategy {
-        self = try format.parseStrategy.parse(value.description)
+    init<Format, ParseInput>(_ input: ParseInput, format: Format) throws where Format: ParseableFormatStyle, ParseInput: StringProtocol, Format.Strategy == CGPointParseStrategy {
+        self = try format.parseStrategy.parse(String(input))
     }
 
-    init<T, Value>(_ value: Value, strategy: T) throws where T: ParseStrategy, Value: StringProtocol, T.ParseInput == String, T.ParseOutput == CGPoint {
-        self = try strategy.parse(value.description)
+    init<Strategy, Value>(_ value: Value, strategy: Strategy) throws where Strategy: ParseStrategy, Value: StringProtocol, Strategy.ParseInput == String, Strategy.ParseOutput == CGPoint {
+        self = try strategy.parse(String(value))
     }
 }
 
-@available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
 public extension ParseableFormatStyle where Self == CGPointFormatStyle {
-    static var cgPoint: Self { .init() }
+    static var point: Self { .init() }
 }
 
-@available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
 public extension ParseStrategy where Self == CGPointParseStrategy {
-    static var cgPoint: Self { .init() }
+    static var point: Self { .init() }
 }
 
 // MARK: -
