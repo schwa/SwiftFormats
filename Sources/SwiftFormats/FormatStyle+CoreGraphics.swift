@@ -2,7 +2,7 @@ import CoreGraphics
 import Foundation
 
 /// Format `CGPoint`s.
-public struct CGPointFormatStyle: ParseableFormatStyle {
+public struct CGPointFormatStyle: ParseableFormatStyle, InitializableFormatStyle {
 
     public var parseStrategy: CGPointParseStrategy {
         return CGPointParseStrategy(componentFormat: componentFormat)
@@ -10,18 +10,11 @@ public struct CGPointFormatStyle: ParseableFormatStyle {
 
     public var componentFormat: FloatingPointFormatStyle<Double> = .number
 
-    public init() {
-    }
+    public init() {}
 
     public func format(_ value: CGPoint) -> String {
         let style = SimpleListFormatStyle(substyle: componentFormat)
         return style.format([value.x, value.y])
-    }
-}
-
-public extension FormatStyle where Self == CGPointFormatStyle {
-    static func point() -> Self {
-        return Self()
     }
 }
 
@@ -44,12 +37,22 @@ public struct CGPointParseStrategy: ParseStrategy {
 
 // MARK: -
 
-public extension CGPoint {
-    func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S : FormatStyle {
-        return format.format(self)
-    }
+public extension FormatStyle where Self == CGPointFormatStyle {
+    static var point: Self { .init() }
+}
 
-    func formatted() -> String {
-        formatted(CGPointFormatStyle())
-    }
+// MARK: -
+
+public extension ParseableFormatStyle where Self == CGPointFormatStyle {
+    static var point: Self { .init() }
+}
+
+public extension ParseStrategy where Self == CGPointParseStrategy {
+    static var point: Self { .init() }
+}
+
+// MARK: -
+
+extension CGPoint: StringFormattable, StringParseable {
+    public typealias Format = CGPointFormatStyle
 }
