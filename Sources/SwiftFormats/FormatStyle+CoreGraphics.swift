@@ -45,6 +45,30 @@ public struct CGPointParseStrategy: ParseStrategy {
 // MARK: -
 
 public extension CGPoint {
+    init(_ string: String) throws {
+        self = try CGPointFormatStyle().parseStrategy.parse(string)
+    }
+
+    init<Format, ParseInput>(_ input: ParseInput, format: Format) throws where Format: ParseableFormatStyle, ParseInput: StringProtocol, Format.Strategy == CGPointParseStrategy {
+        self = try format.parseStrategy.parse(String(input))
+    }
+
+    init<Strategy, Value>(_ value: Value, strategy: Strategy) throws where Strategy: ParseStrategy, Value: StringProtocol, Strategy.ParseInput == String, Strategy.ParseOutput == CGPoint {
+        self = try strategy.parse(String(value))
+    }
+}
+
+public extension ParseableFormatStyle where Self == CGPointFormatStyle {
+    static var point: Self { .init() }
+}
+
+public extension ParseStrategy where Self == CGPointParseStrategy {
+    static var point: Self { .init() }
+}
+
+// MARK: -
+
+public extension CGPoint {
     func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S : FormatStyle {
         return format.format(self)
     }

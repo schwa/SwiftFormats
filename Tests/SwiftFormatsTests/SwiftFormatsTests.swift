@@ -80,6 +80,9 @@ class CGPointTests: XCTestCase {
     func test1() {
         XCTAssertEqual(CGPoint.zero.formatted(), "0, 0")
         XCTAssertEqual(try CGPointParseStrategy().parse("0, 0"), CGPoint.zero)
+        XCTAssertEqual(try CGPoint("0, 0"), CGPoint.zero)
+        XCTAssertEqual(try CGPoint("0, 0", format: .point), CGPoint.zero)
+        XCTAssertEqual(try CGPoint("0, 0", strategy: .point), CGPoint.zero)
         XCTAssertEqual(try CGPointParseStrategy().parse("0.1, 2.3"), CGPoint(x: 0.1, y: 2.3))
         XCTAssertThrowsError(try CGPointParseStrategy().parse(""))
         XCTAssertThrowsError(try CGPointParseStrategy().parse("0.1"))
