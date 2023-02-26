@@ -1,6 +1,6 @@
 import RegexBuilder
 import Foundation
-@_implementationOnly import SIMDSupport
+//@_implementationOnly import SIMDSupport
 import simd
 
 // TODO: Make generic
@@ -110,7 +110,6 @@ public struct SIMDParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SIMD
 
 // TODO: Only works with simd_quatd right now
 public struct QuaternionFormatStyle: FormatStyle {
-
 
     public enum Style: Codable {
         case components // ix, iy, iz, r

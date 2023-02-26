@@ -1,4 +1,5 @@
 import Foundation
+import simd
 
 // TODO: From Everything.
 internal func unimplemented(_ message: @autoclosure () -> String = String(), file: StaticString = #file, line: UInt = #line) -> Never {
@@ -14,3 +15,15 @@ internal func radiansToDegrees<F>(_ value: F) -> F where F: FloatingPoint {
 }
 
 // MARK: -
+
+internal extension SIMD {
+    var scalars: [Scalar] {
+        (0 ..< scalarCount).map {
+            self[$0]
+        }
+    }
+}
+
+internal extension simd_quatd {
+    static let identity = simd_quatd(real: 1, imag: .zero)
+}

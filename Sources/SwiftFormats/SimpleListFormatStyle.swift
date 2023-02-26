@@ -32,7 +32,7 @@ extension SimpleListFormatStyle: ParseableFormatStyle where Substyle: ParseableF
 /// A parse strategy that parses a list of elements by parsing each element with a substrategy and splitting them by a separator.
 public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy where Substrategy: ParseStrategy, Element == Substrategy.ParseOutput, Substrategy.ParseInput == String {
 
-    // TODO: allow skipping , and just split by whitespace
+    // TODO: allow skipping, and just split by whitespace
     // TODO: provide user separator
 
     public enum ParseError: Error {

@@ -36,7 +36,7 @@ extension UnitAngleParseStrategy: ParseStrategy {
     public func parse(_ value: String) throws -> Measurement<UnitAngle> {
         let parsedUnit = try parseUnit(from: value, for: format.locale)
         let numericalValue = try Double(value, format: format.numberFormatStyle ?? .number)
-        return Measurement<UnitAngle>(value: numericalValue , unit: parsedUnit)
+        return Measurement<UnitAngle>(value: numericalValue, unit: parsedUnit)
     }
 }
 
