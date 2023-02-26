@@ -8,20 +8,22 @@ public protocol FormattableMatrix: Equatable {
     var columnCount: Int { get }
     var rowCount: Int { get }
 
-    subscript(column: Int, row: Int) -> Scalar { get }
+    init()
+
+    subscript(column: Int, row: Int) -> Scalar { get set }
+}
+
+public enum MatrixOrder: Codable {
+    case columnMajor
+    case rowMajor
 }
 
 public struct MatrixFormatStyle <Matrix, ScalarStyle>: FormatStyle where Matrix: FormattableMatrix, ScalarStyle: FormatStyle, ScalarStyle.FormatInput == Matrix.Scalar, ScalarStyle.FormatOutput == String {
 
-    public enum Order: Codable {
-        case columnMajor
-        case rowMajor
-    }
-
-    public var order: Order
+    public var order: MatrixOrder
     public var scalarStyle: ScalarStyle
 
-    public init(order: Order = .rowMajor, scalarStyle: ScalarStyle) {
+    public init(order: MatrixOrder = .rowMajor, scalarStyle: ScalarStyle) {
         self.order = order
         self.scalarStyle = scalarStyle
     }
@@ -43,6 +45,42 @@ public struct MatrixFormatStyle <Matrix, ScalarStyle>: FormatStyle where Matrix:
             }
         }
         return SimpleListFormatStyle(substyle: SimpleListFormatStyle(substyle: scalarStyle), separator: "\n").format(elements)
+    }
+}
+
+// MARK: -
+
+extension MatrixFormatStyle: ParseableFormatStyle where ScalarStyle: ParseableFormatStyle {
+    public var parseStrategy: MatrixParseStrategy<Matrix, ScalarStyle.Strategy> {
+        return MatrixParseStrategy<Matrix, ScalarStyle.Strategy>(order: order, scalarStrategy: scalarStyle.parseStrategy)
+    }
+}
+
+public struct MatrixParseStrategy <Matrix, ScalarStrategy>: ParseStrategy where Matrix: FormattableMatrix, ScalarStrategy: ParseStrategy, ScalarStrategy.ParseInput == String, ScalarStrategy.ParseOutput == Matrix.Scalar {
+
+    public var order: MatrixOrder
+    public var scalarStrategy: ScalarStrategy
+
+    public init(order: MatrixOrder = .rowMajor, scalarStrategy: ScalarStrategy) {
+        self.order = order
+        self.scalarStrategy = scalarStrategy
+    }
+
+    public func parse(_ value: String) throws -> Matrix {
+        let elementsStrategy = SimpleListParseStrategy(substrategy: SimpleListParseStrategy(substrategy: scalarStrategy))
+        let elements = try elementsStrategy.parse(value)
+        var result = Matrix()
+        switch order {
+        case .columnMajor:
+            fatalError()
+        case .rowMajor:
+            for row in 0 ..< result.rowCount {
+                for column in 0 ..< result.columnCount {
+                    result[row, column] = elements[row][column]
+                }
+            }
+        }
+        return result
     }
 }
 
