@@ -48,7 +48,7 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
     public var style: Style = .components
     public var mappingStyle: Bool = true
     public var humanReadable: Bool = true // TODO: rename
-    public var numberStyle: FloatingPointFormatStyle<Double> = .number
+    public var numberStyle: FloatingPointFormatStyle<Double> = .number // TODO: This needs to be generic
 
     public func format(_ value: Q) -> String {
         // TODO: We're converting components to SIMDx<Double> here a lot where we probably shouldn't need to
