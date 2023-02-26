@@ -1,13 +1,12 @@
 import RegexBuilder
 import Foundation
-//@_implementationOnly import SIMDSupport
 import simd
 
-// TODO: Make generic
 public struct SIMDFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, ScalarStyle: FormatStyle, ScalarStyle.FormatInput == V.Scalar, ScalarStyle.FormatOutput == String {
 
     public var scalarStyle: ScalarStyle
     public var mappingStyle: Bool
+    public var scalarNames = ["x", "y", "z", "w"] // TODO: Localize, allow changing of names, e.g. rgba or quaternion fields
 
     public init(scalarStyle: ScalarStyle, mappingStyle: Bool = true) {
         self.scalarStyle = scalarStyle
@@ -16,7 +15,6 @@ public struct SIMDFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, Scala
 
     public func format(_ value: V) -> String {
         if mappingStyle {
-            let scalarNames = ["x", "y", "z", "w"] // TODO: Localize
             let mapping = Array(zip(scalarNames, value.scalars))
             return SimpleMappingFormatStyle(substyle: scalarStyle).format(mapping)
         }
@@ -98,73 +96,5 @@ public struct SIMDParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SIMD
         let strategy = SimpleListParseStrategy(substrategy: scalarStrategy)
         let scalars = try strategy.parse(value)
         return V(scalars)
-    }
-}
-
-// MARK: -
-
-// TODO: To make fully generic we need a … ugh.
-//internal protocol Quaternion {
-//    associatedtype Scalar: BinaryFloatingPoint
-//}
-
-// TODO: Only works with simd_quatd right now
-public struct QuaternionFormatStyle: FormatStyle {
-
-    public enum Style: Codable {
-        case components // ix, iy, iz, r
-        case imaginaryReal // (ix, iy, iz), r
-        case vector // x, y, z, w
-        case angleAxis // angle, axis x, axis y, axis z
-    }
-
-    public init(style: QuaternionFormatStyle.Style = .components, mappingStyle: Bool = true, humanReadable: Bool = true, numberStyle: FloatingPointFormatStyle<Double> = .number) {
-        self.style = style
-        self.mappingStyle = mappingStyle
-        self.humanReadable = humanReadable
-        self.numberStyle = numberStyle
-    }
-
-    public var style: Style = .components
-    public var mappingStyle: Bool = true
-    public var humanReadable: Bool = true // TODO: rename
-    public var numberStyle: FloatingPointFormatStyle<Double> = .number
-
-    public func format(_ value: simd_quatd) -> String {
-        if value == .identity && humanReadable {
-            return "identity"
-        }
-
-        switch style {
-        case .components:
-            let mapping = [
-                ("real", value.real.formatted(numberStyle)),
-                ("ix", value.imag.x.formatted(numberStyle)),
-                ("iy", value.imag.y.formatted(numberStyle)),
-                ("iz", value.imag.z.formatted(numberStyle)),
-            ]
-            return SimpleMappingFormatStyle().format(mapping)
-        case .imaginaryReal:
-            let mapping = [
-                ("real", value.real.formatted(numberStyle)),
-                ("imaginary", "\(value.imag, format: .simd(numberStyle))"),
-            ]
-            return SimpleMappingFormatStyle().format(mapping)
-        case .vector:
-            return value.vector.formatted(.simd(numberStyle))
-        case .angleAxis:
-            let mapping = [
-                ("angle", value.angle.formatted(numberStyle)),
-                ("axis", "\(value.axis, format: .simd(numberStyle))"),
-            ]
-            return SimpleMappingFormatStyle().format(mapping)
-        }
-    }
-}
-
-
-public extension FormatStyle where Self == QuaternionFormatStyle {
-    static func quaternion(style: QuaternionFormatStyle.Style = .components, mappingStyle: Bool = true, humanReadable: Bool = true, numberStyle: FloatingPointFormatStyle<Double> = .number) -> Self {
-        return QuaternionFormatStyle(style: style, mappingStyle: mappingStyle, humanReadable: humanReadable, numberStyle: numberStyle)
     }
 }

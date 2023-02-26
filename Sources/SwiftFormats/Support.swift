@@ -23,7 +23,3 @@ internal extension SIMD {
         }
     }
 }
-
-internal extension simd_quatd {
-    static let identity = simd_quatd(real: 1, imag: .zero)
-}
