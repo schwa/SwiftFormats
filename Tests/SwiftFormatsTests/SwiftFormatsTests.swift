@@ -183,3 +183,12 @@ class QuaternionTests: XCTestCase {
         XCTAssertEqual("\(q, format: .quaternion(style: .angleAxis, numberStyle: .number.precision(.fractionLength(...2))))", "angle: 0.79, axis: x: 0, y: 0, z: 1")
     }
 }
+
+// MARK: -
+
+class MatrixTests: XCTestCase {
+    func test1() throws {
+        let matrix = simd_float4x4()
+        XCTAssertEqual("\(matrix, format: .matrix(scalarStyle: .number))", "0, 0, 0, 0\n0, 0, 0, 0\n0, 0, 0, 0\n0, 0, 0, 0")
+    }
+}
