@@ -43,14 +43,66 @@ class DMSTests: XCTestCase {
 }
 
 class AngleTests: XCTestCase {
-    func test1() {
+    func test1() throws {
         XCTAssertEqual(45.25125.formatted(.dmsNotation().locale(locale)), "45.25125°")
-        XCTAssertEqual("\(45.25125, format: .angle(inputUnit: .degrees, outputUnit: .degrees).locale(locale))", "45.25125°")
-
         XCTAssertEqual("\(45.25125, format: .angle(inputUnit: .degrees, outputUnit: .degrees).locale(locale))", "45.25125°")
         XCTAssertEqual("\(45.25125, format: .angle(inputUnit: .degrees, outputUnit: .radians).locale(locale))", "0.789783rad")
         XCTAssertEqual("\(0.789783, format: .angle(inputUnit: .radians, outputUnit: .degrees).locale(locale))", "45.251233°")
         XCTAssertEqual("\(0.789783, format: .angle(inputUnit: .radians, outputUnit: .radians).locale(locale))", "0.789783rad")
+        XCTAssertEqual(45.25125.formatted(.dmsNotation().locale(locale)), "45.25125°")
+        XCTAssertEqual(45.25125.formatted(.angle(inputUnit: .degrees, outputUnit: .radians)), "0.789783rad")
+
+        XCTAssertEqual(try AngleParseStrategy(inputUnit: .degrees, outputUnit: .degrees).parse("45.25125°"), 45.25125)
+        XCTAssertEqual(try AngleParseStrategy(inputUnit: .degrees, outputUnit: .radians).parse("45.25125°"), 0.789783303143084)
+        XCTAssertEqual(try AngleParseStrategy(inputUnit: .radians, outputUnit: .radians).parse("0.789783rad"), 0.789783)
+        XCTAssertEqual(try AngleParseStrategy(inputUnit: .radians, outputUnit: .degrees).parse("0.789783rad"), 45.2512326311807)
+
+        XCTAssertEqual(try Double("45.25125°", strategy: .angle(inputUnit: .degrees, outputUnit: .degrees)), 45.25125)
+        XCTAssertEqual(try Double("45.25125°", strategy: .angle(inputUnit: .degrees, outputUnit: .radians)), 0.789783303143084)
+        XCTAssertEqual(try Double("0.789783 rad", strategy: .angle(inputUnit: .radians, outputUnit: .radians)), 0.789783)
+        XCTAssertEqual(try Double("0.789783 rad", strategy: .angle(inputUnit: .radians, outputUnit: .degrees)), 45.2512326311807)
+
+        XCTAssertEqual(try Double("0.789783 radian", strategy: .angle(inputUnit: .radians, outputUnit: .radians, locale: Locale(identifier: "fr_FR"))), 0.789783)
+        XCTAssertEqual(try Double("10", format: .number), 10)
+
+        XCTAssertEqual(try Double("0.789783 radian", format: .angle(inputUnit: .radians, outputUnit: .degrees)), 45.2512326311807)
+    }
+}
+
+class UnitAngleMeasurementTests: XCTestCase {
+
+    func testParsing() throws {
+
+        let testMeasurement = Measurement<UnitAngle>(value: 45.0, unit: UnitAngle.degrees)
+
+        let englishUS = Locale(identifier: "en_US")
+        XCTAssertEqual(try Measurement<UnitAngle>("45°", format: .measurement(width: .narrow).locale(englishUS)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45 deg", format: .measurement(width: .abbreviated).locale(englishUS)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45 degrees", format: .measurement(width: .wide).locale(englishUS)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45°", locale: englishUS), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45 deg", locale: englishUS), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45 degrees", locale: englishUS), testMeasurement)
+
+        let frenchFR = Locale(identifier: "fr_FR")
+        XCTAssertEqual(try Measurement<UnitAngle>("45°", format: .measurement(width: .narrow).locale(frenchFR)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45°", format: .measurement(width: .abbreviated).locale(frenchFR)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45 degrés", format: .measurement(width: .wide).locale(frenchFR)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45°", locale: frenchFR), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45 degrés", locale: frenchFR), testMeasurement)
+
+        let japaneseJP = Locale(identifier: "ja_JP")
+        XCTAssertEqual(try Measurement<UnitAngle>("45°", format: .measurement(width: .narrow).locale(japaneseJP)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45度", format: .measurement(width: .abbreviated).locale(japaneseJP)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45度", format: .measurement(width: .wide).locale(japaneseJP)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45°", locale: japaneseJP), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45度", locale: japaneseJP), testMeasurement)
+
+        let hindiID = Locale(identifier: "id_HI")
+        XCTAssertEqual(try Measurement<UnitAngle>("45°", format: .measurement(width: .narrow).locale(hindiID)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45°", format: .measurement(width: .abbreviated).locale(hindiID)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45 derajat", format: .measurement(width: .wide).locale(hindiID)), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45°", locale: hindiID), testMeasurement)
+        XCTAssertEqual(try Measurement<UnitAngle>("45 derajat", locale: hindiID), testMeasurement)
     }
 }
 
