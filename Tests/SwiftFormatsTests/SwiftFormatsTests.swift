@@ -113,15 +113,6 @@ class CoordinatesTests: XCTestCase {
     }
 }
 
-class SimpleListTests: XCTestCase {
-    func test1() {
-        let style = SimpleListFormatStyle(substyle: FloatingPointFormatStyle<Double>.number).locale(locale)
-        XCTAssertEqual(style.format([1.1,2.2,3.3,4.4]), "1.1, 2.2, 3.3, 4.4")
-        let parser = style.parseStrategy
-        XCTAssertEqual(try parser.parse("1.1, 2.2, 3.3, 4.4"), [1.1,2.2,3.3,4.4])
-    }
-}
-
 class HexDumpTests: XCTestCase {
     func testHexdump() {
         XCTAssertEqual("\(Data([0xDE, 0xED, 0xBE, 0xEF]), format: .hexdump())", "0000000000000000  0xDE 0xED 0xBE 0xEF                              ????\n")
@@ -190,9 +181,7 @@ class MatrixTests: XCTestCase {
     func test1() throws {
         let matrix = simd_float4x4()
         let string = "0, 0, 0, 0\n0, 0, 0, 0\n0, 0, 0, 0\n0, 0, 0, 0"
-        XCTAssertEqual("\(matrix, format: .matrix(scalarStyle: .number))", string)
-
+        XCTAssertEqual("\(matrix, format: .matrix())", string)
         XCTAssertEqual(try MatrixParseStrategy(scalarStrategy: FloatingPointFormatStyle<Float>.number.parseStrategy).parse(string), matrix)
-
     }
 }

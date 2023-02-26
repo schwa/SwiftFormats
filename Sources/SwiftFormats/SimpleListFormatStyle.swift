@@ -40,17 +40,21 @@ public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy wher
     }
 
     public private(set) var substrategy: Substrategy
-
+    public var separator: String
+//    public var prefix: String?
+//    public var suffix: String?
     public var countRange: ClosedRange <Int> = .zero ... .max
 
-    public init(substrategy: Substrategy) {
+    public init(substrategy: Substrategy, separator: String = ",", countRange: ClosedRange<Int> = .zero ... .max) {
         self.substrategy = substrategy
+        self.separator = separator
+        self.countRange = countRange
     }
 
     /// TODO: this will totally break when the substrategy emits commas (e.g. localisation that use commas as digit group separators) 
     public func parse(_ value: String) throws -> [Element] {
         let components = try value
-            .split(separator: ",", omittingEmptySubsequences: false)
+            .split(separator: separator, omittingEmptySubsequences: false)
             .map {
                 try substrategy.parse(String($0))
             }
@@ -61,3 +65,23 @@ public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy wher
         return components
     }
 }
+
+extension SimpleListParseStrategy: IncrementalParseStrategy {
+    public func incrementalParse(_ value: inout String) throws -> [Element] {
+        var elements: [Element] = []
+        let scanner = Scanner(string: value)
+        scanner.charactersToBeSkipped = nil
+        while !scanner.isAtEnd && elements.count < countRange.upperBound {
+            if let chunk = scanner.scanUpToString(separator) {
+                elements.append(try substrategy.parse(chunk))
+            }
+            _ = scanner.scanString(separator)
+        }
+        guard countRange.contains(elements.count) else {
+            throw ParseError.countError
+        }
+        value = String(value[scanner.currentIndex ..< value.endIndex])
+        return elements
+    }
+}
+
