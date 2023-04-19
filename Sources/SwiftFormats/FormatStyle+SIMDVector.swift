@@ -16,7 +16,7 @@ public struct SIMDFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, Scala
     public func format(_ value: V) -> String {
         if mappingStyle {
             let mapping = Array(zip(scalarNames, value.scalars))
-            return SimpleMappingFormatStyle(substyle: scalarStyle).format(mapping)
+            return SimpleMappingFormatStyle(valueStyle: scalarStyle).format(mapping)
         }
         else {
             return SimpleListFormatStyle(substyle: scalarStyle).format(value.scalars)
@@ -79,22 +79,29 @@ public extension SIMD {
 
 extension SIMDFormatStyle: ParseableFormatStyle where ScalarStyle: ParseableFormatStyle {
     public var parseStrategy: SIMDParseStrategy <V, ScalarStyle.Strategy> {
-        return SIMDParseStrategy(scalarStrategy: scalarStyle.parseStrategy)
+        return SIMDParseStrategy(scalarStrategy: scalarStyle.parseStrategy, mappingStyle: mappingStyle)
     }
 }
 
 public struct SIMDParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SIMD, ScalarStrategy: ParseStrategy, ScalarStrategy.ParseInput == String, ScalarStrategy.ParseOutput == V.Scalar {
 
     public var scalarStrategy: ScalarStrategy
-    //public var mappingStyle: Bool = true // TODO
+    public var mappingStyle: Bool
 
-    public init(scalarStrategy: ScalarStrategy) {
+    public init(scalarStrategy: ScalarStrategy, mappingStyle: Bool = false) {
         self.scalarStrategy = scalarStrategy
+        self.mappingStyle = mappingStyle
     }
 
     public func parse(_ value: String) throws -> V {
-        let strategy = SimpleListParseStrategy(substrategy: scalarStrategy)
-        let scalars = try strategy.parse(value)
-        return V(scalars)
+        if mappingStyle {
+            fatalError("Unimplemented")
+            //SimpleMappingParseStrategy()
+        }
+        else {
+            let strategy = SimpleListParseStrategy(substrategy: scalarStrategy)
+            let scalars = try strategy.parse(value)
+            return V(scalars)
+        }
     }
 }

@@ -8,20 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		454C1ACB29ABC96700B77553 /* SwiftFormatsDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454C1ACA29ABC96700B77553 /* SwiftFormatsDemoApp.swift */; };
-		454C1ACD29ABC96700B77553 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454C1ACC29ABC96700B77553 /* ContentView.swift */; };
+		454C1ACD29ABC96700B77553 /* MatrixEditorDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454C1ACC29ABC96700B77553 /* MatrixEditorDemoView.swift */; };
 		454C1ACF29ABC96800B77553 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 454C1ACE29ABC96800B77553 /* Assets.xcassets */; };
 		454C1AD329ABC96800B77553 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 454C1AD229ABC96800B77553 /* Preview Assets.xcassets */; };
 		454C1ADD29ABC9EF00B77553 /* SwiftFormats in Frameworks */ = {isa = PBXBuildFile; productRef = 454C1ADC29ABC9EF00B77553 /* SwiftFormats */; };
+		45F39EB329F06A6600715361 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F39EB229F06A6600715361 /* ContentView.swift */; };
+		45F39EB529F06AD400715361 /* VectorEditorDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F39EB429F06AD400715361 /* VectorEditorDemoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		454C1AC729ABC96700B77553 /* SwiftFormatsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftFormatsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		454C1ACA29ABC96700B77553 /* SwiftFormatsDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftFormatsDemoApp.swift; sourceTree = "<group>"; };
-		454C1ACC29ABC96700B77553 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		454C1ACC29ABC96700B77553 /* MatrixEditorDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixEditorDemoView.swift; sourceTree = "<group>"; };
 		454C1ACE29ABC96800B77553 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		454C1AD029ABC96800B77553 /* SwiftFormatsDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftFormatsDemo.entitlements; sourceTree = "<group>"; };
 		454C1AD229ABC96800B77553 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		454C1ADA29ABC99000B77553 /* SwiftFormats */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SwiftFormats; path = ..; sourceTree = "<group>"; };
+		45F39EB129F06A0700715361 /* SwiftFormats */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SwiftFormats; path = ..; sourceTree = "<group>"; };
+		45F39EB229F06A6600715361 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		45F39EB429F06AD400715361 /* VectorEditorDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorEditorDemoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +62,9 @@
 			isa = PBXGroup;
 			children = (
 				454C1ACA29ABC96700B77553 /* SwiftFormatsDemoApp.swift */,
-				454C1ACC29ABC96700B77553 /* ContentView.swift */,
+				45F39EB229F06A6600715361 /* ContentView.swift */,
+				454C1ACC29ABC96700B77553 /* MatrixEditorDemoView.swift */,
+				45F39EB429F06AD400715361 /* VectorEditorDemoView.swift */,
 				454C1ACE29ABC96800B77553 /* Assets.xcassets */,
 				454C1AD029ABC96800B77553 /* SwiftFormatsDemo.entitlements */,
 				454C1AD129ABC96800B77553 /* Preview Content */,
@@ -77,7 +83,7 @@
 		454C1AD929ABC99000B77553 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				454C1ADA29ABC99000B77553 /* SwiftFormats */,
+				45F39EB129F06A0700715361 /* SwiftFormats */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -162,8 +168,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				454C1ACD29ABC96700B77553 /* ContentView.swift in Sources */,
+				454C1ACD29ABC96700B77553 /* MatrixEditorDemoView.swift in Sources */,
 				454C1ACB29ABC96700B77553 /* SwiftFormatsDemoApp.swift in Sources */,
+				45F39EB329F06A6600715361 /* ContentView.swift in Sources */,
+				45F39EB529F06AD400715361 /* VectorEditorDemoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
