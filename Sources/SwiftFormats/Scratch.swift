@@ -10,6 +10,20 @@ public struct IdentityFormatStyle <Value>: FormatStyle {
     }
 }
 
+extension IdentityFormatStyle: ParseableFormatStyle {
+    public var parseStrategy: IdentityParseStategy <Value> {
+        return IdentityParseStategy()
+    }
+}
+
+public struct IdentityParseStategy <Value>: ParseStrategy {
+    public init() {
+    }
+    public func parse(_ value: Value) throws -> Value {
+        return value
+    }
+}
+
 // TODO: Again annoyed that FormatStyle has to be Hashable/Codable. Also need to do a AnyParseableFormatStyle
 internal struct AnyFormatStyle <FormatInput, FormatOutput>: FormatStyle {
     var closure: (FormatInput) -> FormatOutput

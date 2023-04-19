@@ -35,7 +35,7 @@ public extension MappingFormatStyle where Key == String, KeyStyle == IdentityFor
 
 extension MappingFormatStyle: ParseableFormatStyle where KeyStyle: ParseableFormatStyle, ValueStyle: ParseableFormatStyle {
     public var parseStrategy: MappingParseStrategy<Key, Value, KeyStyle.Strategy, ValueStyle.Strategy> {
-        return MappingParseStrategy(listStrategy: listStyle.parseStrategy, keyValueSeparator: keyValueSeparator, itemSeparator: itemSeparator)
+        return MappingParseStrategy(listStrategy: listStyle.parseStrategy)
     }
 }
 
@@ -44,17 +44,19 @@ extension MappingFormatStyle: ParseableFormatStyle where KeyStyle: ParseableForm
 public struct MappingParseStrategy <Key, Value, KeyStrategy, ValueStrategy>: ParseStrategy where KeyStrategy: ParseStrategy, KeyStrategy.ParseInput == String, KeyStrategy.ParseOutput == Key, ValueStrategy: ParseStrategy, ValueStrategy.ParseInput == String, ValueStrategy.ParseOutput == Value {
     public typealias ListStrategy = SimpleListParseStrategy<(Key, Value), TupleParseStrategy<Key, Value, KeyStrategy, ValueStrategy>>
     let listStrategy: ListStrategy
-    let keyValueSeparator: String
-    let itemSeparator: String
 
-    public init(listStrategy: ListStrategy, keyValueSeparator: String = ":", itemSeparator: String = ",") {
+    public init(listStrategy: ListStrategy) {
         self.listStrategy = listStrategy
-        self.keyValueSeparator = keyValueSeparator
-        self.itemSeparator = itemSeparator
-
     }
 
     public func parse(_ value: String) throws -> [(Key, Value)] {
         return try listStrategy.parse(value)
+    }
+}
+
+extension MappingParseStrategy {
+    public init(keyStrategy: KeyStrategy, valueStrategy: ValueStrategy, keyValueSeparator: String = ":", itemSeparator: String = ",") {
+        let keyValueStrategy = TupleParseStrategy(type: (Key, Value).self, separators: [keyValueSeparator], substrategy0: keyStrategy, substrategy1: valueStrategy)
+        self.listStrategy = ListStrategy(substrategy: keyValueStrategy)
     }
 }

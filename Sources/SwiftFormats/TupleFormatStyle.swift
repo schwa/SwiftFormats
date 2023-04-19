@@ -79,8 +79,6 @@ public struct TupleParseStrategy <Element0, Element1, Substrategy0, Substrategy1
             string1 = String(match.output.2)
         }
         else {
-            let start = #/^/#
-            print(start)
             let regex = Regex {
                 #/^/#
                 Capture {

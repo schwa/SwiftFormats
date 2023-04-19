@@ -2,7 +2,6 @@ import CoreLocation
 import Foundation
 @testable import SwiftFormats
 import XCTest
-import simd
 
 private let locale = Locale(identifier: "en_US")
 private let fp = FloatingPointFormatStyle<Double>.number

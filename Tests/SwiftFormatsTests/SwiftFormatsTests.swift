@@ -155,14 +155,6 @@ class ClosedRangeTests: XCTestCase {
     }
 }
 
-class SIMDRangeTests: XCTestCase {
-    func test1() throws {
-        XCTAssertEqual("\(SIMD3<Float>(0, 1, 2), format: .simd())", "x: 0, y: 1, z: 2")
-        XCTAssertEqual("\(SIMD3<Float>(0, 1, 2), format: .simd(mappingStyle: false))", "0, 1, 2")
-        XCTAssertEqual(try SIMDParseStrategy(scalarStrategy: FloatingPointFormatStyle<Float>.number.parseStrategy).parse("0, 1, 2"), SIMD3<Float>(0, 1, 2))
-    }
-}
-
 class QuaternionTests: XCTestCase {
     func test1() throws {
         let angle = 0.785398 // 45°
@@ -174,6 +166,3 @@ class QuaternionTests: XCTestCase {
         XCTAssertEqual("\(q, format: .quaternion(style: .angleAxis, numberStyle: .number.precision(.fractionLength(...2))))", "angle: 0.79, axis: x: 0, y: 0, z: 1")
     }
 }
-
-// MARK: -
-

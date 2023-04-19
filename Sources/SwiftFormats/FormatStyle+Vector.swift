@@ -3,16 +3,16 @@ import Foundation
 import simd
 
 public struct SIMDFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, ScalarStyle: FormatStyle, ScalarStyle.FormatInput == V.Scalar, ScalarStyle.FormatOutput == String {
-
+    
     public var scalarStyle: ScalarStyle
     public var mappingStyle: Bool
     public var scalarNames = ["x", "y", "z", "w"] // TODO: Localize, allow changing of names, e.g. rgba or quaternion fields
-
+    
     public init(scalarStyle: ScalarStyle, mappingStyle: Bool = true) {
         self.scalarStyle = scalarStyle
         self.mappingStyle = mappingStyle
     }
-
+    
     public func format(_ value: V) -> String {
         if mappingStyle {
             let mapping = Array(zip(scalarNames, value.scalars))
@@ -84,19 +84,45 @@ extension SIMDFormatStyle: ParseableFormatStyle where ScalarStyle: ParseableForm
 }
 
 public struct SIMDParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SIMD, ScalarStrategy: ParseStrategy, ScalarStrategy.ParseInput == String, ScalarStrategy.ParseOutput == V.Scalar {
-
+    
+    public enum ParseError: Error {
+        case missingKeys
+    }
+    
     public var scalarStrategy: ScalarStrategy
     public var mappingStyle: Bool
-
+    
     public init(scalarStrategy: ScalarStrategy, mappingStyle: Bool = false) {
         self.scalarStrategy = scalarStrategy
         self.mappingStyle = mappingStyle
     }
-
+    
     public func parse(_ value: String) throws -> V {
         if mappingStyle {
-            fatalError("Unimplemented")
-            //MappingParseStrategy()
+            let strategy = MappingParseStrategy(keyStrategy: IdentityParseStategy(), valueStrategy: scalarStrategy)
+            let dictionary = Dictionary(uniqueKeysWithValues: try strategy.parse(value).map { key, value in
+                // TODO: Quick hack to prevent keys like " x", " y". Obviously fix in MappingParseStrategy…
+                return (key.trimmingCharacters(in: .whitespaces), value)
+            })
+            switch V.scalarCount {
+            case 2:
+                guard let x = dictionary["x"], let y = dictionary["y"] else {
+                    throw ParseError.missingKeys
+                }
+                return V([x, y])
+            case 3:
+                guard let x = dictionary["x"], let y = dictionary["y"], let z = dictionary["z"] else {
+                    throw ParseError.missingKeys
+                }
+                return V([x, y, z])
+            case 4:
+                guard let x = dictionary["x"], let y = dictionary["y"], let z = dictionary["z"], let w = dictionary["w"] else {
+                    throw ParseError.missingKeys
+                }
+                return V([x, y, z, w])
+            default:
+                throw ParseError.missingKeys
+            }
         }
         else {
             let strategy = SimpleListParseStrategy(substrategy: scalarStrategy)
