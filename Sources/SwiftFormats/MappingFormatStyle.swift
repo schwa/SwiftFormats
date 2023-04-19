@@ -6,7 +6,7 @@ public struct MappingFormatStyle <Key, Value, KeyStyle, ValueStyle>: FormatStyle
     let keyValueSeparator: String
     let itemSeparator: String
 
-    public init(keyStyle: KeyStyle, valueStyle: ValueStyle, keyValueSeparator: String = ":", itemSeparator: String = ", ") {
+    public init(keyStyle: KeyStyle, valueStyle: ValueStyle, keyValueSeparator: String = ": ", itemSeparator: String = ", ") {
         self.keyValueSeparator = keyValueSeparator
         self.itemSeparator = itemSeparator
         let keyValueStyle = TupleFormatStyle(type: (Key, Value).self, separator: keyValueSeparator, substyle0: keyStyle, substyle1: valueStyle)
@@ -21,14 +21,14 @@ public struct MappingFormatStyle <Key, Value, KeyStyle, ValueStyle>: FormatStyle
 // MARK: -
 
 public extension MappingFormatStyle {
-    public init(keyType: Key.Type, valueType: Value.Type, keyStyle: KeyStyle, valueStyle: ValueStyle, keyValueSeparator: String = ":", itemSeparator: String = ", ") {
+    public init(keyType: Key.Type, valueType: Value.Type, keyStyle: KeyStyle, valueStyle: ValueStyle, keyValueSeparator: String = ": ", itemSeparator: String = ", ") {
         self.init(keyStyle: keyStyle, valueStyle: valueStyle, keyValueSeparator: keyValueSeparator, itemSeparator: itemSeparator)
     }
 
 }
 
 public extension MappingFormatStyle where Key == String, KeyStyle == IdentityFormatStyle<Key> {
-    init(valueStyle: ValueStyle, keyValueSeparator: String = ":", itemSeparator: String = ", ") {
+    init(valueStyle: ValueStyle, keyValueSeparator: String = ": ", itemSeparator: String = ", ") {
         self = .init(keyStyle: IdentityFormatStyle<String>(), valueStyle: valueStyle, keyValueSeparator: keyValueSeparator)
     }
 }
@@ -47,7 +47,7 @@ public struct MappingParseStrategy <Key, Value, KeyStrategy, ValueStrategy>: Par
     let keyValueSeparator: String
     let itemSeparator: String
 
-    public init(listStrategy: ListStrategy, keyValueSeparator: String = ":", itemSeparator: String = ", ") {
+    public init(listStrategy: ListStrategy, keyValueSeparator: String = ":", itemSeparator: String = ",") {
         self.listStrategy = listStrategy
         self.keyValueSeparator = keyValueSeparator
         self.itemSeparator = itemSeparator
