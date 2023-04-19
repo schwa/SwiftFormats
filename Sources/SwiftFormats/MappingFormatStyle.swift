@@ -21,7 +21,7 @@ public struct MappingFormatStyle <Key, Value, KeyStyle, ValueStyle>: FormatStyle
 // MARK: -
 
 public extension MappingFormatStyle {
-    public init(keyType: Key.Type, valueType: Value.Type, keyStyle: KeyStyle, valueStyle: ValueStyle, keyValueSeparator: String = ": ", itemSeparator: String = ", ") {
+    init(keyType: Key.Type, valueType: Value.Type, keyStyle: KeyStyle, valueStyle: ValueStyle, keyValueSeparator: String = ": ", itemSeparator: String = ", ") {
         self.init(keyStyle: keyStyle, valueStyle: valueStyle, keyValueSeparator: keyValueSeparator, itemSeparator: itemSeparator)
     }
 

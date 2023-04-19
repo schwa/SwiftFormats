@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "3A4C2ACE-27CE-4F8C-B93B-0EC578912072",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SwiftFormatsTests",
+        "name" : "SwiftFormatsTests"
+      }
+    }
+  ],
+  "version" : 1
+}
