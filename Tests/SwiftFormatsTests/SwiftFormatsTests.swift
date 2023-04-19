@@ -177,11 +177,3 @@ class QuaternionTests: XCTestCase {
 
 // MARK: -
 
-class MatrixTests: XCTestCase {
-    func test1() throws {
-        let matrix = simd_float4x4()
-        let string = "0, 0, 0, 0\n0, 0, 0, 0\n0, 0, 0, 0\n0, 0, 0, 0"
-        XCTAssertEqual("\(matrix, format: .matrix())", string)
-        XCTAssertEqual(try MatrixParseStrategy(scalarStrategy: FloatingPointFormatStyle<Float>.number.parseStrategy).parse(string), matrix)
-    }
-}

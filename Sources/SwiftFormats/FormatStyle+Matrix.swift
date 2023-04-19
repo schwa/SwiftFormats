@@ -68,17 +68,20 @@ public struct MatrixParseStrategy <Matrix, ScalarStrategy>: ParseStrategy where 
 
     public func parse(_ value: String) throws -> Matrix {
         var result = Matrix()
+        let innerStrategy = SimpleListParseStrategy(substrategy: scalarStrategy, separator: ",", countRange: result.rowCount ... result.rowCount)
+        let elementsStrategy = SimpleListParseStrategy(substrategy: innerStrategy, separator: "\n", countRange: result.columnCount ... result.columnCount)
+        let elements = try elementsStrategy.parse(value)
         switch order {
         case .columnMajor:
-            // TODO:
-            fatalError()
-        case .rowMajor:
-            let innerStrategy = SimpleListParseStrategy(substrategy: scalarStrategy, separator: ",", countRange: result.columnCount ... result.columnCount)
-            let elementsStrategy = SimpleListParseStrategy(substrategy: innerStrategy, separator: "\n", countRange: result.rowCount ... result.rowCount)
-            let elements = try elementsStrategy.parse(value)
-            for row in 0 ..< result.rowCount {
-                for column in 0 ..< result.columnCount {
+            for column in 0 ..< result.columnCount {
+                for row in 0 ..< result.rowCount {
                     result[row, column] = elements[row][column]
+                }
+            }
+        case .rowMajor:
+            for column in 0 ..< result.columnCount {
+                for row in 0 ..< result.rowCount {
+                    result[row, column] = elements[column][row]
                 }
             }
         }
