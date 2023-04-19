@@ -51,35 +51,36 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
     public var numberStyle: FloatingPointFormatStyle<Double> = .number // TODO: This needs to be generic
 
     public func format(_ value: Q) -> String {
-        // TODO: We're converting components to SIMDx<Double> here a lot where we probably shouldn't need to
-        if value == .identity && humanReadable {
-            return "identity"
-        }
-
-        switch style {
-        case .components:
-            let mapping = [
-                ("real", value.real.formatted(numberStyle)),
-                ("ix", value.imag.x.formatted(numberStyle)),
-                ("iy", value.imag.y.formatted(numberStyle)),
-                ("iz", value.imag.z.formatted(numberStyle)),
-            ]
-            return SimpleMappingFormatStyle().format(mapping)
-        case .imaginaryReal:
-            let mapping = [
-                ("real", value.real.formatted(numberStyle)),
-                ("imaginary", "\(SIMD3<Double>(value.imag), format: .simd(numberStyle))"),
-            ]
-            return SimpleMappingFormatStyle().format(mapping)
-        case .vector:
-            return SIMD4<Double>(value.vector).formatted(.simd(numberStyle))
-        case .angleAxis:
-            let mapping = [
-                ("angle", value.angle.formatted(numberStyle)),
-                ("axis", "\(SIMD3<Double>(value.axis), format: .simd(numberStyle))"),
-            ]
-            return SimpleMappingFormatStyle().format(mapping)
-        }
+        fatalError()
+//        // TODO: We're converting components to SIMDx<Double> here a lot where we probably shouldn't need to
+//        if value == .identity && humanReadable {
+//            return "identity"
+//        }
+//
+//        switch style {
+//        case .components:
+//            let mapping = [
+//                ("real", value.real.formatted(numberStyle)),
+//                ("ix", value.imag.x.formatted(numberStyle)),
+//                ("iy", value.imag.y.formatted(numberStyle)),
+//                ("iz", value.imag.z.formatted(numberStyle)),
+//            ]
+//            return MappingFormatStyle(keyStyle: IdentityFormatStyle(), valueStyle: numberStyle).format(mapping)
+//        case .imaginaryReal:
+//            let mapping = [
+//                ("real", value.real.formatted(numberStyle)),
+//                ("imaginary", "\(SIMD3<Double>(value.imag), format: .simd(numberStyle))"),
+//            ]
+//            return MappingFormatStyle().format(mapping)
+//        case .vector:
+//            return SIMD4<Double>(value.vector).formatted(.simd(numberStyle))
+//        case .angleAxis:
+//            let mapping = [
+//                ("angle", value.angle.formatted(numberStyle)),
+//                ("axis", "\(SIMD3<Double>(value.axis), format: .simd(numberStyle))"),
+//            ]
+//            return MappingFormatStyle().format(mapping)
+//        }
     }
 }
 

@@ -1,7 +1,7 @@
 import Foundation
 
 // TODO: This could work with any Sequence and only the ParseableFormatStyle needs to restrict to an Array
-/// A format style that formats a list of elements by formatting each element with a substyle and joining them with a separator.
+/// A format style that formats a list of elements by formatting each element with a substyle and joining them with a separator. See also `ListFormatStyle`
 public struct SimpleListFormatStyle <Element, Substyle>: FormatStyle where Substyle: FormatStyle, Element == Substyle.FormatInput, Substyle.FormatOutput == String {
 
     public var substyle: Substyle

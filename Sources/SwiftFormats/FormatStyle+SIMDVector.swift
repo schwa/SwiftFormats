@@ -16,7 +16,7 @@ public struct SIMDFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, Scala
     public func format(_ value: V) -> String {
         if mappingStyle {
             let mapping = Array(zip(scalarNames, value.scalars))
-            return SimpleMappingFormatStyle(valueStyle: scalarStyle).format(mapping)
+            return MappingFormatStyle(valueStyle: scalarStyle).format(mapping)
         }
         else {
             return SimpleListFormatStyle(substyle: scalarStyle).format(value.scalars)
@@ -96,7 +96,7 @@ public struct SIMDParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SIMD
     public func parse(_ value: String) throws -> V {
         if mappingStyle {
             fatalError("Unimplemented")
-            //SimpleMappingParseStrategy()
+            //MappingParseStrategy()
         }
         else {
             let strategy = SimpleListParseStrategy(substrategy: scalarStrategy)

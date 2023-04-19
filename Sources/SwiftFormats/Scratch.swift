@@ -1,8 +1,11 @@
 import Foundation
 
 // TODO: Make public and put in a doc explain why this is necessary :-(
-internal struct IdentityFormatStyle <Value>: FormatStyle {
-    func format(_ value: Value) -> Value {
+public struct IdentityFormatStyle <Value>: FormatStyle {
+    public init() {
+    }
+
+    public func format(_ value: Value) -> Value {
         return value
     }
 }
@@ -22,18 +25,18 @@ internal struct AnyFormatStyle <FormatInput, FormatOutput>: FormatStyle {
     // MARK: -
 
     static func == (lhs: Self, rhs: Self) -> Bool {
-        fatalError()
+        fatalError("Unimplemented")
     }
 
     func hash(into hasher: inout Hasher) {
-        fatalError()
+        fatalError("Unimplemented")
     }
 
     init(from decoder: Decoder) throws {
-        fatalError()
+        fatalError("Unimplemented")
     }
 
     func encode(to encoder: Encoder) throws {
-        fatalError()
+        fatalError("Unimplemented")
     }
 }
