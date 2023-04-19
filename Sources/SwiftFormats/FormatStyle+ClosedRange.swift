@@ -93,9 +93,6 @@ public extension ClosedRangeParseStrategy {
 }
 
 /// Generates a ChoiceOf regex pattern from an array of strings.
-/// // TODO: use ChoiceOf { array }
-/// TODO: Make private.
-@available(*, deprecated, message: "Use `ChoiceOf { array }`")
 extension Array: RegexComponent where Element == String {
     public var regex: Regex<Substring> {
 
