@@ -39,10 +39,10 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
         case angleAxis // angle, axis x, axis y, axis z
     }
 
-    public var style: Style
-    public var compositeStyle: CompositeStyle
-    public var isHumanReadable: Bool // TODO: rename
-    public var numberStyle: FloatingPointFormatStyle<Double> // TODO: This needs to be generic
+    var style: Style
+    var compositeStyle: CompositeStyle
+    var isHumanReadable: Bool // TODO: rename
+    var numberStyle: FloatingPointFormatStyle<Double> // TODO: This needs to be generic
 
     public init(style: QuaternionFormatStyle.Style = .components, compositeStyle: CompositeStyle = .mapping, isHumanReadable: Bool = true, numberStyle: FloatingPointFormatStyle<Double> = .number) {
         self.style = style

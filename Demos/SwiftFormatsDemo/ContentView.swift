@@ -42,18 +42,19 @@ struct VectorEditorDemoView: View {
     var value: SIMD3<Float> = [0, 0, 0]
 
     var body: some View {
-        Form {
-            Section("Value") {
-                Text("\(value, format: .vector)")
-            }
-            Section("Mapping Style") {
-                TextField("Vector", value: $value, format: .vector)
-            }
-//            Section("List Style") {
-//                TextField("Vector", value: $value, format: .vector.compositeStyle(.mapping))
+        TextField("Vector", value: $value, format: .vector.compositeStyle(.list))
+//        Form {
+//            Section("Value") {
+//                Text("\(value, format: .vector)")
 //            }
-        }
-        .frame(maxWidth: 200)
+//            Section("Mapping Style") {
+//                TextField("Vector", value: $value, format: .vector)
+//            }
+////            Section("List Style") {
+////                TextField("Vector", value: $value, format: .vector.compositeStyle(.list))
+////            }
+//        }
+//        .frame(maxWidth: 200)
     }
 }
 
