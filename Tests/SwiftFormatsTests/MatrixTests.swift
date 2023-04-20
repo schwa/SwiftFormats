@@ -15,7 +15,7 @@ class MatrixTests: XCTestCase {
             [12, 13, 14, 15],
         ])
         let string = "0, 1, 2, 3\n4, 5, 6, 7\n8, 9, 10, 11\n12, 13, 14, 15"
-        XCTAssertEqual("\(matrix, format: .matrix())", string)
+        XCTAssertEqual("\(matrix, format: .matrix)", string)
         XCTAssertEqual(try MatrixParseStrategy(scalarStrategy: FloatingPointFormatStyle<Float>.number.parseStrategy).parse(string), matrix)
     }
 }

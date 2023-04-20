@@ -35,11 +35,9 @@ public struct JSONParseStrategy <ParseOutput>: ParseStrategy where ParseOutput: 
     }
 
     public func parse(_ value: String) throws -> ParseOutput {
-
         guard let data = value.data(using: .utf8) else {
             throw JSONParseError.couldNotDecodeData
         }
-
         return try JSONDecoder().decode(ParseOutput.self, from: data)
     }
 }

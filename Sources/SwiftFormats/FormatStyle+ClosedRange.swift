@@ -91,19 +91,3 @@ public extension ClosedRangeParseStrategy {
         return copy
     }
 }
-
-/// Generates a ChoiceOf regex pattern from an array of strings.
-extension Array: RegexComponent where Element == String {
-    public var regex: Regex<Substring> {
-
-        guard let first else {
-            fatalError("Cannot create ChoiceOf with zero elements.")
-        }
-
-        return Regex {
-            dropFirst().reduce(AlternationBuilder.buildPartialBlock(first: first)) { regex, element in
-                return AlternationBuilder.buildPartialBlock(accumulated: regex, next: element)
-            }
-        }
-    }
-}

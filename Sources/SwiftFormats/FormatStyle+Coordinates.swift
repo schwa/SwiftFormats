@@ -14,7 +14,7 @@ public struct CoordinatesFormatter: FormatStyle {
 }
 
 public extension FormatStyle where Self == CoordinatesFormatter {
-    static func coordinates() -> Self {
+    static var coordinates: Self {
         CoordinatesFormatter()
     }
 }

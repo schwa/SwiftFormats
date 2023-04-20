@@ -20,7 +20,7 @@ public struct CGPointFormatStyle: ParseableFormatStyle {
 }
 
 public extension FormatStyle where Self == CGPointFormatStyle {
-    static func point() -> Self {
+    static var point: Self {
         return Self()
     }
 }
@@ -59,11 +59,15 @@ public extension CGPoint {
 }
 
 public extension ParseableFormatStyle where Self == CGPointFormatStyle {
-    static var point: Self { .init() }
+    static var point: Self {
+        .init()
+    }
 }
 
 public extension ParseStrategy where Self == CGPointParseStrategy {
-    static var point: Self { .init() }
+    static var point: Self {
+        .init()
+    }
 }
 
 // MARK: -

@@ -1,5 +1,6 @@
 import Foundation
 import simd
+@_implementationOnly import RegexBuilder
 
 // TODO: From Everything.
 internal func unimplemented(_ message: @autoclosure () -> String = String(), file: StaticString = #file, line: UInt = #line) -> Never {
@@ -19,5 +20,22 @@ internal func radiansToDegrees<F>(_ value: F) -> F where F: FloatingPoint {
 internal extension SIMD {
     var scalars: [Scalar] {
         (0 ..< scalarCount).map { self[$0] }
+    }
+}
+
+
+/// Generates a ChoiceOf regex pattern from an array of strings.
+extension Array: RegexComponent where Element == String {
+    public var regex: Regex<Substring> {
+
+        guard let first else {
+            fatalError("Cannot create ChoiceOf with zero elements.")
+        }
+
+        return Regex {
+            dropFirst().reduce(AlternationBuilder.buildPartialBlock(first: first)) { regex, element in
+                return AlternationBuilder.buildPartialBlock(accumulated: regex, next: element)
+            }
+        }
     }
 }

@@ -109,7 +109,7 @@ class UnitAngleMeasurementTests: XCTestCase {
 class CoordinatesTests: XCTestCase {
     func test1() {
         let coordinate = CLLocationCoordinate2D(latitude: 37.78, longitude: 122.43)
-        XCTAssertEqual("\(coordinate, format: .coordinates().locale(locale))", "37.78° N, 122.43° E")
+        XCTAssertEqual("\(coordinate, format: .coordinates.locale(locale))", "37.78° N, 122.43° E")
     }
 }
 
