@@ -3,7 +3,7 @@ import Foundation
 import simd
 
 public protocol FormattableQuaternion: Equatable {
-    associatedtype Scalar: SIMDScalar & BinaryFloatingPoint
+    associatedtype Scalar: SIMDScalar, BinaryFloatingPoint
 
     var real: Scalar { get }
     var imag: SIMD3<Scalar> { get }
@@ -46,8 +46,8 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
     }
 
     public var style: Style = .components
-    public var mappingStyle: Bool = true
-    public var humanReadable: Bool = true // TODO: rename
+    public var mappingStyle = true
+    public var humanReadable = true // TODO: rename
     public var numberStyle: FloatingPointFormatStyle<Double> = .number // TODO: This needs to be generic
 
     public func format(_ value: Q) -> String {

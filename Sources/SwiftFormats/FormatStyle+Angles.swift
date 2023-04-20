@@ -122,8 +122,7 @@ public struct AngleParseStrategy<ParseOutput>: ParseStrategy where ParseOutput: 
     public func parse(_ value: String) throws -> ParseOutput {
         let number = try Double(value, format: .number)
         switch (inputUnit, outputUnit) {
-        case (.degrees, .degrees),
-             (.radians, .radians):
+        case (.degrees, .degrees), (.radians, .radians):
             return ParseOutput(number)
         case (.degrees, .radians):
             return ParseOutput(degreesToRadians(number))

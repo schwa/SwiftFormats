@@ -9,9 +9,9 @@ private let fp = FloatingPointFormatStyle<Double>.number
 class SimpleListTests: XCTestCase {
     func test1() {
         let style = SimpleListFormatStyle(substyle: fp).locale(locale)
-        XCTAssertEqual(style.format([1.1,2.2,3.3,4.4]), "1.1, 2.2, 3.3, 4.4")
+        XCTAssertEqual(style.format([1.1, 2.2, 3.3, 4.4]), "1.1, 2.2, 3.3, 4.4")
         let parser = style.parseStrategy
-        XCTAssertEqual(try parser.parse("1.1, 2.2, 3.3, 4.4"), [1.1,2.2,3.3,4.4])
+        XCTAssertEqual(try parser.parse("1.1, 2.2, 3.3, 4.4"), [1.1, 2.2, 3.3, 4.4])
     }
 
     func testIncrementalParsing1() {
@@ -19,7 +19,7 @@ class SimpleListTests: XCTestCase {
         let listStrategy = SimpleListParseStrategy(substrategy: fp.parseStrategy, countRange: 3...3)
         XCTAssertThrowsError(try listStrategy.parse(string))
         var copy = string
-        XCTAssertEqual(try listStrategy.incrementalParse(&copy), [1,2,3])
+        XCTAssertEqual(try listStrategy.incrementalParse(&copy), [1, 2, 3])
         XCTAssertEqual(copy, " 4, 5")
     }
 
@@ -28,7 +28,7 @@ class SimpleListTests: XCTestCase {
         let listStrategy = SimpleListParseStrategy(substrategy: fp.parseStrategy, separator: "\n", countRange: 3...3)
         XCTAssertThrowsError(try listStrategy.parse(string))
         var copy = string
-        XCTAssertEqual(try listStrategy.incrementalParse(&copy), [1,2,3])
+        XCTAssertEqual(try listStrategy.incrementalParse(&copy), [1, 2, 3])
         XCTAssertEqual(copy, "4\n5")
     }
 

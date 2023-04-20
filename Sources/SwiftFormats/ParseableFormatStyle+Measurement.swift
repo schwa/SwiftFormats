@@ -19,7 +19,7 @@ public struct UnitAngleParseStrategy {
     }
 
     public func lenient(_ isLenient: Bool) -> UnitAngleParseStrategy {
-        UnitAngleParseStrategy(format: format, lenient: isLenient)
+        Self(format: format, lenient: isLenient)
     }
 }
 
@@ -42,7 +42,7 @@ private extension UnitAngleParseStrategy {
             let unitStrings = try candidateUnit.localizedUnitStrings(for: locale, widths: checkWidths)
             switch lenient {
             case true:
-                return unitStrings.map({$0.lowercased()}).contains(where: { string.contains($0.lowercased()) })
+                return unitStrings.map({ $0.lowercased() }).contains(where: { string.contains($0.lowercased()) })
             case false:
                 return unitStrings.contains(where: { string.contains($0) })
             }

@@ -3,16 +3,16 @@ import Foundation
 import simd
 
 public struct SIMDFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, ScalarStyle: FormatStyle, ScalarStyle.FormatInput == V.Scalar, ScalarStyle.FormatOutput == String {
-    
+
     public var scalarStyle: ScalarStyle
     public var mappingStyle: Bool
     public var scalarNames = ["x", "y", "z", "w"] // TODO: Localize, allow changing of names, e.g. rgba or quaternion fields
-    
+
     public init(scalarStyle: ScalarStyle, mappingStyle: Bool = true) {
         self.scalarStyle = scalarStyle
         self.mappingStyle = mappingStyle
     }
-    
+
     public func format(_ value: V) -> String {
         if mappingStyle {
             let mapping = Array(zip(scalarNames, value.scalars))
@@ -61,7 +61,7 @@ public extension FormatStyle where Self == SIMDFormatStyle<SIMD4<Double>, Floati
 }
 
 public extension SIMD {
-    func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S : FormatStyle {
+    func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S: FormatStyle {
         return format.format(self)
     }
 }
@@ -84,19 +84,19 @@ extension SIMDFormatStyle: ParseableFormatStyle where ScalarStyle: ParseableForm
 }
 
 public struct SIMDParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SIMD, ScalarStrategy: ParseStrategy, ScalarStrategy.ParseInput == String, ScalarStrategy.ParseOutput == V.Scalar {
-    
+
     public enum ParseError: Error {
         case missingKeys
     }
-    
+
     public var scalarStrategy: ScalarStrategy
     public var mappingStyle: Bool
-    
+
     public init(scalarStrategy: ScalarStrategy, mappingStyle: Bool = false) {
         self.scalarStrategy = scalarStrategy
         self.mappingStyle = mappingStyle
     }
-    
+
     public func parse(_ value: String) throws -> V {
         if mappingStyle {
             let strategy = MappingParseStrategy(keyStrategy: IdentityParseStategy(), valueStrategy: scalarStrategy)

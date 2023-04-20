@@ -69,7 +69,7 @@ public extension ParseStrategy where Self == CGPointParseStrategy {
 // MARK: -
 
 public extension CGPoint {
-    func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S : FormatStyle {
+    func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S: FormatStyle {
         return format.format(self)
     }
 
