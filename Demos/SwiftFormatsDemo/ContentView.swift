@@ -40,15 +40,15 @@ struct AngleEditorDemoView: View, DefaultInitialisable {
 
     var body: some View {
         Form {
-            LabeledContent("String(describing:)") {
+            Section("String(describing:)") {
                 Text(verbatim: "\(value)")
             }
-            LabeledContent("Formatting TextField (degrees)") {
+            Section("Formatting TextField (degrees)") {
                 TextField("Degrees", value: $value, format: .angle(inputUnit: .degrees, outputUnit: .degrees))
                     .labelsHidden()
                     .frame(maxWidth: 160)
             }
-            LabeledContent("Formatting TextField (radians)") {
+            Section("Formatting TextField (radians)") {
                 TextField("Radians", value: $value, format: .angle(inputUnit: .degrees, outputUnit: .radians))
                     .labelsHidden()
                     .frame(maxWidth: 160)
@@ -65,10 +65,10 @@ struct ClosedRangeEditorDemoView: View, DefaultInitialisable {
 
     var body: some View {
         Form {
-            LabeledContent("String(describing:)") {
+            Section("String(describing:)") {
                 Text(verbatim: "\(value)")
             }
-            LabeledContent("Formatting TextField") {
+            Section("Formatting TextField") {
                 TextField("Value", value: $value, format: ClosedRangeFormatStyle(substyle: .number))
                     .labelsHidden()
                     .frame(maxWidth: 160)
@@ -86,10 +86,10 @@ struct CoordinatesEditorDemoView: View, DefaultInitialisable {
     var body: some View {
         Text("Broken!")
 //        Form {
-//            LabeledContent("String(describing:)") {
+//            Section("String(describing:)") {
 //                Text(verbatim: "\(value)")
 //            }
-//            LabeledContent("Formatted Text") {
+//            Section("Formatted Text") {
 //                Text("\(value, format: .coordinates)")
 //            }
 //        }
@@ -102,10 +102,10 @@ struct HexDumpFormatDemoView: View, DefaultInitialisable {
 
     var body: some View {
         Form {
-            LabeledContent("String(describing:)") {
+            Section("String(describing:)") {
                 Text(verbatim: "\(value)")
             }
-            LabeledContent("Formatted Text") {
+            Section("Formatted Text") {
                 Text("\(value, format: .hexdump())")
                     .font(.body.monospaced())
             }
@@ -119,10 +119,10 @@ struct JSONFormatDemoView: View, DefaultInitialisable {
 
     var body: some View {
         Form {
-            LabeledContent("String(describing:)") {
+            Section("String(describing:)") {
                 Text(verbatim: "\(value)")
             }
-            LabeledContent("Formatting TextField") {
+            Section("Formatting TextField") {
                 TextField("json", value: $value, format: JSONFormatStyle())
             }
         }
@@ -137,10 +137,10 @@ struct QuaternionDemoView: View, DefaultInitialisable {
 
     var body: some View {
         Form {
-            LabeledContent("String(describing:)") {
+            Section("String(describing:)") {
                 Text(verbatim: "\(value)")
             }
-            LabeledContent("Formatted Text") {
+            Section("Formatted Text") {
                 Text(value: value, format: .quaternion)
             }
         }
@@ -155,25 +155,24 @@ struct MatrixEditorDemoView: View, DefaultInitialisable {
 
     var body: some View {
         Form {
-            LabeledContent("String(describing:)") {
+            Section("String(describing:)") {
                 Text(verbatim: "\(value)")
             }
-            LabeledContent("Formatted Text") {
+            Section("Formatted Text") {
                 Text(value, format: .matrix)
             }
-            LabeledContent("Formatting TextField") {
+            Section("Formatting TextField") {
                 TextField("matrix", value: $value, format: .matrix)
                     .lineLimit(4, reservesSpace: true)
                     .labelsHidden()
                     .frame(maxWidth: 160)
             }
-            LabeledContent("Formatting TextEditor") {
+            Section("Formatting TextEditor") {
                 TextEditor(value: $value, format: .matrix)
                     .lineLimit(4, reservesSpace: true)
-                    .frame(maxHeight: 160)
+                    .frame(maxHeight: 200)
             }
         }
-        .padding()
     }
 }
 
@@ -185,10 +184,10 @@ struct PointEditorDemoView: View, DefaultInitialisable {
 
     var body: some View {
         Form {
-            LabeledContent("String(describing:)") {
+            Section("String(describing:)") {
                 Text(verbatim: "\(value)")
             }
-            LabeledContent("Formatting TextField") {
+            Section("Formatting TextField") {
                 TextField("Value", value: $value, format: .point)
                     .labelsHidden()
                     .frame(maxWidth: 160)
@@ -217,7 +216,6 @@ struct VectorEditorDemoView: View, DefaultInitialisable {
                 TextField("Vector", value: $value, format: .vector.compositeStyle(.list))
             }
         }
-        .frame(maxWidth: 200)
     }
 }
 
