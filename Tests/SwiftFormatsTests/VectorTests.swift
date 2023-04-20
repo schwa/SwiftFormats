@@ -12,6 +12,6 @@ class VectorTests: XCTestCase {
 //        XCTAssertEqual("\(vector, format: .simd())", "x: 0, y: 1, z: 2")
 //        XCTAssertEqual("\(vector, format: .simd(mappingStyle: false))", "0, 1, 2")
 //        XCTAssertEqual(try SIMDParseStrategy(scalarStrategy: FloatingPointFormatStyle<Float>.number.parseStrategy, mappingStyle: false).parse("0, 1, 2"), vector)
-        XCTAssertEqual(try SIMDParseStrategy(scalarStrategy: FloatingPointFormatStyle<Float>.number.parseStrategy, mappingStyle: true).parse("x: 0, y: 1, z: 2"), vector)
+        XCTAssertEqual(try SIMDParseStrategy(scalarStrategy: FloatingPointFormatStyle<Float>.number.parseStrategy, compositeStyle: .mapping).parse("x: 0, y: 1, z: 2"), vector)
     }
 }

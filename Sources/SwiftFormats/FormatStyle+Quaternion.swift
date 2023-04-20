@@ -14,7 +14,6 @@ public protocol FormattableQuaternion: Equatable {
     var vector: SIMD4<Scalar> { get }
 
     init(real: Scalar, imag: SIMD3<Scalar>)
-
 }
 
 internal extension FormattableQuaternion {
@@ -29,6 +28,8 @@ extension simd_quatf: FormattableQuaternion {
 extension simd_quatd: FormattableQuaternion {
 }
 
+// MARK: -
+
 public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuaternion {
 
     public enum Style: Codable {
@@ -38,21 +39,21 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
         case angleAxis // angle, axis x, axis y, axis z
     }
 
-    public init(style: QuaternionFormatStyle.Style = .components, mappingStyle: Bool = true, humanReadable: Bool = true, numberStyle: FloatingPointFormatStyle<Double> = .number) {
+    public var style: Style
+    public var compositeStyle: CompositeStyle
+    public var isHumanReadable: Bool // TODO: rename
+    public var numberStyle: FloatingPointFormatStyle<Double> // TODO: This needs to be generic
+
+    public init(style: QuaternionFormatStyle.Style = .components, compositeStyle: CompositeStyle = .mapping, isHumanReadable: Bool = true, numberStyle: FloatingPointFormatStyle<Double> = .number) {
         self.style = style
-        self.mappingStyle = mappingStyle
-        self.humanReadable = humanReadable
+        self.compositeStyle = compositeStyle
+        self.isHumanReadable = isHumanReadable
         self.numberStyle = numberStyle
     }
 
-    public var style: Style = .components
-    public var mappingStyle = true
-    public var humanReadable = true // TODO: rename
-    public var numberStyle: FloatingPointFormatStyle<Double> = .number // TODO: This needs to be generic
-
     public func format(_ value: Q) -> String {
         // TODO: We're converting components to SIMDx<Double> here a lot where we probably shouldn't need to
-        if value == .identity && humanReadable {
+        if value == .identity && isHumanReadable {
             return "identity"
         }
 
@@ -68,30 +69,56 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
         case .imaginaryReal:
             let mapping = [
                 ("real", value.real.formatted(numberStyle)),
-                ("imaginary", "\(SIMD3<Double>(value.imag), format: .simd(numberStyle))"),
+                ("imaginary", "\(SIMD3<Double>(value.imag), format: .vector.scalarStyle(numberStyle))"),
             ]
             return MappingFormatStyle(keyStyle: IdentityFormatStyle(), valueStyle: IdentityFormatStyle()).format(mapping)
         case .vector:
-            return SIMD4<Double>(value.vector).formatted(.simd(numberStyle))
+            return SIMD4<Double>(value.vector).formatted(.vector.scalarStyle(numberStyle))
         case .angleAxis:
             let mapping = [
                 ("angle", value.angle.formatted(numberStyle)),
-                ("axis", "\(SIMD3<Double>(value.axis), format: .simd(numberStyle))"),
+                ("axis", "\(SIMD3<Double>(value.axis), format: .vector.scalarStyle(numberStyle))"),
             ]
             return MappingFormatStyle(keyStyle: IdentityFormatStyle(), valueStyle: IdentityFormatStyle()).format(mapping)
         }
     }
 }
 
+public extension QuaternionFormatStyle {
+    func style(_ style: Style) -> Self {
+        var copy = self
+        copy.style = style
+        return copy
+    }
+
+    func compositeStyle(_ compositeStyle: CompositeStyle) -> Self {
+        var copy = self
+        copy.compositeStyle = compositeStyle
+        return copy
+    }
+
+    func isHumanReadable(_ isHumanReadable: Bool) -> Self {
+        var copy = self
+        copy.isHumanReadable = isHumanReadable
+        return copy
+    }
+
+    func numberStyle(_ numberStyle: FloatingPointFormatStyle<Double>) -> Self {
+        var copy = self
+        copy.numberStyle = numberStyle
+        return copy
+    }
+}
+
 public extension FormatStyle where Self == QuaternionFormatStyle<simd_quatf> {
-    static func quaternion(style: QuaternionFormatStyle<simd_quatf>.Style = .components, mappingStyle: Bool = true, humanReadable: Bool = true, numberStyle: FloatingPointFormatStyle<Double> = .number) -> Self {
-        return QuaternionFormatStyle(style: style, mappingStyle: mappingStyle, humanReadable: humanReadable, numberStyle: numberStyle)
+    static var quaternion: Self {
+        return QuaternionFormatStyle()
     }
 }
 
 public extension FormatStyle where Self == QuaternionFormatStyle<simd_quatd> {
-    static func quaternion(style: QuaternionFormatStyle<simd_quatd>.Style = .components, mappingStyle: Bool = true, humanReadable: Bool = true, numberStyle: FloatingPointFormatStyle<Double> = .number) -> Self {
-        return QuaternionFormatStyle(style: style, mappingStyle: mappingStyle, humanReadable: humanReadable, numberStyle: numberStyle)
+    static var quaternion: Self {
+        return QuaternionFormatStyle()
     }
 }
 
