@@ -25,7 +25,8 @@ It also provides extensions for String and string interpolation to make it easie
 |      | `Any`                    | `String` | Dump                  | No         | `dumped`      | Uses `dump()`                        |
 |      | `DataProtocol`           | `String` | Hex-dumped            | No         | `hexdumped`   |                                      |
 |      | `Codable`                | `String` | JSON                  | Yes        | `json`        | Uses `JSONEncoder` and `JSONDecoder` |
-|      | `SIMD3<Float>`           | `String` | List (7)              | Yes        | TODO          | TODO: Placeholder implementation     |
+|      | `SIMD3<Float>`           | `String` | List or mapping       | Yes        | `vector`      |                                      |
+|      | SIMD matrix types        | `String` | List                  | Yes        | `matrix`      |                                      |
 |      | `BinaryInteger`          | `String` | Radixed format        | No         | Various       | Binary, Octal, Hex representations   |
 
 ### Notes
