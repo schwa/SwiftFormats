@@ -18,8 +18,6 @@ internal func radiansToDegrees<F>(_ value: F) -> F where F: FloatingPoint {
 
 internal extension SIMD {
     var scalars: [Scalar] {
-        (0 ..< scalarCount).map {
-            self[$0]
-        }
+        (0 ..< scalarCount).map { self[$0] }
     }
 }

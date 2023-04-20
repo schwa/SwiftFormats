@@ -24,7 +24,9 @@ public struct ClosedRangeFormatStyle <Bound, Substyle>: FormatStyle where Bound:
             delimiter,
             substyle.format(value.upperBound),
         ]
-        return parts.compactMap({ $0 }).joined(separator: " ")
+        return parts
+            .compactMap { $0 }
+            .joined(separator: " ")
     }
 }
 
@@ -61,7 +63,6 @@ public struct ClosedRangeParseStrategy <Bound, Substrategy>: ParseStrategy where
         let upperBoundReference = Reference(Substring.self)
         let pattern = Regex {
             Capture(as: lowerBoundReference) {
-                //OneOrMore(.reluctant, .any)
                 OneOrMore(.any)
             }
             ZeroOrMore(.whitespace)
@@ -69,7 +70,6 @@ public struct ClosedRangeParseStrategy <Bound, Substrategy>: ParseStrategy where
             ZeroOrMore(.whitespace)
             Capture(as: upperBoundReference) {
                 OneOrMore(.any)
-//                OneOrMore(.reluctant, .any)
             }
         }
 
@@ -97,7 +97,7 @@ extension Array: RegexComponent where Element == String {
     public var regex: Regex<Substring> {
 
         guard let first else {
-            fatalError()
+            fatalError("Cannot create ChoiceOf with zero elements.")
         }
 
         return Regex {

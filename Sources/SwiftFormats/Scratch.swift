@@ -38,18 +38,22 @@ internal struct AnyFormatStyle <FormatInput, FormatOutput>: FormatStyle {
 
     // MARK: -
 
+    // swiftlint:disable:next unavailable_function
     static func == (lhs: Self, rhs: Self) -> Bool {
         fatalError("Unimplemented")
     }
 
+    // swiftlint:disable:next unavailable_function
     func hash(into hasher: inout Hasher) {
         fatalError("Unimplemented")
     }
 
+    // swiftlint:disable:next unavailable_function
     init(from decoder: Decoder) throws {
         fatalError("Unimplemented")
     }
 
+    // swiftlint:disable:next unavailable_function
     func encode(to encoder: Encoder) throws {
         fatalError("Unimplemented")
     }

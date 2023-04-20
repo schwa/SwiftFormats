@@ -35,9 +35,7 @@ public struct HexdumpFormatStyle<FormatInput>: FormatStyle where FormatInput: Da
             if chunk.isEmpty {
                 break
             }
-            let hex = chunk.map {
-                $0.formatted(.hex.leadingZeros())
-            }
+            let hex = chunk.map { $0.formatted(.hex.leadingZeros()) }
             .joined(separator: " ")
             .padding(toLength: width * 3 - 1, withPad: " ", startingAt: 0)
 

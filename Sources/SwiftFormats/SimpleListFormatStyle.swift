@@ -55,9 +55,7 @@ public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy wher
     public func parse(_ value: String) throws -> [Element] {
         let components = try value
             .split(separator: separator, omittingEmptySubsequences: false)
-            .map {
-                try substrategy.parse(String($0))
-            }
+            .map { try substrategy.parse(String($0)) }
 
         guard countRange.contains(components.count) else {
             throw ParseError.countError

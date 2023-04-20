@@ -27,7 +27,7 @@ extension JSONFormatStyle: ParseableFormatStyle where FormatInput: Decodable {
 
 public struct JSONParseStrategy <ParseOutput>: ParseStrategy where ParseOutput: Decodable {
 
-    public enum JSONParseStrategy: Error {
+    public enum JSONParseError: Error {
         case couldNotDecodeData
     }
 
@@ -37,7 +37,7 @@ public struct JSONParseStrategy <ParseOutput>: ParseStrategy where ParseOutput: 
     public func parse(_ value: String) throws -> ParseOutput {
 
         guard let data = value.data(using: .utf8) else {
-            throw Self.couldNotDecodeData
+            throw JSONParseError.couldNotDecodeData
         }
 
         return try JSONDecoder().decode(ParseOutput.self, from: data)

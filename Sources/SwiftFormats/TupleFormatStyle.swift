@@ -49,6 +49,7 @@ public struct TupleParseStrategy <Element0, Element1, Substrategy0, Substrategy1
         self.substrategy1 = substrategy1
     }
 
+    // swiftlint:disable:next function_body_length
     public func parse(_ value: String) throws -> (Element0, Element1) {
         let string0: String
         let string1: String
