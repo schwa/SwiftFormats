@@ -1,10 +1,3 @@
-//
-//  File.swift
-//
-//
-//  Created by Jonathan Wight on 1/30/23.
-//
-
 import Foundation
 
 /// Format `Encodable`` types as JSON strings.

@@ -1,10 +1,3 @@
-//
-//  ParseableFormatStyle+Measurement.swift
-//
-//
-//  Created by brett ohland on 02/25/23.
-//
-
 import Foundation
 
 public struct UnitAngleParseStrategy {

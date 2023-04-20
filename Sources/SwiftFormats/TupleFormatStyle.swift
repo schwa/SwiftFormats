@@ -1,5 +1,5 @@
 import Foundation
-import RegexBuilder
+@_implementationOnly import RegexBuilder
 
 public struct TupleFormatStyle <Element0, Element1, Substyle0, Substyle1>: FormatStyle where Substyle0: FormatStyle, Substyle1: FormatStyle, Element0 == Substyle0.FormatInput, Substyle0.FormatOutput == String, Element1 == Substyle1.FormatInput, Substyle1.FormatOutput == String {
     public typealias FormatInput = (Element0, Element1)

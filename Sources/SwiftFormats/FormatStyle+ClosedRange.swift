@@ -1,5 +1,5 @@
 import Foundation
-import RegexBuilder
+@_implementationOnly import RegexBuilder
 
 /// Formats a `ClosedRange`.
 public struct ClosedRangeFormatStyle <Bound, Substyle>: FormatStyle where Bound: Comparable, Substyle: FormatStyle, Substyle.FormatInput == Bound, Substyle.FormatOutput == String {
