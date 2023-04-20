@@ -16,10 +16,8 @@ public struct DegreesMinutesSecondsNotationFormatStyle<FormatInput>: FormatStyle
         .measurement(width: .narrow)
     }
 
-    public var mode: Mode
-
-    /// The style used to format the degrees, minutes, and seconds.
-    public var measurementStyle: Measurement<UnitAngle>.FormatStyle
+    var mode: Mode
+    var measurementStyle: Measurement<UnitAngle>.FormatStyle
 
     public init(mode: DegreesMinutesSecondsNotationFormatStyle.Mode = .decimalDegrees, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle) {
         self.mode = mode

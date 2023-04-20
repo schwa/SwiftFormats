@@ -9,8 +9,6 @@ public enum CompositeStyle: Codable {
 }
 
 public struct VectorFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, ScalarStyle: FormatStyle, ScalarStyle.FormatInput == V.Scalar, ScalarStyle.FormatOutput == String {
-
-
     public var scalarStyle: ScalarStyle
     public var compositeStyle: CompositeStyle
     public var scalarNames = ["x", "y", "z", "w"] // TODO: Localize, allow changing of names, e.g. rgba or quaternion fields
@@ -31,7 +29,7 @@ public struct VectorFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, Sca
     }
 }
 
-extension VectorFormatStyle {
+public extension VectorFormatStyle {
     func scalarStyle(_ scalarStyle: ScalarStyle) -> Self {
         var copy = self
         copy.scalarStyle = scalarStyle

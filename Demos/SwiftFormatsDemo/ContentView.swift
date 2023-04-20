@@ -1,17 +1,57 @@
 import SwiftUI
 import SwiftFormats
 import simd
+import CoreLocation
+
+protocol DefaultInitialisable {
+    init()
+}
 
 struct ContentView: View {
     var body: some View {
         NavigationView {
             List {
-                NavigationLink("Matrix Editor") {
-                    MatrixEditorDemoView()
-                }
-                NavigationLink("Vector Editor") {
-                    VectorEditorDemoView()
-                }
+                demo(of: AngleEditorDemoView.self)
+                demo(of: ClosedRangeEditorDemoView.self)
+                demo(of: CoordinatesEditorDemoView.self)
+                demo(of: HexDumpFormatDemoView.self)
+                demo(of: JSONFormatDemoView.self)
+                demo(of: MatrixEditorDemoView.self)
+                demo(of: PointEditorDemoView.self)
+                demo(of: QuaternionDemoView.self)
+                demo(of: VectorEditorDemoView.self)
+            }
+        }
+    }
+
+    func demo<T>(of t: T.Type) -> some View where T: View & DefaultInitialisable {
+        let name = String(String(describing: type(of: t)).prefix(while: { $0 != "." }))
+        return NavigationLink(name) {
+            t.init()
+        }
+    }
+}
+
+// MARK: -
+
+struct AngleEditorDemoView: View, DefaultInitialisable {
+    @State
+    var value: Double = 45
+
+    var body: some View {
+        Form {
+            LabeledContent("String(describing:)") {
+                Text(verbatim: "\(value)")
+            }
+            LabeledContent("Formatting TextField (degrees)") {
+                TextField("Degrees", value: $value, format: .angle(inputUnit: .degrees, outputUnit: .degrees))
+                    .labelsHidden()
+                    .frame(maxWidth: 160)
+            }
+            LabeledContent("Formatting TextField (radians)") {
+                TextField("Radians", value: $value, format: .angle(inputUnit: .degrees, outputUnit: .radians))
+                    .labelsHidden()
+                    .frame(maxWidth: 160)
             }
         }
     }
@@ -19,16 +59,119 @@ struct ContentView: View {
 
 // MARK: -
 
-struct MatrixEditorDemoView: View {
-
+struct ClosedRangeEditorDemoView: View, DefaultInitialisable {
     @State
-    var matrix = simd_float4x4()
+    var value = 1...10
 
     var body: some View {
-        VStack {
-            Text(matrix, format: .matrix)
-            TextEditor(value: $matrix, format: .matrix)
-                .lineLimit(4, reservesSpace: true)
+        Form {
+            LabeledContent("String(describing:)") {
+                Text(verbatim: "\(value)")
+            }
+            LabeledContent("Formatting TextField") {
+                TextField("Value", value: $value, format: ClosedRangeFormatStyle(substyle: .number))
+                    .labelsHidden()
+                    .frame(maxWidth: 160)
+            }
+        }
+    }
+}
+
+// MARK: -
+
+struct CoordinatesEditorDemoView: View, DefaultInitialisable {
+    @State
+    var value = CLLocationCoordinate2D(latitude: 45, longitude: 45)
+
+    var body: some View {
+        Text("Broken!")
+//        Form {
+//            LabeledContent("String(describing:)") {
+//                Text(verbatim: "\(value)")
+//            }
+//            LabeledContent("Formatted Text") {
+//                Text("\(value, format: .coordinates)")
+//            }
+//        }
+    }
+}
+
+struct HexDumpFormatDemoView: View, DefaultInitialisable {
+    @State
+    var value: Data = "Hello world".data(using: .utf8)!
+
+    var body: some View {
+        Form {
+            LabeledContent("String(describing:)") {
+                Text(verbatim: "\(value)")
+            }
+            LabeledContent("Formatted Text") {
+                Text("\(value, format: .hexdump())")
+                    .font(.body.monospaced())
+            }
+        }
+    }
+}
+
+struct JSONFormatDemoView: View, DefaultInitialisable {
+    @State
+    var value = ["Hello": "World"]
+
+    var body: some View {
+        Form {
+            LabeledContent("String(describing:)") {
+                Text(verbatim: "\(value)")
+            }
+            LabeledContent("Formatting TextField") {
+                TextField("json", value: $value, format: JSONFormatStyle())
+            }
+        }
+    }
+}
+
+// MARK: -
+
+struct QuaternionDemoView: View, DefaultInitialisable {
+    @State
+    var value = simd_quatd(real: 0, imag: [0, 0, 0])
+
+    var body: some View {
+        Form {
+            LabeledContent("String(describing:)") {
+                Text(verbatim: "\(value)")
+            }
+            LabeledContent("Formatted Text") {
+                Text(value: value, format: .quaternion)
+            }
+        }
+    }
+}
+
+// MARK: -
+
+struct MatrixEditorDemoView: View, DefaultInitialisable {
+    @State
+    var value = simd_float4x4()
+
+    var body: some View {
+        Form {
+            LabeledContent("String(describing:)") {
+                Text(verbatim: "\(value)")
+            }
+            LabeledContent("Formatted Text") {
+                Text(value, format: .matrix)
+            }
+            LabeledContent("Formatting TextField") {
+                TextField("matrix", value: $value, format: .matrix)
+                    .lineLimit(4, reservesSpace: true)
+                    .labelsHidden()
+                    .frame(maxWidth: 160)
+            }
+            LabeledContent("Formatting TextEditor") {
+                TextEditor(value: $value, format: .matrix)
+                    .lineLimit(4, reservesSpace: true)
+                    .frame(maxHeight: 160)
+            }
         }
         .padding()
     }
@@ -36,25 +179,45 @@ struct MatrixEditorDemoView: View {
 
 // MARK: -
 
-struct VectorEditorDemoView: View {
+struct PointEditorDemoView: View, DefaultInitialisable {
+    @State
+    var value = CGPoint.zero
+
+    var body: some View {
+        Form {
+            LabeledContent("String(describing:)") {
+                Text(verbatim: "\(value)")
+            }
+            LabeledContent("Formatting TextField") {
+                TextField("Value", value: $value, format: .point)
+                    .labelsHidden()
+                    .frame(maxWidth: 160)
+            }
+        }
+    }
+}
+
+// MARK: -
+
+struct VectorEditorDemoView: View, DefaultInitialisable {
 
     @State
     var value: SIMD3<Float> = [0, 0, 0]
 
     var body: some View {
-        TextField("Vector", value: $value, format: .vector.compositeStyle(.list))
-//        Form {
-//            Section("Value") {
-//                Text("\(value, format: .vector)")
-//            }
-//            Section("Mapping Style") {
-//                TextField("Vector", value: $value, format: .vector)
-//            }
-////            Section("List Style") {
-////                TextField("Vector", value: $value, format: .vector.compositeStyle(.list))
-////            }
-//        }
-//        .frame(maxWidth: 200)
+        Form {
+            Text(verbatim: "\(value)")
+            Section("Value") {
+                Text("\(value, format: .vector)")
+            }
+            Section("Mapping Style") {
+                TextField("Vector", value: $value, format: .vector)
+            }
+            Section("List Style") {
+                TextField("Vector", value: $value, format: .vector.compositeStyle(.list))
+            }
+        }
+        .frame(maxWidth: 200)
     }
 }
 

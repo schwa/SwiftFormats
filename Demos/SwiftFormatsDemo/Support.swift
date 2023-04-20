@@ -24,3 +24,9 @@ extension TextEditor {
         self.init(text: binding)
     }
 }
+
+extension Text {
+    init <Value, Format>(value: Value, format: Format) where Format: FormatStyle, Format.FormatInput == Value, Format.FormatOutput == String {
+        self.init(format.format(value))
+    }
+}
