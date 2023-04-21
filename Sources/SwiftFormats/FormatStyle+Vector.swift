@@ -104,12 +104,12 @@ public extension SIMD {
 // MARK: -
 
 extension VectorFormatStyle: ParseableFormatStyle where ScalarStyle: ParseableFormatStyle {
-    public var parseStrategy: SIMDParseStrategy <V, ScalarStyle.Strategy> {
-        return SIMDParseStrategy(scalarStrategy: scalarStyle.parseStrategy, compositeStyle: compositeStyle)
+    public var parseStrategy: VectorParseStrategy <V, ScalarStyle.Strategy> {
+        return VectorParseStrategy(scalarStrategy: scalarStyle.parseStrategy, compositeStyle: compositeStyle)
     }
 }
 
-public struct SIMDParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SIMD, ScalarStrategy: ParseStrategy, ScalarStrategy.ParseInput == String, ScalarStrategy.ParseOutput == V.Scalar {
+public struct VectorParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SIMD, ScalarStrategy: ParseStrategy, ScalarStrategy.ParseInput == String, ScalarStrategy.ParseOutput == V.Scalar {
 
     public enum ParseError: Error {
         case missingKeys

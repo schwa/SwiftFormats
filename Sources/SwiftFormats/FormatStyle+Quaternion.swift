@@ -149,7 +149,7 @@ public struct QuaternionParseStrategy <Q>: ParseStrategy where Q: FormattableQua
         case .components: // ix, iy, iz, r
             switch compositeStyle {
             case .list:
-                let vector: SIMD4<Q.Scalar> = try SIMDParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
+                let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
                 return Q(vector: vector)
             case .mapping:
                 fatalError("unimplemented")
@@ -162,12 +162,12 @@ public struct QuaternionParseStrategy <Q>: ParseStrategy where Q: FormattableQua
                 fatalError("unimplemented")
             }
         case .vector: // x, y, z, w
-            let vector: SIMD4<Q.Scalar> = try SIMDParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
+            let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
             return Q(vector: vector)
         case .angleAxis: // angle, axis x, axis y, axis z
             switch compositeStyle {
             case .list:
-                let vector: SIMD4<Q.Scalar> = try SIMDParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
+                let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
                 return Q(angle: vector[0], axis: SIMD3(vector[0], vector[1], vector[2]))
             case .mapping:
                 fatalError("unimplemented")
