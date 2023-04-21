@@ -22,7 +22,7 @@ public struct MatrixFormatStyle <Matrix, ScalarStyle>: FormatStyle where Matrix:
     public var order: MatrixOrder
     public var scalarStyle: ScalarStyle
 
-    public init(order: MatrixOrder = .rowMajor, scalarStyle: ScalarStyle) {
+    public init(type: FormatInput.Type, order: MatrixOrder = .rowMajor, scalarStyle: ScalarStyle) {
         self.order = order
         self.scalarStyle = scalarStyle
     }
@@ -47,7 +47,14 @@ public struct MatrixFormatStyle <Matrix, ScalarStyle>: FormatStyle where Matrix:
     }
 }
 
-extension MatrixFormatStyle {
+public extension MatrixFormatStyle {
+
+    func scalarStyle(_ order: MatrixOrder) -> Self {
+        var copy = self
+        copy.order = order
+        return copy
+    }
+
     func scalarStyle(_ scalarStyle: ScalarStyle) -> Self {
         var copy = self
         copy.scalarStyle = scalarStyle
@@ -100,55 +107,55 @@ public struct MatrixParseStrategy <Matrix, ScalarStrategy>: ParseStrategy where 
 
 public extension FormatStyle where Self == MatrixFormatStyle<simd_float2x2, FloatingPointFormatStyle<Float>> {
     static var matrix: Self {
-        return MatrixFormatStyle(scalarStyle: .number)
+        return MatrixFormatStyle(type: FormatInput.self, scalarStyle: .number)
     }
 }
 
 public extension FormatStyle where Self == MatrixFormatStyle<simd_float3x2, FloatingPointFormatStyle<Float>> {
     static var matrix: Self {
-        return MatrixFormatStyle(scalarStyle: .number)
+        return MatrixFormatStyle(type: FormatInput.self, scalarStyle: .number)
     }
 }
 
 public extension FormatStyle where Self == MatrixFormatStyle<simd_float4x2, FloatingPointFormatStyle<Float>> {
     static var matrix: Self {
-        return MatrixFormatStyle(scalarStyle: .number)
+        return MatrixFormatStyle(type: FormatInput.self, scalarStyle: .number)
     }
 }
 
 public extension FormatStyle where Self == MatrixFormatStyle<simd_float2x3, FloatingPointFormatStyle<Float>> {
     static var matrix: Self {
-        return MatrixFormatStyle(scalarStyle: .number)
+        return MatrixFormatStyle(type: FormatInput.self, scalarStyle: .number)
     }
 }
 
 public extension FormatStyle where Self == MatrixFormatStyle<simd_float3x3, FloatingPointFormatStyle<Float>> {
     static var matrix: Self {
-        return MatrixFormatStyle(scalarStyle: .number)
+        return MatrixFormatStyle(type: FormatInput.self, scalarStyle: .number)
     }
 }
 
 public extension FormatStyle where Self == MatrixFormatStyle<simd_float4x3, FloatingPointFormatStyle<Float>> {
     static var matrix: Self {
-        return MatrixFormatStyle(scalarStyle: .number)
+        return MatrixFormatStyle(type: FormatInput.self, scalarStyle: .number)
     }
 }
 
 public extension FormatStyle where Self == MatrixFormatStyle<simd_float2x4, FloatingPointFormatStyle<Float>> {
     static var matrix: Self {
-        return MatrixFormatStyle(scalarStyle: .number)
+        return MatrixFormatStyle(type: FormatInput.self, scalarStyle: .number)
     }
 }
 
 public extension FormatStyle where Self == MatrixFormatStyle<simd_float3x4, FloatingPointFormatStyle<Float>> {
     static var matrix: Self {
-        return MatrixFormatStyle(scalarStyle: .number)
+        return MatrixFormatStyle(type: FormatInput.self, scalarStyle: .number)
     }
 }
 
 public extension FormatStyle where Self == MatrixFormatStyle<simd_float4x4, FloatingPointFormatStyle<Float>> {
     static var matrix: Self {
-        return MatrixFormatStyle(scalarStyle: .number)
+        return MatrixFormatStyle(type: FormatInput.self, scalarStyle: .number)
     }
 }
 
