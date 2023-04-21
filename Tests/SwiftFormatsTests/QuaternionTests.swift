@@ -24,4 +24,17 @@ class QuaternionTests: XCTestCase {
         let q2 = try strategy.parse(s)
         XCTAssertEqual(q2.formatted(), "real: 0.92388, ix: 0, iy: 0, iz: 0.382683")
     }
+
+    func testStyles() throws {
+        let angle = 0.785398 // 45°
+        let q = simd_quatd(angle: angle, axis: [0, 0, 1])
+        let style = QuaternionFormatStyle(type: simd_quatd.self)
+        XCTAssertEqual(try style.parseStrategy.parse(style.format(q)).formatted(), q.formatted())
+        XCTAssertEqual(try style.style(.components).parseStrategy.parse(style.format(q)).formatted(), q.formatted())
+        XCTAssertEqual(try style.style(.imaginaryReal).parseStrategy.parse(style.format(q)).formatted(), q.formatted())
+        XCTAssertEqual(try style.style(.vector).parseStrategy.parse(style.format(q)).formatted(), q.formatted())
+        XCTAssertEqual(try style.style(.angleAxis).parseStrategy.parse(style.format(q)).formatted(), q.formatted())
+
+
+    }
 }
