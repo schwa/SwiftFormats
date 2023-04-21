@@ -76,6 +76,11 @@ The initial priority is to expose formats and parsers for more SIMD/CG types. So
 - [ ] Investigate a "Parsable" and "Formattable" protocol that provides a .formatted() etc functions.
 - [ ] Add support for SwiftUI.Angle - how do we differentiate between two different Angle formatters?
 - [ ] Add support for Spatial.framework types
+- [ ] Make quaternion and vector parsers more accepting of styles.
+- [ ] Make quaternion parser treat angles as angle foramts (i.e. with °)
+- [ ] Make angle parser not care and parse rad or ° correctly.
+- [ ] In general parsers need to be configured less and accept more formats.
+- [ ] Real docc documentation.
 
 ## Resources
 
