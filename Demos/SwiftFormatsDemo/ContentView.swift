@@ -143,6 +143,9 @@ struct QuaternionDemoView: View, DefaultInitialisable {
             Section("Formatted Text") {
                 Text(value: value, format: .quaternion)
             }
+            Section("Formatting TextField") {
+                TextField("value", value: $value, format: .quaternion)
+            }
         }
     }
 }

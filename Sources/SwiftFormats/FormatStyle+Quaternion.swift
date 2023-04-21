@@ -14,6 +14,8 @@ public protocol FormattableQuaternion: Equatable {
     var vector: SIMD4<Scalar> { get }
 
     init(real: Scalar, imag: SIMD3<Scalar>)
+    init(vector: SIMD4<Scalar>)
+    init(angle: Scalar, axis: SIMD3<Scalar>)
 }
 
 internal extension FormattableQuaternion {
@@ -32,7 +34,7 @@ extension simd_quatd: FormattableQuaternion {
 
 public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuaternion {
 
-    public enum Style: Codable {
+    public enum Style: Codable, CaseIterable {
         case components // ix, iy, iz, r
         case imaginaryReal // (ix, iy, iz), r
         case vector // x, y, z, w
@@ -42,9 +44,10 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
     public var style: Style
     public var compositeStyle: CompositeStyle
     public var isHumanReadable: Bool // TODO: rename
-    public var numberStyle: FloatingPointFormatStyle<Double> // TODO: This needs to be generic
+    public typealias NumberStyle = FloatingPointFormatStyle<Q.Scalar>
+    public var numberStyle: NumberStyle
 
-    public init(style: QuaternionFormatStyle.Style = .components, compositeStyle: CompositeStyle = .mapping, isHumanReadable: Bool = true, numberStyle: FloatingPointFormatStyle<Double> = .number) {
+    public init(style: QuaternionFormatStyle.Style = .components, compositeStyle: CompositeStyle = .mapping, isHumanReadable: Bool = true, numberStyle: NumberStyle = NumberStyle()) {
         self.style = style
         self.compositeStyle = compositeStyle
         self.isHumanReadable = isHumanReadable
@@ -52,7 +55,6 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
     }
 
     public func format(_ value: Q) -> String {
-        // TODO: We're converting components to SIMDx<Double> here a lot where we probably shouldn't need to
         if value == .identity && isHumanReadable {
             return "identity"
         }
@@ -60,24 +62,24 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
         switch style {
         case .components:
             let mapping = [
-                ("real", Double(value.real)),
-                ("ix", Double(value.imag.x)),
-                ("iy", Double(value.imag.y)),
-                ("iz", Double(value.imag.z)),
+                ("real", value.real),
+                ("ix", value.imag.x),
+                ("iy", value.imag.y),
+                ("iz", value.imag.z),
             ]
             return MappingFormatStyle(keyStyle: IdentityFormatStyle(), valueStyle: numberStyle).format(mapping)
         case .imaginaryReal:
             let mapping = [
                 ("real", value.real.formatted(numberStyle)),
-                ("imaginary", "\(SIMD3<Double>(value.imag), format: .vector.scalarStyle(numberStyle))"),
+                ("imaginary", VectorFormatStyle(type: SIMD3<Q.Scalar>.self, scalarStyle: numberStyle).format(value.imag)),
             ]
             return MappingFormatStyle(keyStyle: IdentityFormatStyle(), valueStyle: IdentityFormatStyle()).format(mapping)
         case .vector:
-            return SIMD4<Double>(value.vector).formatted(.vector.scalarStyle(numberStyle))
+            return VectorFormatStyle(type: SIMD4<Q.Scalar>.self, scalarStyle: numberStyle).format(value.vector)
         case .angleAxis:
             let mapping = [
                 ("angle", value.angle.formatted(numberStyle)),
-                ("axis", "\(SIMD3<Double>(value.axis), format: .vector.scalarStyle(numberStyle))"),
+                ("axis", VectorFormatStyle(type: SIMD3<Q.Scalar>.self, scalarStyle: numberStyle).format(value.axis)),
             ]
             return MappingFormatStyle(keyStyle: IdentityFormatStyle(), valueStyle: IdentityFormatStyle()).format(mapping)
         }
@@ -103,7 +105,7 @@ public extension QuaternionFormatStyle {
         return copy
     }
 
-    func numberStyle(_ numberStyle: FloatingPointFormatStyle<Double>) -> Self {
+    func numberStyle(_ numberStyle: FloatingPointFormatStyle<Q.Scalar>) -> Self {
         var copy = self
         copy.numberStyle = numberStyle
         return copy
@@ -122,3 +124,60 @@ public extension FormatStyle where Self == QuaternionFormatStyle<simd_quatd> {
     }
 }
 
+// MARK: -
+
+public struct QuaternionParseStrategy <Q>: ParseStrategy where Q: FormattableQuaternion {
+    public typealias Style = QuaternionFormatStyle<Q>.Style
+    public var style: Style
+    public var compositeStyle: CompositeStyle
+    public var isHumanReadable: Bool
+    public var numberStrategy: FloatingPointParseStrategy<FloatingPointFormatStyle<Q.Scalar>>
+
+    public init(style: QuaternionParseStrategy<Q>.Style, compositeStyle: CompositeStyle, isHumanReadable: Bool, numberStrategy: FloatingPointParseStrategy<FloatingPointFormatStyle<Q.Scalar>>) {
+        self.style = style
+        self.compositeStyle = compositeStyle
+        self.isHumanReadable = isHumanReadable
+        self.numberStrategy = numberStrategy
+    }
+
+    public func parse(_ value: String) throws -> Q {
+        let value = value.trimmingCharacters(in: .whitespaces)
+        if value.lowercased() == "identity" {
+            return Q.identity
+        }
+        switch style {
+        case .components: // ix, iy, iz, r
+            switch compositeStyle {
+            case .list:
+                let vector: SIMD4<Q.Scalar> = try SIMDParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
+                return Q(vector: vector)
+            case .mapping:
+                fatalError("unimplemented")
+            }
+        case .imaginaryReal: // (ix, iy, iz), r
+            switch compositeStyle {
+            case .list:
+                fatalError("unimplemented")
+            case .mapping:
+                fatalError("unimplemented")
+            }
+        case .vector: // x, y, z, w
+            let vector: SIMD4<Q.Scalar> = try SIMDParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
+            return Q(vector: vector)
+        case .angleAxis: // angle, axis x, axis y, axis z
+            switch compositeStyle {
+            case .list:
+                let vector: SIMD4<Q.Scalar> = try SIMDParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
+                return Q(angle: vector[0], axis: SIMD3(vector[0], vector[1], vector[2]))
+            case .mapping:
+                fatalError("unimplemented")
+            }
+        }
+    }
+}
+
+extension QuaternionFormatStyle: ParseableFormatStyle {
+    public var parseStrategy: QuaternionParseStrategy <Q> {
+        return QuaternionParseStrategy(style: style, compositeStyle: compositeStyle, isHumanReadable: isHumanReadable, numberStrategy: numberStyle.parseStrategy)
+    }
+}
