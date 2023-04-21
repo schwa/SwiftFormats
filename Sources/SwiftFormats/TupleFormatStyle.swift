@@ -38,10 +38,6 @@ public struct TupleParseStrategy <Element0, Element1, Substrategy0, Substrategy1
     var substrategy0: Substrategy0
     var substrategy1: Substrategy1
 
-    public enum ParseError: Error {
-        case parseError
-    }
-
     public init(type: (Element0, Element1).Type, separators: [String], disallowWhitespace: Bool = false, substrategy0: Substrategy0, substrategy1: Substrategy1) {
         self.separators = separators
         self.disallowWhitespace = disallowWhitespace
@@ -74,7 +70,7 @@ public struct TupleParseStrategy <Element0, Element1, Substrategy0, Substrategy1
                 #/$/#
             }
             guard let match = value.firstMatch(of: regex) else {
-                throw ParseError.parseError
+                throw SwiftFormatsError.parseError
             }
             string0 = String(match.output.1)
             string1 = String(match.output.2)
@@ -101,7 +97,7 @@ public struct TupleParseStrategy <Element0, Element1, Substrategy0, Substrategy1
             }
 
             guard let match = value.firstMatch(of: regex) else {
-                throw ParseError.parseError
+                throw SwiftFormatsError.parseError
             }
             string0 = String(match.output.1)
             string1 = String(match.output.2)

@@ -45,10 +45,6 @@ public struct ClosedRangeParseStrategy <Bound, Substrategy>: ParseStrategy where
     /// The delimiters used to separate the bounds of the `ClosedRange`.
     public var delimiters: [String]
 
-    public enum ParseError: Error {
-        case parseError
-    }
-
     /// - Parameters:
     ///   - substrategy: The `ParseStrategy` used to parse the individual bounds of the `ClosedRange`.
     ///   - delimiters: The delimiters used to separate the bounds of the `ClosedRange`.
@@ -74,7 +70,7 @@ public struct ClosedRangeParseStrategy <Bound, Substrategy>: ParseStrategy where
         }
 
         guard let match = value.firstMatch(of: pattern) else {
-            throw ParseError.parseError
+            throw SwiftFormatsError.parseError
         }
 
         let lowerBound = match[lowerBoundReference]

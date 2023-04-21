@@ -2,10 +2,6 @@ import Foundation
 
 public struct UnitAngleParseStrategy {
 
-    public enum ParsingError: Error {
-        case unitCannotBeDetermined
-    }
-
     /// The format style's locale and (optionally) the unit's width width to be used to match the candidate unit.
     let format: Measurement<UnitAngle>.FormatStyle
     /// Determines how strict the unit parsing detection will be.
@@ -49,7 +45,7 @@ private extension UnitAngleParseStrategy {
 
         }
         guard let matchingUnit else {
-            throw ParsingError.unitCannotBeDetermined
+            throw SwiftFormatsError.unitCannotBeDetermined
         }
         return matchingUnit
     }

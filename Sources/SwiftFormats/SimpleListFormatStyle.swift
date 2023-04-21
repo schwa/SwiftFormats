@@ -35,10 +35,6 @@ public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy wher
     // TODO: allow skipping, and just split by whitespace
     // TODO: provide user separator
 
-    public enum ParseError: Error {
-        case countError
-    }
-
     public private(set) var substrategy: Substrategy
     public var separator: String
 //    public var prefix: String?
@@ -58,7 +54,7 @@ public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy wher
             .map { try substrategy.parse(String($0)) }
 
         guard countRange.contains(components.count) else {
-            throw ParseError.countError
+            throw SwiftFormatsError.countError
         }
         return components
     }
@@ -76,7 +72,7 @@ extension SimpleListParseStrategy: IncrementalParseStrategy {
             _ = scanner.scanString(separator)
         }
         guard countRange.contains(elements.count) else {
-            throw ParseError.countError
+            throw SwiftFormatsError.countError
         }
         value = String(value[scanner.currentIndex ..< value.endIndex])
         return elements

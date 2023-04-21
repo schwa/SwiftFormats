@@ -111,16 +111,16 @@ extension VectorFormatStyle: ParseableFormatStyle where ScalarStyle: ParseableFo
 
 public struct VectorParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SIMD, ScalarStrategy: ParseStrategy, ScalarStrategy.ParseInput == String, ScalarStrategy.ParseOutput == V.Scalar {
 
-    public enum ParseError: Error {
-        case missingKeys
-    }
-
     public var scalarStrategy: ScalarStrategy
     public var compositeStyle: CompositeStyle
 
     public init(scalarStrategy: ScalarStrategy, compositeStyle: CompositeStyle = .mapping) {
         self.scalarStrategy = scalarStrategy
         self.compositeStyle = compositeStyle
+    }
+
+    public init(type: V.Type, scalarStrategy: ScalarStrategy, compositeStyle: CompositeStyle = .mapping) {
+        self.init(scalarStrategy: scalarStrategy, compositeStyle: compositeStyle)
     }
 
     public func parse(_ value: String) throws -> V {
@@ -138,21 +138,21 @@ public struct VectorParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SI
             switch V.scalarCount {
             case 2:
                 guard let x = dictionary["x"], let y = dictionary["y"] else {
-                    throw ParseError.missingKeys
+                    throw SwiftFormatsError.missingKeys
                 }
                 return V([x, y])
             case 3:
                 guard let x = dictionary["x"], let y = dictionary["y"], let z = dictionary["z"] else {
-                    throw ParseError.missingKeys
+                    throw SwiftFormatsError.missingKeys
                 }
                 return V([x, y, z])
             case 4:
                 guard let x = dictionary["x"], let y = dictionary["y"], let z = dictionary["z"], let w = dictionary["w"] else {
-                    throw ParseError.missingKeys
+                    throw SwiftFormatsError.missingKeys
                 }
                 return V([x, y, z, w])
             default:
-                throw ParseError.missingKeys
+                throw SwiftFormatsError.missingKeys
             }
         }
     }

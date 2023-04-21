@@ -147,31 +147,24 @@ public struct QuaternionParseStrategy <Q>: ParseStrategy where Q: FormattableQua
         }
         switch style {
         case .components: // ix, iy, iz, r
-            switch compositeStyle {
-            case .list:
-                let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
-                return Q(vector: vector)
-            case .mapping:
-                fatalError("unimplemented")
-            }
+            let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
+            return Q(vector: vector)
         case .imaginaryReal: // (ix, iy, iz), r
-            switch compositeStyle {
-            case .list:
-                fatalError("unimplemented")
-            case .mapping:
-                fatalError("unimplemented")
+            let mapping = try MappingParseStrategy(keyStrategy: IdentityParseStategy(), valueStrategy: IdentityParseStategy()).parse(value)
+            let dictionary = Dictionary(uniqueKeysWithValues: mapping)
+            guard let real = try dictionary["real"].map({ try numberStrategy.parse($0) }) else {
+                throw SwiftFormatsError.parseError
             }
+            guard let imaginary = try dictionary["imaginary"].map({ try VectorParseStrategy(type: SIMD3<Q.Scalar>.self, scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse($0) }) else {
+                throw SwiftFormatsError.parseError
+            }
+            return Q(real: real, imag: imaginary)
         case .vector: // x, y, z, w
             let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
             return Q(vector: vector)
         case .angleAxis: // angle, axis x, axis y, axis z
-            switch compositeStyle {
-            case .list:
-                let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
-                return Q(angle: vector[0], axis: SIMD3(vector[0], vector[1], vector[2]))
-            case .mapping:
-                fatalError("unimplemented")
-            }
+            let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
+            return Q(angle: vector[0], axis: SIMD3(vector[0], vector[1], vector[2]))
         }
     }
 }
