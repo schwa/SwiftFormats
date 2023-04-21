@@ -81,6 +81,7 @@ The initial priority is to expose formats and parsers for more SIMD/CG types. So
 - [ ] Make angle parser not care and parse rad or ° correctly.
 - [ ] In general parsers need to be configured less and accept more formats.
 - [ ] Real docc documentation.
+- [ ] Fuzz parsers and see what fun will ensue.
 
 ## Resources
 
