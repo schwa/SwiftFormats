@@ -74,7 +74,7 @@ public struct AngleFormatStyle<FormatInput>: ParseableFormatStyle where FormatIn
     public var locale: Locale
 
     public var parseStrategy: AngleParseStrategy<FormatInput> {
-        AngleParseStrategy(inputUnit: inputUnit, outputUnit: outputUnit, locale: locale)
+        AngleParseStrategy(type: FormatInput.self, defaultInputUnit: inputUnit, outputUnit: outputUnit, locale: locale)
     }
 
     public init(
@@ -107,25 +107,36 @@ public struct AngleParseStrategy<ParseOutput>: ParseStrategy where ParseOutput: 
 
     public typealias Unit = AngleFormatStyle<ParseOutput>.Unit
 
-    public let inputUnit: Unit
-    public let outputUnit: Unit
-    public let locale: Locale
+    public var defaultInputUnit: Unit?
+    public var outputUnit: Unit
+    public var locale: Locale
 
-    init(inputUnit: Unit, outputUnit: Unit, locale: Locale = .autoupdatingCurrent) {
-        self.inputUnit = inputUnit
+    init(type: ParseOutput.Type, defaultInputUnit: Unit? = nil, outputUnit: Unit, locale: Locale = .autoupdatingCurrent) {
+        self.defaultInputUnit = defaultInputUnit
         self.outputUnit = outputUnit
         self.locale = locale
     }
 
     public func parse(_ value: String) throws -> ParseOutput {
-        let number = try Double(value, format: .number)
-        switch (inputUnit, outputUnit) {
-        case (.degrees, .degrees), (.radians, .radians):
-            return ParseOutput(number)
-        case (.degrees, .radians):
-            return ParseOutput(degreesToRadians(number))
-        case (.radians, .degrees):
-            return ParseOutput(radiansToDegrees(number))
+        let regex = #/^(.+?)(°|rad)?$/#
+        guard let match = value.firstMatch(of: regex) else {
+            throw SwiftFormatsError.parseError
+        }
+        let (value, unit) = (try Double(String(match.output.1), format: .number), match.output.2)
+        let radians: Double
+        switch (unit, defaultInputUnit) {
+        case ("°", _), (.none, .degrees):
+            radians = degreesToRadians(value)
+        case ("rad", _), (.none, .radians):
+            radians = value
+        default:
+            throw SwiftFormatsError.parseError
+        }
+        switch outputUnit {
+        case .degrees:
+            return ParseOutput(radiansToDegrees(radians))
+        case .radians:
+            return ParseOutput(radians)
         }
     }
 }
@@ -137,8 +148,8 @@ public extension FormatStyle where Self == AngleFormatStyle<Double> {
 }
 
 public extension ParseStrategy where Self == AngleParseStrategy<Double> {
-    static func angle(inputUnit: AngleFormatStyle<Double>.Unit, outputUnit: AngleFormatStyle<Double>.Unit, locale: Locale = .autoupdatingCurrent) -> Self {
-        Self(inputUnit: inputUnit, outputUnit: outputUnit, locale: locale)
+    static func angle(defaultInputUnit: AngleFormatStyle<Double>.Unit? = nil, outputUnit: AngleFormatStyle<Double>.Unit, locale: Locale = .autoupdatingCurrent) -> Self {
+        Self(type: Double.self, defaultInputUnit: defaultInputUnit, outputUnit: outputUnit, locale: locale)
     }
 }
 

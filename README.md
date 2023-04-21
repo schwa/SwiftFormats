@@ -78,7 +78,8 @@ The initial priority is to expose formats and parsers for more SIMD/CG types. So
 - [ ] Add support for Spatial.framework types
 - [ ] Make quaternion and vector parsers more accepting of styles.
 - [ ] Make quaternion parser treat angles as angle foramts (i.e. with °)
-- [ ] Make angle parser not care and parse rad or ° correctly.
+- [X] Make angle parser not care and parse rad or ° correctly.
+- [ ] Test 'radian' vs 'radians' vs localized.
 - [ ] In general parsers need to be configured less and accept more formats.
 - [ ] Real docc documentation.
 - [ ] Fuzz parsers and see what fun will ensue.

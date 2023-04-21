@@ -52,17 +52,17 @@ class AngleTests: XCTestCase {
         XCTAssertEqual(45.25125.formatted(.dmsNotation().locale(locale)), "45.25125°")
         XCTAssertEqual(45.25125.formatted(.angle(inputUnit: .degrees, outputUnit: .radians)), "0.789783rad")
 
-        XCTAssertEqual(try AngleParseStrategy(inputUnit: .degrees, outputUnit: .degrees).parse("45.25125°"), 45.25125)
-        XCTAssertEqual(try AngleParseStrategy(inputUnit: .degrees, outputUnit: .radians).parse("45.25125°"), 0.789783303143084)
-        XCTAssertEqual(try AngleParseStrategy(inputUnit: .radians, outputUnit: .radians).parse("0.789783rad"), 0.789783)
-        XCTAssertEqual(try AngleParseStrategy(inputUnit: .radians, outputUnit: .degrees).parse("0.789783rad"), 45.2512326311807)
+        XCTAssertEqual(try AngleParseStrategy(type: Double.self, defaultInputUnit: .degrees, outputUnit: .degrees).parse("45.25125°"), 45.25125)
+        XCTAssertEqual(try AngleParseStrategy(type: Double.self, defaultInputUnit: .degrees, outputUnit: .radians).parse("45.25125°"), 0.789783303143084)
+        XCTAssertEqual(try AngleParseStrategy(type: Double.self, defaultInputUnit: .radians, outputUnit: .radians).parse("0.789783rad"), 0.789783)
+        XCTAssertEqual(try AngleParseStrategy(type: Double.self, defaultInputUnit: .radians, outputUnit: .degrees).parse("0.789783rad"), 45.2512326311807)
 
-        XCTAssertEqual(try Double("45.25125°", strategy: .angle(inputUnit: .degrees, outputUnit: .degrees)), 45.25125)
-        XCTAssertEqual(try Double("45.25125°", strategy: .angle(inputUnit: .degrees, outputUnit: .radians)), 0.789783303143084)
-        XCTAssertEqual(try Double("0.789783 rad", strategy: .angle(inputUnit: .radians, outputUnit: .radians)), 0.789783)
-        XCTAssertEqual(try Double("0.789783 rad", strategy: .angle(inputUnit: .radians, outputUnit: .degrees)), 45.2512326311807)
+        XCTAssertEqual(try Double("45.25125°", strategy: .angle(defaultInputUnit: .degrees, outputUnit: .degrees)), 45.25125)
+        XCTAssertEqual(try Double("45.25125°", strategy: .angle(defaultInputUnit: .degrees, outputUnit: .radians)), 0.789783303143084)
+        XCTAssertEqual(try Double("0.789783 rad", strategy: .angle(defaultInputUnit: .radians, outputUnit: .radians)), 0.789783)
+        XCTAssertEqual(try Double("0.789783 rad", strategy: .angle(defaultInputUnit: .radians, outputUnit: .degrees)), 45.2512326311807)
 
-        XCTAssertEqual(try Double("0.789783 radian", strategy: .angle(inputUnit: .radians, outputUnit: .radians, locale: Locale(identifier: "fr_FR"))), 0.789783)
+        XCTAssertEqual(try Double("0.789783 radian", strategy: .angle(defaultInputUnit: .radians, outputUnit: .radians, locale: Locale(identifier: "fr_FR"))), 0.789783)
         XCTAssertEqual(try Double("10", format: .number), 10)
 
         XCTAssertEqual(try Double("0.789783 radian", format: .angle(inputUnit: .radians, outputUnit: .degrees)), 45.2512326311807)
