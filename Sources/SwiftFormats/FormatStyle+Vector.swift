@@ -29,6 +29,13 @@ public struct VectorFormatStyle <V, ScalarStyle>: FormatStyle where V: SIMD, Sca
     }
 }
 
+extension VectorFormatStyle {
+    public init(type: V.Type, scalarStyle: ScalarStyle, compositeStyle: CompositeStyle = .mapping) {
+        self.init(scalarStyle: scalarStyle, compositeStyle: compositeStyle)
+    }
+
+}
+
 public extension VectorFormatStyle {
     func scalarStyle(_ scalarStyle: ScalarStyle) -> Self {
         var copy = self
@@ -60,6 +67,8 @@ public extension FormatStyle where Self == VectorFormatStyle<SIMD4<Float>, Float
         return Self(scalarStyle: .number)
     }
 }
+
+// MARK: -
 
 public extension FormatStyle where Self == VectorFormatStyle<SIMD2<Double>, FloatingPointFormatStyle<Double>> {
     static var vector: Self {
