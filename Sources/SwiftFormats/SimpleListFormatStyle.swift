@@ -33,7 +33,6 @@ extension SimpleListFormatStyle: ParseableFormatStyle where Substyle: ParseableF
 public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy where Substrategy: ParseStrategy, Element == Substrategy.ParseOutput, Substrategy.ParseInput == String {
 
     // TODO: allow skipping, and just split by whitespace
-    // TODO: provide user separator
 
     public private(set) var substrategy: Substrategy
     public var separator: String
@@ -51,6 +50,7 @@ public struct SimpleListParseStrategy <Element, Substrategy>: ParseStrategy wher
     public func parse(_ value: String) throws -> [Element] {
         let components = try value
             .split(separator: separator, omittingEmptySubsequences: false)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .map { try substrategy.parse(String($0)) }
 
         guard countRange.contains(components.count) else {

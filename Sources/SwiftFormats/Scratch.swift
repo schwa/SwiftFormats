@@ -1,6 +1,5 @@
 import Foundation
 
-// TODO: Make public and put in a doc explain why this is necessary :-(
 public struct IdentityFormatStyle <Value>: FormatStyle {
     public init() {
     }

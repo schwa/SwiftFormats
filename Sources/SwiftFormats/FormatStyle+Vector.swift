@@ -131,10 +131,7 @@ public struct VectorParseStrategy <V, ScalarStrategy>: ParseStrategy where V: SI
             return V(scalars)
         case .mapping:
             let strategy = MappingParseStrategy(keyStrategy: IdentityParseStategy(), valueStrategy: scalarStrategy)
-            let dictionary = Dictionary(uniqueKeysWithValues: try strategy.parse(value).map { key, value in
-                // TODO: Quick hack to prevent keys like " x", " y". Obviously fix in MappingParseStrategy…
-                return (key.trimmingCharacters(in: .whitespaces), value)
-            })
+            let dictionary = Dictionary(uniqueKeysWithValues: try strategy.parse(value))
             switch V.scalarCount {
             case 2:
                 guard let x = dictionary["x"], let y = dictionary["y"] else {

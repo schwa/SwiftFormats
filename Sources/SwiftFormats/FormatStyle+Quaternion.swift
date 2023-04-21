@@ -24,12 +24,6 @@ internal extension FormattableQuaternion {
     }
 }
 
-extension simd_quatf: FormattableQuaternion {
-}
-
-extension simd_quatd: FormattableQuaternion {
-}
-
 // MARK: -
 
 public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuaternion {
@@ -128,12 +122,14 @@ public extension FormatStyle where Self == QuaternionFormatStyle<simd_quatd> {
 
 public struct QuaternionParseStrategy <Q>: ParseStrategy where Q: FormattableQuaternion {
     public typealias Style = QuaternionFormatStyle<Q>.Style
+    public typealias NumberStrategy = FloatingPointParseStrategy<FloatingPointFormatStyle<Q.Scalar>>
+
     public var style: Style
     public var compositeStyle: CompositeStyle
     public var isHumanReadable: Bool
-    public var numberStrategy: FloatingPointParseStrategy<FloatingPointFormatStyle<Q.Scalar>>
+    public var numberStrategy: NumberStrategy
 
-    public init(style: QuaternionParseStrategy<Q>.Style, compositeStyle: CompositeStyle, isHumanReadable: Bool, numberStrategy: FloatingPointParseStrategy<FloatingPointFormatStyle<Q.Scalar>>) {
+    public init(type: Q.Type, style: QuaternionParseStrategy<Q>.Style = .components, compositeStyle: CompositeStyle = .mapping, isHumanReadable: Bool = true, numberStrategy: NumberStrategy = FloatingPointFormatStyle<Q.Scalar>().parseStrategy) {
         self.style = style
         self.compositeStyle = compositeStyle
         self.isHumanReadable = isHumanReadable
@@ -146,9 +142,13 @@ public struct QuaternionParseStrategy <Q>: ParseStrategy where Q: FormattableQua
             return Q.identity
         }
         switch style {
-        case .components: // ix, iy, iz, r
-            let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
-            return Q(vector: vector)
+        case .components: // ix, iy, iz, real
+            let mapping = try MappingParseStrategy(keyStrategy: IdentityParseStategy(), valueStrategy: numberStrategy).parse(value)
+            let dictionary = Dictionary(uniqueKeysWithValues: mapping)
+            guard let ix = dictionary["ix"], let iy = dictionary["iy"], let iz = dictionary["iz"], let real = dictionary["real"] else {
+                throw SwiftFormatsError.missingKeys
+            }
+            return Q(real: real, imag: [ix, iy, iz])
         case .imaginaryReal: // (ix, iy, iz), r
             let mapping = try MappingParseStrategy(keyStrategy: IdentityParseStategy(), valueStrategy: IdentityParseStategy()).parse(value)
             let dictionary = Dictionary(uniqueKeysWithValues: mapping)
@@ -171,6 +171,25 @@ public struct QuaternionParseStrategy <Q>: ParseStrategy where Q: FormattableQua
 
 extension QuaternionFormatStyle: ParseableFormatStyle {
     public var parseStrategy: QuaternionParseStrategy <Q> {
-        return QuaternionParseStrategy(style: style, compositeStyle: compositeStyle, isHumanReadable: isHumanReadable, numberStrategy: numberStyle.parseStrategy)
+        return QuaternionParseStrategy(type: Q.self, style: style, compositeStyle: compositeStyle, isHumanReadable: isHumanReadable, numberStrategy: numberStyle.parseStrategy)
+    }
+}
+
+// MARK: -
+
+extension simd_quatf: FormattableQuaternion {
+}
+
+extension simd_quatd: FormattableQuaternion {
+}
+
+public extension FormattableQuaternion {
+
+    func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S: FormatStyle {
+        return format.format(self)
+    }
+
+    func formatted() -> String {
+        return self.formatted(QuaternionFormatStyle())
     }
 }

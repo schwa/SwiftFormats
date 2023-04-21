@@ -38,4 +38,10 @@ class SimpleListTests: XCTestCase {
         let outerStrategy = SimpleListParseStrategy(substrategy: innerStrategy, separator: "\n")
         XCTAssertEqual(try outerStrategy.parse(string), [[1, 2, 3], [4, 5]])
     }
+
+    func testSpaces() {
+        let string = "  A, B, C "
+        let strategy = SimpleListParseStrategy(substrategy: IdentityParseStategy(), separator: ",")
+        XCTAssertEqual(try strategy.parse(string), ["A", "B", "C"])
+    }
 }
