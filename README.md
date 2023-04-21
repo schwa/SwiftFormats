@@ -14,7 +14,7 @@ It also provides extensions for String and string interpolation to make it easie
 
 | Name | In (1)                   | Out (2)  | Format (3)            | Parser (4) | Accessor (5)  | Notes                                |
 |------|--------------------------|----------|-----------------------|------------|---------------|--------------------------------------|
-|      | `BinaryFloatingPoint`    | `String` | Angles                | No         | `angle`       | Radians, degrees, etc                |
+|      | `BinaryFloatingPoint`    | `String` | Angles                | Yes        | `angle`       | Radians, degrees, etc                |
 |      | `BinaryFloatingPoint`    | `String` | Degree Minute Seconds | No         | `dmsNotation` |                                      |
 |      | `CGPoint`                | `String` | List (6)              | Yes        | `point`       |                                      |
 |      | `ClosedRange`            | `String` | `X ... Y`             | Yes        | No            |                                      |
@@ -28,6 +28,7 @@ It also provides extensions for String and string interpolation to make it easie
 |      | `SIMD3<Float>`           | `String` | List or mapping       | Yes        | `vector`      |                                      |
 |      | SIMD matrix types        | `String` | List                  | Yes        | `matrix`      |                                      |
 |      | `BinaryInteger`          | `String` | Radixed format        | No         | Various       | Binary, Octal, Hex representations   |
+
 
 ### Notes
 
