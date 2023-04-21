@@ -30,7 +30,6 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
 
     public enum Style: Codable, CaseIterable {
         case components // ix, iy, iz, r
-        case imaginaryReal // (ix, iy, iz), r
         case vector // x, y, z, w
         case angleAxis // angle, axis x, axis y, axis z
     }
@@ -41,7 +40,7 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
     public typealias NumberStyle = FloatingPointFormatStyle<Q.Scalar>
     public var numberStyle: NumberStyle
 
-    public init(style: QuaternionFormatStyle.Style = .components, compositeStyle: CompositeStyle = .mapping, isHumanReadable: Bool = true, numberStyle: NumberStyle = NumberStyle()) {
+    public init(type: Q.Type, style: QuaternionFormatStyle.Style = .components, compositeStyle: CompositeStyle = .mapping, isHumanReadable: Bool = true, numberStyle: NumberStyle = NumberStyle()) {
         self.style = style
         self.compositeStyle = compositeStyle
         self.isHumanReadable = isHumanReadable
@@ -62,20 +61,16 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
                 ("iz", value.imag.z),
             ]
             return MappingFormatStyle(keyStyle: IdentityFormatStyle(), valueStyle: numberStyle).format(mapping)
-        case .imaginaryReal:
-            let mapping = [
-                ("real", value.real.formatted(numberStyle)),
-                ("imaginary", VectorFormatStyle(type: SIMD3<Q.Scalar>.self, scalarStyle: numberStyle).format(value.imag)),
-            ]
-            return MappingFormatStyle(keyStyle: IdentityFormatStyle(), valueStyle: IdentityFormatStyle()).format(mapping)
         case .vector:
             return VectorFormatStyle(type: SIMD4<Q.Scalar>.self, scalarStyle: numberStyle).format(value.vector)
         case .angleAxis:
             let mapping = [
-                ("angle", value.angle.formatted(numberStyle)),
-                ("axis", VectorFormatStyle(type: SIMD3<Q.Scalar>.self, scalarStyle: numberStyle).format(value.axis)),
+                ("angle", value.angle),
+                ("x", value.axis.x),
+                ("y", value.axis.y),
+                ("z", value.axis.z),
             ]
-            return MappingFormatStyle(keyStyle: IdentityFormatStyle(), valueStyle: IdentityFormatStyle()).format(mapping)
+            return MappingFormatStyle(keyStyle: IdentityFormatStyle(), valueStyle: numberStyle).format(mapping)
         }
     }
 }
@@ -108,13 +103,13 @@ public extension QuaternionFormatStyle {
 
 public extension FormatStyle where Self == QuaternionFormatStyle<simd_quatf> {
     static var quaternion: Self {
-        return QuaternionFormatStyle()
+        return QuaternionFormatStyle(type: simd_quatf.self)
     }
 }
 
 public extension FormatStyle where Self == QuaternionFormatStyle<simd_quatd> {
     static var quaternion: Self {
-        return QuaternionFormatStyle()
+        return QuaternionFormatStyle(type: simd_quatd.self)
     }
 }
 
@@ -149,22 +144,16 @@ public struct QuaternionParseStrategy <Q>: ParseStrategy where Q: FormattableQua
                 throw SwiftFormatsError.missingKeys
             }
             return Q(real: real, imag: [ix, iy, iz])
-        case .imaginaryReal: // (ix, iy, iz), r
-            let mapping = try MappingParseStrategy(keyStrategy: IdentityParseStategy(), valueStrategy: IdentityParseStategy()).parse(value)
-            let dictionary = Dictionary(uniqueKeysWithValues: mapping)
-            guard let real = try dictionary["real"].map({ try numberStrategy.parse($0) }) else {
-                throw SwiftFormatsError.parseError
-            }
-            guard let imaginary = try dictionary["imaginary"].map({ try VectorParseStrategy(type: SIMD3<Q.Scalar>.self, scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse($0) }) else {
-                throw SwiftFormatsError.parseError
-            }
-            return Q(real: real, imag: imaginary)
         case .vector: // x, y, z, w
             let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
             return Q(vector: vector)
         case .angleAxis: // angle, axis x, axis y, axis z
-            let vector: SIMD4<Q.Scalar> = try VectorParseStrategy(scalarStrategy: numberStrategy, compositeStyle: compositeStyle).parse(value)
-            return Q(angle: vector[0], axis: SIMD3(vector[0], vector[1], vector[2]))
+            let mapping = try MappingParseStrategy(keyStrategy: IdentityParseStategy(), valueStrategy: numberStrategy).parse(value)
+            let dictionary = Dictionary(uniqueKeysWithValues: mapping)
+            guard let angle = dictionary["angle"], let x = dictionary["x"], let y = dictionary["y"], let z = dictionary["z"] else {
+                throw SwiftFormatsError.missingKeys
+            }
+            return Q(angle: angle, axis: [x, y, z])
         }
     }
 }
@@ -190,6 +179,6 @@ public extension FormattableQuaternion {
     }
 
     func formatted() -> String {
-        return self.formatted(QuaternionFormatStyle())
+        return self.formatted(QuaternionFormatStyle(type: Self.self))
     }
 }
