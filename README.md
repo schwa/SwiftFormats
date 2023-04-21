@@ -63,7 +63,9 @@ The initial priority is to expose formats and parsers for more SIMD/CG types. So
 ### TODOs
 
 - [ ] Find and handle all the TODOs
+- [ ] Clean up the parser init methods. Foundation parsers do not have public .init() methods and are only created via corresponding FormatStyles. Follow this. This will be API breaking.
 - [ ] Add more `.formatted()` and `.formatted(_ style:)` functions where appropriate
+    - [ ] Track this in tabel
 - [ ] Add sugar for parsing (does a standard library equivalent to `.formatted()` exist?)
 - [ ] Investigate attribute strings and other non-string `FormatOutput` types
 - [ ] More CoreGraphics types
@@ -72,6 +74,8 @@ The initial priority is to expose formats and parsers for more SIMD/CG types. So
 - [ ] Make a "field" type generic format, e.g. represent CGPoint as `x: 1.234, y: 5.678` (use for SIMD and other CG types)
 - [ ] A parser for angle would be nice but `Measurement<Angle>` has no parser we can base it off.
 - [ ] Investigate a "Parsable" and "Formattable" protocol that provides a .formatted() etc functions.
+- [ ] Add support for SwiftUI.Angle - how do we differentiate between two different Angle formatters?
+- [ ] Add support for Spatial.framework types
 
 ## Resources
 
