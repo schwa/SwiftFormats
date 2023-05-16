@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 /// Format angles in degrees or radians, input and output units can be different.
 public struct AngleFormatStyle<FormatInput>: ParseableFormatStyle where FormatInput: BinaryFloatingPoint {
@@ -99,5 +100,106 @@ public extension ParseStrategy where Self == AngleParseStrategy<Double> {
 public extension BinaryFloatingPoint {
     init(_ value: String, format: AngleFormatStyle<Self>) throws {
         self = try format.parseStrategy.parse(value)
+    }
+}
+
+// MARK: -
+
+
+public struct AngleValueFormatStyle: FormatStyle {
+
+    public static var defaultMeasurementStyle: Measurement<UnitAngle>.FormatStyle {
+        .measurement(width: .narrow)
+    }
+
+    public enum Unit: Codable {
+        case degrees
+        case radians
+    }
+
+    public var unit: Unit
+    public var measurementStyle: Measurement<UnitAngle>.FormatStyle
+    public var locale: Locale
+
+    public init(unit: AngleValueFormatStyle.Unit, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle, locale: Locale = .autoupdatingCurrent) {
+        self.unit = unit
+        self.measurementStyle = measurementStyle
+        self.locale = locale
+    }
+
+    public func format(_ value: Angle) -> String {
+        switch unit {
+        case .degrees:
+            return "\(value.degrees, unit: UnitAngle.degrees, format: measurementStyle.locale(locale))"
+        case .radians:
+            return "\(value.radians, unit: UnitAngle.radians, format: measurementStyle.locale(locale))"
+        }
+    }
+}
+
+public extension AngleValueFormatStyle {
+    func unit(_ unit: Unit) -> Self {
+        var copy = self
+        copy.unit = unit
+        return copy
+    }
+
+    var radians: Self {
+        var copy = self
+        copy.unit = .radians
+        return copy
+    }
+
+    var degrees: Self {
+        var copy = self
+        copy.unit = .degrees
+        return copy
+    }
+}
+
+public extension FormatStyle where Self == AngleValueFormatStyle {
+    static var angle: Self {
+        AngleValueFormatStyle(unit: .degrees)
+    }
+}
+
+public extension Angle {
+    func formatted() -> String {
+        return AngleValueFormatStyle(unit: .degrees, measurementStyle: AngleValueFormatStyle.defaultMeasurementStyle, locale: .autoupdatingCurrent).format(self)
+    }
+}
+
+// MARK: -
+
+extension AngleValueFormatStyle: ParseableFormatStyle {
+    public var parseStrategy: AngleValueParseStrategy {
+        return AngleValueParseStrategy()
+    }
+}
+
+public struct AngleValueParseStrategy: ParseStrategy {
+    public typealias Unit = AngleValueFormatStyle.Unit
+
+    public var defaultInputUnit: Unit?
+
+    public init(defaultInputUnit: AngleValueParseStrategy.Unit? = nil) {
+        self.defaultInputUnit = defaultInputUnit
+    }
+
+    public func parse(_ value: String) throws -> Angle {
+        let regex = #/^(.+?)(°|rad)?$/#
+        guard let match = value.firstMatch(of: regex) else {
+            throw SwiftFormatsError.parseError
+        }
+        let (value, unit) = (try Double(String(match.output.1), format: .number), match.output.2)
+        let radians: Double
+        switch (unit, defaultInputUnit) {
+        case ("°", _), (nil, .degrees):
+            return Angle(degrees: value)
+        case ("rad", _), (nil, .radians):
+            return Angle(radians: value)
+        default:
+            throw SwiftFormatsError.parseError
+        }
     }
 }
