@@ -20,6 +20,7 @@ struct ContentView: View {
                 demo(of: PointEditorDemoView.self)
                 demo(of: QuaternionDemoView.self)
                 demo(of: VectorEditorDemoView.self)
+                demo(of: AngleRangeEditorDemo.self)
             }
         }
     }
@@ -222,3 +223,16 @@ struct VectorEditorDemoView: View, DefaultInitialisable {
     }
 }
 
+// MARK: -
+
+struct AngleRangeEditorDemo: View, DefaultInitialisable {
+
+    @State
+    var value: ClosedRange<Angle> = .degrees(0) ... .degrees(180)
+
+    var body: some View {
+        TextField("Angles", value: $value, format: ClosedRangeFormatStyle(substyle: .angle))
+    }
+
+
+}
