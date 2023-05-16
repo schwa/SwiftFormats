@@ -16,5 +16,10 @@ class AngleValueTests: XCTestCase {
         XCTAssertEqual(try AngleValueParseStrategy().parse("1.570796rad").degrees, 90, accuracy: 0.001)
         XCTAssertThrowsError(try AngleValueParseStrategy().parse("90"))
         XCTAssertThrowsError(try AngleValueParseStrategy().parse("xxx°"))
+
+        XCTAssertEqual(try AngleValueParseStrategy().parse("  90°"), Angle(degrees: 90))
+        XCTAssertEqual(try AngleValueParseStrategy().parse("90°  "), Angle(degrees: 90))
+        XCTAssertEqual(try AngleValueParseStrategy().parse("90  °"), Angle(degrees: 90))
+        XCTAssertEqual(try AngleValueParseStrategy().parse("  90  °  "), Angle(degrees: 90))
     }
 }

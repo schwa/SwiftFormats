@@ -187,8 +187,8 @@ public struct AngleValueParseStrategy: ParseStrategy {
     }
 
     public func parse(_ value: String) throws -> Angle {
-        let regex = #/^(.+?)(°|rad)?$/#
-        guard let match = value.trimmingCharacters(in: .whitespaces).firstMatch(of: regex) else {
+        let regex = #/^\s*(.+?)\s*(°|rad)?\s*$/#
+        guard let match = value.firstMatch(of: regex) else {
             throw SwiftFormatsError.parseError
         }
         let (value, unit) = (try Double(String(match.output.1), format: .number), match.output.2)
