@@ -192,7 +192,6 @@ public struct AngleValueParseStrategy: ParseStrategy {
             throw SwiftFormatsError.parseError
         }
         let (value, unit) = (try Double(String(match.output.1), format: .number), match.output.2)
-        let radians: Double
         switch (unit, defaultInputUnit) {
         case ("°", _), (nil, .degrees):
             return Angle(degrees: value)
