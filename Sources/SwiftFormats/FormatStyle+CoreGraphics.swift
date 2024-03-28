@@ -1,7 +1,8 @@
 import CoreGraphics
 import Foundation
 
-/// Format `CGPoint`s.
+// MARK: CGPointFormatStyle
+
 public struct CGPointFormatStyle: ParseableFormatStyle {
 
     public var parseStrategy: CGPointParseStrategy {
@@ -25,7 +26,7 @@ public extension FormatStyle where Self == CGPointFormatStyle {
     }
 }
 
-// MARK: -
+// MARK: CGPointParseStrategy
 
 public struct CGPointParseStrategy: ParseStrategy {
     public var componentFormat: FloatingPointFormatStyle<Double>
@@ -42,7 +43,7 @@ public struct CGPointParseStrategy: ParseStrategy {
     }
 }
 
-// MARK: -
+// MARK: CGPoint convenience constructors
 
 public extension CGPoint {
     init(_ string: String) throws {
@@ -70,7 +71,7 @@ public extension ParseStrategy where Self == CGPointParseStrategy {
     }
 }
 
-// MARK: -
+// MARK: CGPoint.formatted
 
 public extension CGPoint {
     func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S: FormatStyle {
@@ -82,7 +83,7 @@ public extension CGPoint {
     }
 }
 
-// MARK: CGSize
+// MARK: CGSizeFormatStyle
 
 /// Format `CGSize`s.
 public struct CGSizeFormatStyle: ParseableFormatStyle {
@@ -108,7 +109,7 @@ public extension FormatStyle where Self == CGSizeFormatStyle {
     }
 }
 
-// MARK: -
+// MARK: CGSizeParseStrategy
 
 public struct CGSizeParseStrategy: ParseStrategy {
     public var componentFormat: FloatingPointFormatStyle<Double>
@@ -125,7 +126,7 @@ public struct CGSizeParseStrategy: ParseStrategy {
     }
 }
 
-// MARK: -
+// MARK: CGSize convenience init
 
 public extension CGSize {
     init(_ string: String) throws {
@@ -153,7 +154,7 @@ public extension ParseStrategy where Self == CGSizeParseStrategy {
     }
 }
 
-// MARK: -
+// MARK: CGSize.formatted
 
 public extension CGSize {
     func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S: FormatStyle {
@@ -165,3 +166,35 @@ public extension CGSize {
     }
 }
 
+// MARK: CGRectFormatStyle
+
+public struct CGRectFormatStyle: FormatStyle {
+
+    public var componentFormat: FloatingPointFormatStyle<Double> = .number
+
+    public init() {
+    }
+
+    public func format(_ value: CGRect) -> String {
+        let style = MappingFormatStyle(valueStyle: componentFormat)
+        return style.format([("x", value.origin.x), ("y", value.origin.y), ("width", value.size.width), ("height", value.size.height)])
+    }
+}
+
+public extension FormatStyle where Self == CGRectFormatStyle {
+    static var rectangle: Self {
+        return Self()
+    }
+}
+
+// MARK: CGRect.formatted
+
+public extension CGRect {
+    func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S: FormatStyle {
+        return format.format(self)
+    }
+
+    func formatted() -> String {
+        formatted(CGRectFormatStyle())
+    }
+}
