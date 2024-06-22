@@ -120,7 +120,7 @@ public struct AngleValueFormatStyle: FormatStyle {
     public var unit: Unit
     public var measurementStyle: Measurement<UnitAngle>.FormatStyle
     public var locale: Locale
-    public var defaultInputUnit: Unit?
+    public var defaultInputUnit: Unit? = .degrees
 
     public init(unit: AngleValueFormatStyle.Unit, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle, locale: Locale = .autoupdatingCurrent) {
         self.unit = unit
@@ -190,7 +190,7 @@ public struct AngleValueParseStrategy: ParseStrategy {
 
     public var defaultInputUnit: Unit?
 
-    public init(defaultInputUnit: AngleValueParseStrategy.Unit? = nil) {
+    public init(defaultInputUnit: AngleValueParseStrategy.Unit? = .degrees) {
         self.defaultInputUnit = defaultInputUnit
     }
 
