@@ -1,4 +1,4 @@
-@_implementationOnly import RegexBuilder
+import RegexBuilder
 import Foundation
 import simd
 

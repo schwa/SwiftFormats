@@ -1,4 +1,4 @@
-@_implementationOnly import Algorithms
+import Algorithms
 import Foundation
 
 // TODO: Remove FormatInput.Index == Int restriction

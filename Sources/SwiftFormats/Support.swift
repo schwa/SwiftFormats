@@ -1,6 +1,6 @@
 import Foundation
 import simd
-@_implementationOnly import RegexBuilder
+import RegexBuilder
 
 public enum SwiftFormatsError: Error {
     case parseError
