@@ -30,6 +30,5 @@ let package = Package(
             name: "SwiftFormatsTests",
             dependencies: ["SwiftFormats"]
         ),
-    ],
-    swiftLanguageVersions: [.v5, .version("6.0")]
+    ]
 )
