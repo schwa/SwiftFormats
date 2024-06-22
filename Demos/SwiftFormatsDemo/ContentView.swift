@@ -39,6 +39,9 @@ struct AngleEditorDemoView: View, DefaultInitialisable {
     @State
     var value: Double = 45
 
+    @State
+    var angleValue = Angle.degrees(45)
+
     var body: some View {
         Form {
             Section("String(describing:)") {
@@ -51,6 +54,20 @@ struct AngleEditorDemoView: View, DefaultInitialisable {
             }
             Section("Formatting TextField (radians)") {
                 TextField("Radians", value: $value, format: .angle(inputUnit: .degrees, outputUnit: .radians))
+                    .labelsHidden()
+                    .frame(maxWidth: 160)
+            }
+
+            Section("String(describing:)") {
+                Text(verbatim: "\(angleValue)")
+            }
+            Section("Formatting TextField (degrees)") {
+                TextField("Degrees", value: $angleValue, format: .angle.defaultInputUnit(.degrees))
+                    .labelsHidden()
+                    .frame(maxWidth: 160)
+            }
+            Section("Formatting TextField (radians)") {
+                TextField("Radians", value: $angleValue, format: .angle)
                     .labelsHidden()
                     .frame(maxWidth: 160)
             }

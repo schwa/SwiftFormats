@@ -120,6 +120,7 @@ public struct AngleValueFormatStyle: FormatStyle {
     public var unit: Unit
     public var measurementStyle: Measurement<UnitAngle>.FormatStyle
     public var locale: Locale
+    public var defaultInputUnit: Unit?
 
     public init(unit: AngleValueFormatStyle.Unit, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle, locale: Locale = .autoupdatingCurrent) {
         self.unit = unit
@@ -172,8 +173,15 @@ public extension Angle {
 // MARK: -
 
 extension AngleValueFormatStyle: ParseableFormatStyle {
+
     public var parseStrategy: AngleValueParseStrategy {
-        return AngleValueParseStrategy()
+        return AngleValueParseStrategy(defaultInputUnit: defaultInputUnit)
+    }
+
+    public func defaultInputUnit(_ defaultInputUnit: Unit) -> Self {
+        var copy = self
+        copy.defaultInputUnit = defaultInputUnit
+        return copy
     }
 }
 
