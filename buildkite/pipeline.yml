@@ -3,5 +3,5 @@ steps:
           - "swift package clean"
           - "swift build"
           - "swift test"
-          - "cd Demos; xcodebuild -scheme 'SwiftFormatsDemo' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.0' build"
+          - "cd Demos; xcodebuild -scheme 'SwiftFormatsDemo' -sdk iphonesimulator build"
           #- "swiftlint lint --quiet"
