@@ -20,4 +20,4 @@ jobs:
       - name: Run tests
         run: swift test -v
       - name: Build Demo
-        run: cd Demo && xcodebuild -scheme 'SwiftFormatsDemo' -sdk iphonesimulator build
+        run: cd Demos && xcodebuild -scheme 'SwiftFormatsDemo' -sdk iphonesimulator build
