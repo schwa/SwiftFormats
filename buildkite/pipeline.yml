@@ -1,7 +1,0 @@
-steps:
-    - commands:
-          - "swift package clean"
-          - "swift build"
-          - "swift test"
-          - "cd Demos; xcodebuild -scheme 'SwiftFormatsDemo' -sdk iphonesimulator build"
-          #- "swiftlint lint --quiet"
