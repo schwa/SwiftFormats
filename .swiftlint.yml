@@ -8,7 +8,6 @@ only_rules:
   - accessibility_label_for_image
   - accessibility_trait_for_button
   - anonymous_argument_in_multiline_closure
-  - anyobject_protocol
   - array_init
   - balanced_xctest_lifecycle
   - block_based_kvo
@@ -86,7 +85,6 @@ only_rules:
   - implicitly_unwrapped_optional
   - inclusive_language
   - indentation_width
-  - inert_defer
   - is_disjoint
   - joined_default_parameter
   - large_tuple
@@ -131,7 +129,7 @@ only_rules:
   - object_literal
   - opening_brace
   - operator_usage_whitespace
-  - operator_whitespace
+  - function_name_whitespace
   - optional_enum_case_matching
   - orphaned_doc_comment
   - overridden_super_call
@@ -159,7 +157,7 @@ only_rules:
   - redundant_discardable_let
   - redundant_nil_coalescing
   - redundant_objc_attribute
-  - redundant_optional_initialization
+  - implicit_optional_initialization
   - redundant_set_access_control
   - redundant_string_enum_value
   - redundant_type_annotation
@@ -200,7 +198,6 @@ only_rules:
   - unneeded_parentheses_in_closure_argument
   - unowned_variable_capture
   - untyped_error_in_catch
-  - unused_capture_list
   - unused_closure_parameter
   - unused_control_flow_label
   - unused_enumerated

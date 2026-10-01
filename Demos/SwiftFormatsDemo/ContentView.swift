@@ -26,7 +26,7 @@ struct ContentView: View {
     }
 
     func demo<T>(of t: T.Type) -> some View where T: View & DefaultInitialisable {
-        let name = String(String(describing: type(of: t)).prefix(while: { $0 != "." }))
+        let name = String(String(describing: type(of: t)).prefix { $0 != "." })
         return NavigationLink(name) {
             t.init()
         }

@@ -3,15 +3,15 @@ import Foundation
 // TODO: Localisation?
 
 public struct BoolFormatStyle: FormatStyle {
-    
+
     var falseString: String
     var trueString: String
-    
+
     public init(_ falseString: String = "false", _ trueString: String = "true") {
         self.falseString = falseString
         self.trueString = trueString
     }
-    
+
     public func format(_ value: Bool) -> String {
         switch value {
         case true:
@@ -51,7 +51,7 @@ public extension Bool {
     func formatted() -> String {
         return formatted(.bool)
     }
-    
+
     func formatted<S>(_ style: S) -> S.FormatOutput where S: FormatStyle, S.FormatInput == Bool {
         return style.format(self)
     }

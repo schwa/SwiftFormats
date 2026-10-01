@@ -40,7 +40,7 @@ public struct QuaternionFormatStyle <Q>: FormatStyle where Q: FormattableQuatern
     public typealias NumberStyle = FloatingPointFormatStyle<Q.Scalar>
     public var numberStyle: NumberStyle
 
-    public init(type: Q.Type, style: QuaternionFormatStyle.Style = .components, compositeStyle: CompositeStyle = .mapping, isHumanReadable: Bool = true, numberStyle: NumberStyle = NumberStyle()) {
+    public init(type: Q.Type, style: Self.Style = .components, compositeStyle: CompositeStyle = .mapping, isHumanReadable: Bool = true, numberStyle: NumberStyle = NumberStyle()) {
         self.style = style
         self.compositeStyle = compositeStyle
         self.isHumanReadable = isHumanReadable

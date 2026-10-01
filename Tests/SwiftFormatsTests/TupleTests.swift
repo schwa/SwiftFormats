@@ -18,7 +18,7 @@ class TupleTests: XCTestCase {
         XCTAssertNotNil(",".firstMatch(of: regex2))
         XCTAssertNotNil(";".firstMatch(of: regex2))
         XCTAssertNil("x".firstMatch(of: regex2))
-     }
+    }
 
     func test1() {
         let tuple = (1, 2)

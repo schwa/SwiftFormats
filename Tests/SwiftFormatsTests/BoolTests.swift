@@ -13,8 +13,8 @@ class BoolValueTests: XCTestCase {
     }
 
     func testParsing() {
-        XCTAssertEqual(try BoolParseStrategy().parse("true"), true)
-        XCTAssertEqual(try BoolParseStrategy().parse("false"), false)
+        XCTAssertTrue(try BoolParseStrategy().parse("true"))
+        XCTAssertFalse(try BoolParseStrategy().parse("false"))
         XCTAssertThrowsError(try BoolParseStrategy().parse("aardvark"))
     }
 }

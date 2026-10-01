@@ -19,7 +19,7 @@ public struct DegreesMinutesSecondsNotationFormatStyle<FormatInput>: FormatStyle
     var mode: Mode
     var measurementStyle: Measurement<UnitAngle>.FormatStyle
 
-    public init(mode: DegreesMinutesSecondsNotationFormatStyle.Mode = .decimalDegrees, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle) {
+    public init(mode: Self.Mode = .decimalDegrees, measurementStyle: Measurement<UnitAngle>.FormatStyle = Self.defaultMeasurementStyle) {
         self.mode = mode
         self.measurementStyle = measurementStyle
     }
