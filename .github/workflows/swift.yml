@@ -1,23 +1,31 @@
-# This workflow will build a Swift project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
-
 name: Swift
-
 on:
   push:
   pull_request:
 
+env:
+  XCODE_VERSION: "26.6"
+
 jobs:
-  build:
-    runs-on: macos-15
+  swiftlint:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Install SwiftLint
+        run: brew install swiftlint
+      - name: Run SwiftLint
+        run: swiftlint --strict
+
+  build-and-test:
+    runs-on: macos-26
     steps:
       - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
         with:
-          xcode-version: 16
+          xcode-version: ${{ env.XCODE_VERSION }}
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - name: Build
+      - name: Trust plugins
+        run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidation -bool YES
+      - name: Build (macOS)
         run: swift build -v
-      - name: Run tests
+      - name: Test (macOS)
         run: swift test -v
-      - name: Build Demo
-        run: cd Demos && xcodebuild -scheme 'SwiftFormatsDemo' -sdk iphonesimulator build
